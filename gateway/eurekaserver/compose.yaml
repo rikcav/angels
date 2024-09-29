@@ -1,0 +1,11 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8761:8761
+    environment:
+      EUREKA_URI: "http://localhost:8761/eureka"
+      PORT: 8761
+      DEPLOY_TYPE: "dev"

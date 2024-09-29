@@ -1,0 +1,32 @@
+# Test your FastAPI endpoints
+
+GET http://127.0.0.1:8000/parameters
+Accept: application/json
+
+###
+
+POST http://127.0.0.1:8000/predict
+Accept: application/json
+Content-Type: application/json
+
+{
+  "previous_weight": 1,
+  "gestational_risk": 1,
+  "schooling": 1,
+  "has_hypertension": true,
+  "has_diabetes": true,
+  "has_pelvic_sugery": true,
+  "has_urinary_infection": true,
+  "has_congenital_malformation": true,
+  "has_family_twinship": true,
+  "amount_gestation": 1,
+  "amount_abortion": 1,
+  "amount_deliveries": 1,
+  "amount_cesarean": 1,
+  "target": 1,
+  "age": 1,
+  "fist_prenatal": 1,
+  "time_between_pregnancies": 1
+}
+
+###
