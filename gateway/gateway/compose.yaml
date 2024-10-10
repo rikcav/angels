@@ -1,12 +1,16 @@
 services:
-  backend:
+  gateway:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - 8080:8080
     environment:
-      EUREKA_URI: "http://localhost:8761/eureka"
+      EUREKA_URI: "http://backend:8761/eureka"
+    external_links:
+      - backend
+    networks:
+      - eurekaserver_default
     depends_on:
       - redis
 
@@ -14,3 +18,7 @@ services:
     image: 'redis:latest'
     ports:
       - '6379'
+
+networks:
+  eurekaserver_default:
+    external: true
