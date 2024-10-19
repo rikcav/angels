@@ -2,13 +2,15 @@ package com.system.angels.service.impl;
 
 import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.domain.Gestante;
+import com.system.angels.dto.create.DadosEvolutivosDTO;
+import com.system.angels.exceptions.DadosEvolutivosNotFoundException;
 import com.system.angels.repository.DadosEvolutivosRepository;
 import com.system.angels.service.iDadosEvolutivosService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -21,77 +23,63 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
     }
 
     public List<DadosEvolutivos> listarDadosEvolutivosPorGestante(Gestante gestante) {
-        List<DadosEvolutivos> dadosEvolutivos = repositorio.findAllByGestante_id(gestante.getId());
-        return dadosEvolutivos;
+        return repositorio.findAllByGestante_id(gestante.getId());
     }
 
     public DadosEvolutivos ultimosDadosEvolutivosPorGestante(Gestante gestante) {
-        List<DadosEvolutivos> listaDeDadosEvolutivos = listarDadosEvolutivos();
+        List<DadosEvolutivos> listaDeDadosEvolutivos = listarDadosEvolutivosPorGestante(gestante);
 
-        DadosEvolutivos ultimosDadosEvolutivos = listaDeDadosEvolutivos.get(listaDeDadosEvolutivos.size() - 1);
-
-        return ultimosDadosEvolutivos;
+        return listaDeDadosEvolutivos.get(listaDeDadosEvolutivos.size() - 1);
     }
 
     public DadosEvolutivos buscarDadosEvolutivosPorId(Long id) {
-        Optional<DadosEvolutivos> dadosEvolutivos = repositorio.findById(id);
-
-        if (dadosEvolutivos.isEmpty()) {
-            throw new RuntimeException("Não foram encontrados dados evolutivos associados a esse ID.");
-        }
-
-        return dadosEvolutivos.get();
+        return repositorio.findById(id).orElseThrow(() -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
     }
 
     public DadosEvolutivos registrarDadosEvolutivos(DadosEvolutivos dadosEvolutivos) {
         return repositorio.save(dadosEvolutivos);
     }
 
-    public DadosEvolutivos atualizarDadosEvolutivos(DadosEvolutivos dadosEvolutivosAtualizados) {
-        DadosEvolutivos dadosEvolutivos = buscarDadosEvolutivosPorId(dadosEvolutivosAtualizados.getId());
+    private DadosEvolutivos dtoToEntity(DadosEvolutivosDTO dadosEvolutivosDTO) {
+        var dadosEvolutivos = new DadosEvolutivos();
 
-        dadosEvolutivos.setMunicipio(dadosEvolutivosAtualizados.getMunicipio());
-        dadosEvolutivos.setDiagnosticoDesnutricao(dadosEvolutivosAtualizados.getDiagnosticoDesnutricao());
-        dadosEvolutivos.setEnergiaEletricaDomicilio(dadosEvolutivosAtualizados.isEnergiaEletricaDomicilio());
-        dadosEvolutivos.setEscolaridade(dadosEvolutivosAtualizados.getEscolaridade());
-        dadosEvolutivos.setTipoMoradia(dadosEvolutivosAtualizados.getTipoMoradia());
-        dadosEvolutivos.setMoradiaRedeEsgoto(dadosEvolutivosAtualizados.isMoradiaRedeEsgoto());
-        dadosEvolutivos.setRendaFamiliar(dadosEvolutivosAtualizados.getRendaFamiliar());
-        dadosEvolutivos.setTratamentoAgua(dadosEvolutivosAtualizados.isTratamentoAgua());
-        dadosEvolutivos.setAmamentacao(dadosEvolutivosAtualizados.isAmamentacao());
-        dadosEvolutivos.setChefeFamilia(dadosEvolutivosAtualizados.isChefeFamilia());
-        dadosEvolutivos.setDataUltimaGestacao(dadosEvolutivosAtualizados.getDataUltimaGestacao());
-        dadosEvolutivos.setEmRisco(dadosEvolutivosAtualizados.isEmRisco());
-        dadosEvolutivos.setEstadoCivil(dadosEvolutivosAtualizados.getEstadoCivil());
-        dadosEvolutivos.setQuantidadeAbortos(dadosEvolutivosAtualizados.getQuantidadeAbortos());
-        dadosEvolutivos.setQuantidadeFilhosVivos(dadosEvolutivosAtualizados.getQuantidadeFilhosVivos());
-        dadosEvolutivos.setQuantidadeGemelares(dadosEvolutivosAtualizados.getQuantidadeGemelares());
-        dadosEvolutivos.setQuantidadeGestacao(dadosEvolutivosAtualizados.getQuantidadeGestacao());
-        dadosEvolutivos.setQuantidadeNascidosMortos(dadosEvolutivosAtualizados.getQuantidadeNascidosMortos());
-        dadosEvolutivos.setQuantidadeNascidosVivos(dadosEvolutivosAtualizados.getQuantidadeNascidosVivos());
-        dadosEvolutivos.setQuantidadeObitosSemana1(dadosEvolutivosAtualizados.getQuantidadeObitosSemana1());
-        dadosEvolutivos.setQuantidadeObitosAposSemana1(dadosEvolutivosAtualizados.getQuantidadeObitosAposSemana1());
-        dadosEvolutivos.setQuantidadePartos(dadosEvolutivosAtualizados.getQuantidadePartos());
-        dadosEvolutivos.setQuantidadePartosCesarios(dadosEvolutivosAtualizados.getQuantidadePartosCesarios());
-        dadosEvolutivos.setQuantidadePartosVaginais(dadosEvolutivosAtualizados.getQuantidadePartosVaginais());
-        dadosEvolutivos.setQuantidadeRnPeso2500_4000(dadosEvolutivosAtualizados.getQuantidadeRnPeso2500_4000());
-        dadosEvolutivos.setQuantidadeRnPesoMaior4000(dadosEvolutivosAtualizados.getQuantidadeRnPesoMaior4000());
-        dadosEvolutivos.setQuantidadeRnPesoMenor2500(dadosEvolutivosAtualizados.getQuantidadeRnPesoMenor2500());
-        dadosEvolutivos.setHipertensao(dadosEvolutivosAtualizados.isHipertensao());
-        dadosEvolutivos.setDiabetes(dadosEvolutivosAtualizados.isDiabetes());
-        dadosEvolutivos.setCirurgiaPelvica(dadosEvolutivosAtualizados.isCirurgiaPelvica());
-        dadosEvolutivos.setInfeccaoUrinaria(dadosEvolutivosAtualizados.isInfeccaoUrinaria());
-        dadosEvolutivos.setMaFormacaoCongenita(dadosEvolutivosAtualizados.isMaFormacaoCongenita());
-        dadosEvolutivos.setFamiliarGemeos(dadosEvolutivosAtualizados.isFamiliarGemeos());
-        dadosEvolutivos.setContato(dadosEvolutivosAtualizados.getContato());
-        dadosEvolutivos.setContatoEmergencia(dadosEvolutivosAtualizados.getContatoEmergencia());
+        dadosEvolutivos.setId(new Random().nextLong());
+        dadosEvolutivos.setMunicipio(dadosEvolutivosDTO.municipio());
+        dadosEvolutivos.setDiagnosticoDesnutricao(dadosEvolutivosDTO.diagnosticoDesnutricao());
+        dadosEvolutivos.setEnergiaEletricaDomicilio(dadosEvolutivosDTO.energiaEletricaDomicilio());
+        dadosEvolutivos.setEscolaridade(dadosEvolutivosDTO.escolaridade());
+        dadosEvolutivos.setTipoMoradia(dadosEvolutivosDTO.tipoMoradia());
+        dadosEvolutivos.setMoradiaRedeEsgoto(dadosEvolutivosDTO.moradiaRedeEsgoto());
+        dadosEvolutivos.setRendaFamiliar(dadosEvolutivosDTO.rendaFamiliar());
+        dadosEvolutivos.setTratamentoAgua(dadosEvolutivosDTO.tratamentoAgua());
+        dadosEvolutivos.setAmamentacao(dadosEvolutivosDTO.amamentacao());
+        dadosEvolutivos.setChefeFamilia(dadosEvolutivosDTO.chefeFamilia());
+        dadosEvolutivos.setDataUltimaGestacao(dadosEvolutivosDTO.dataUltimaGestacao());
+        dadosEvolutivos.setEmRisco(dadosEvolutivosDTO.emRisco());
+        dadosEvolutivos.setEstadoCivil(dadosEvolutivosDTO.estadoCivil());
+        dadosEvolutivos.setQuantidadeAbortos(dadosEvolutivosDTO.quantidadeAbortos());
+        dadosEvolutivos.setQuantidadeFilhosVivos(dadosEvolutivosDTO.quantidadeFilhosVivos());
+        dadosEvolutivos.setQuantidadeGemelares(dadosEvolutivosDTO.quantidadeGemelares());
+        dadosEvolutivos.setQuantidadeGestacao(dadosEvolutivosDTO.quantidadeGestacao());
+        dadosEvolutivos.setQuantidadeNascidosMortos(dadosEvolutivosDTO.quantidadeNascidosMortos());
+        dadosEvolutivos.setQuantidadeNascidosVivos(dadosEvolutivosDTO.quantidadeNascidosVivos());
+        dadosEvolutivos.setQuantidadeObitosSemana1(dadosEvolutivosDTO.quantidadeObitosSemana1());
+        dadosEvolutivos.setQuantidadeObitosAposSemana1(dadosEvolutivosDTO.quantidadeObitosAposSemana1());
+        dadosEvolutivos.setQuantidadePartos(dadosEvolutivosDTO.quantidadePartos());
+        dadosEvolutivos.setQuantidadePartosCesarios(dadosEvolutivosDTO.quantidadePartosCesarios());
+        dadosEvolutivos.setQuantidadePartosVaginais(dadosEvolutivosDTO.quantidadePartosVaginais());
+        dadosEvolutivos.setQuantidadeRnPeso2500_4000(dadosEvolutivosDTO.quantidadeRnPeso2500_4000());
+        dadosEvolutivos.setQuantidadeRnPesoMaior4000(dadosEvolutivosDTO.quantidadeRnPesoMaior4000());
+        dadosEvolutivos.setQuantidadeRnPesoMenor2500(dadosEvolutivosDTO.quantidadeRnPesoMenor2500());
+        dadosEvolutivos.setHipertensao(dadosEvolutivosDTO.hipertensao());
+        dadosEvolutivos.setDiabetes(dadosEvolutivosDTO.diabetes());
+        dadosEvolutivos.setCirurgiaPelvica(dadosEvolutivosDTO.cirurgiaPelvica());
+        dadosEvolutivos.setInfeccaoUrinaria(dadosEvolutivosDTO.infeccaoUrinaria());
+        dadosEvolutivos.setMaFormacaoCongenita(dadosEvolutivosDTO.maFormacaoCongenita());
+        dadosEvolutivos.setFamiliarGemeos(dadosEvolutivosDTO.familiarGemeos());
+        dadosEvolutivos.setContato(dadosEvolutivosDTO.contato());
+        dadosEvolutivos.setContatoEmergencia(dadosEvolutivosDTO.contatoEmergencia());
 
         return registrarDadosEvolutivos(dadosEvolutivos);
-    }
-
-    public void deletarDadosEvolutivos(Long id) {
-        DadosEvolutivos dadosEvolutivos = buscarDadosEvolutivosPorId(id);
-
-        repositorio.delete(dadosEvolutivos);
     }
 }
