@@ -7,6 +7,7 @@ import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.repository.GestacaoRepository;
 import com.system.angels.repository.GestanteRepository;
 import com.system.angels.service.iGestacaoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +15,10 @@ import java.util.Random;
 
 @Service
 public class GestacaoService implements iGestacaoService {
-    public GestacaoRepository gestacaoRepository;
-    public GestanteRepository gestanteRepository;
+    public final GestacaoRepository gestacaoRepository;
+    public final GestanteRepository gestanteRepository;
 
+    @Autowired
     public GestacaoService(GestacaoRepository gestacaoRepository, GestanteRepository gestanteRepository) {
         this.gestacaoRepository = gestacaoRepository;
         this.gestanteRepository = gestanteRepository;
