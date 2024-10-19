@@ -22,6 +22,7 @@ public record DadosEvolutivosDTO(
         int estadoCivil,
         int quantidadeAbortos,
         int quantidadeFilhosVivos,
+        int quantidadeGemelares,
         int quantidadeGestacao,
         int quantidadeNascidosMortos,
         int quantidadeNascidosVivos,

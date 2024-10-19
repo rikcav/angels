@@ -1,41 +1,46 @@
 package com.system.angels.service.impl;
 
 import com.system.angels.domain.Acompanhamento;
+import com.system.angels.dto.create.AcompanhamentoDTO;
+import com.system.angels.exceptions.AcompanhamentoNotFoundException;
+import com.system.angels.exceptions.GestacaoNotFoundException;
 import com.system.angels.repository.AcompanhamentoRepository;
+import com.system.angels.repository.GestacaoRepository;
 import com.system.angels.service.iAcompanhamentoService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Random;
 
 @Service
-@RequiredArgsConstructor
 public class AcompanhamentoService implements iAcompanhamentoService {
+    private final AcompanhamentoRepository acompanhamentoRepository;
+    private final GestacaoRepository gestacaoRepository;
 
-    private final AcompanhamentoRepository repositorio;
-
-    public List<Acompanhamento> listarAcompanhamentos() {
-        return repositorio.findAll();
+    @Autowired
+    public AcompanhamentoService(AcompanhamentoRepository acompanhamentoRepository, GestacaoRepository gestacaoRepository) {
+        this.acompanhamentoRepository = acompanhamentoRepository;
+        this.gestacaoRepository = gestacaoRepository;
     }
 
-    public Acompanhamento buscarAcompanhamentoPorId(Long id) throws RuntimeException {
-        Optional<Acompanhamento> acompanhamento = repositorio.findById(id);
+    public List<Acompanhamento> listarAcompanhamentos() {
+        return acompanhamentoRepository.findAll();
+    }
 
-        if (acompanhamento.isEmpty()) {
-            throw new RuntimeException("Não existe um acompanhamento associado a esse id.");
-        }
-
-        return acompanhamento.get();
+    public Acompanhamento buscarAcompanhamentoPorId(Long id) {
+        return acompanhamentoRepository.findById(id).orElseThrow(
+                () -> new AcompanhamentoNotFoundException("Acompanhamento com id" + id + " não encontrado"));
     }
 
     public Acompanhamento registrarAcompanhamento(Acompanhamento acompanhamento) {
-        return repositorio.save(acompanhamento);
+        return acompanhamentoRepository.save(acompanhamento);
     }
 
     public void deletarAcompanhamento(Long id) {
-        Acompanhamento acompanhamento = buscarAcompanhamentoPorId(id);
-        repositorio.delete(acompanhamento);
+        var acompanhamento = acompanhamentoRepository.findById(id).orElseThrow(
+                () -> new AcompanhamentoNotFoundException("Acompanhamento com id" + id + " não encontrado"));
+        acompanhamentoRepository.delete(acompanhamento);
     }
 
     public Acompanhamento atualizarAcompanhamento(Long id, Acompanhamento acompanhamentoAtualizado) {
@@ -49,10 +54,30 @@ public class AcompanhamentoService implements iAcompanhamentoService {
         acompanhamento.setAlturaUterina(acompanhamentoAtualizado.getAlturaUterina());
         acompanhamento.setTipo(acompanhamentoAtualizado.getTipo());
 
-        return repositorio.save(acompanhamento);
+        return acompanhamentoRepository.save(acompanhamento);
     }
 
     public List<Acompanhamento> listarAcompanhamentoPorGestacaoId(Long gestacaoId) {
-        return repositorio.findByGestacaoId(gestacaoId);
+        return acompanhamentoRepository.findByGestacaoId(gestacaoId);
+    }
+
+    private Acompanhamento dtoToEntity(AcompanhamentoDTO acompanhamentoDTO) {
+        var gestacao = gestacaoRepository.findById(acompanhamentoDTO.gestacao_id()).orElseThrow(
+                () -> new GestacaoNotFoundException("Gestação com id " + acompanhamentoDTO.gestacao_id() + " não encontrada"));
+
+        var acompanhamento = new Acompanhamento();
+
+        acompanhamento.setGestacao(gestacao);
+        acompanhamento.setId(new Random().nextLong());
+        acompanhamento.setDataAcompanhamento(acompanhamentoDTO.dataAcompanhamento());
+        acompanhamento.setRealizadoPor(acompanhamentoDTO.realizadoPor());
+        acompanhamento.setPesoAtual(acompanhamentoDTO.pesoAtual());
+        acompanhamento.setIdadeGestacional(acompanhamentoDTO.idadeGestacional());
+        acompanhamento.setPressaoArterial(acompanhamentoDTO.pressaoArterial());
+        acompanhamento.setBatimentosCardiacosFeto(acompanhamentoDTO.batimentosCardiacosFeto());
+        acompanhamento.setAlturaUterina(acompanhamentoDTO.alturaUterina());
+        acompanhamento.setTipo(acompanhamentoDTO.tipo());
+
+        return acompanhamento;
     }
 }
