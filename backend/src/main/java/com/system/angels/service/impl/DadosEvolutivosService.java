@@ -6,24 +6,27 @@ import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.exceptions.DadosEvolutivosNotFoundException;
 import com.system.angels.repository.DadosEvolutivosRepository;
 import com.system.angels.service.iDadosEvolutivosService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
 
 @Service
-@RequiredArgsConstructor
 public class DadosEvolutivosService implements iDadosEvolutivosService {
+    private final DadosEvolutivosRepository dadosEvolutivosRepository;
 
-    private final DadosEvolutivosRepository repositorio;
+    @Autowired
+    public DadosEvolutivosService(DadosEvolutivosRepository dadosEvolutivosRepository) {
+        this.dadosEvolutivosRepository = dadosEvolutivosRepository;
+    }
 
     public List<DadosEvolutivos> listarDadosEvolutivos() {
-        return repositorio.findAll();
+        return dadosEvolutivosRepository.findAll();
     }
 
     public List<DadosEvolutivos> listarDadosEvolutivosPorGestante(Gestante gestante) {
-        return repositorio.findAllByGestante_id(gestante.getId());
+        return dadosEvolutivosRepository.findAllByGestante_id(gestante.getId());
     }
 
     public DadosEvolutivos ultimosDadosEvolutivosPorGestante(Gestante gestante) {
@@ -33,11 +36,11 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
     }
 
     public DadosEvolutivos buscarDadosEvolutivosPorId(Long id) {
-        return repositorio.findById(id).orElseThrow(() -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
+        return dadosEvolutivosRepository.findById(id).orElseThrow(() -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
     }
 
     public DadosEvolutivos registrarDadosEvolutivos(DadosEvolutivos dadosEvolutivos) {
-        return repositorio.save(dadosEvolutivos);
+        return dadosEvolutivosRepository.save(dadosEvolutivos);
     }
 
     private DadosEvolutivos dtoToEntity(DadosEvolutivosDTO dadosEvolutivosDTO) {
