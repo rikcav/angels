@@ -7,8 +7,8 @@ import com.system.angels.dto.response.VisualizarDadosEvolutivosDTO;
 import com.system.angels.service.impl.DadosEvolutivosService;
 import com.system.angels.service.impl.GestanteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,30 +20,26 @@ public class DadosEvolutivosController {
     private final DadosEvolutivosService service;
     private final GestanteService gestanteService;
 
+    @GetMapping("/{id}")
+    ResponseEntity<VisualizarDadosEvolutivosDTO> buscarDadosEvolutivosPorId(@PathVariable Long id) {
+        var dadosEvolutivos = service.buscarDadosEvolutivosPorId(id);
+        var visualizarDadosEvolutivosDTO = new VisualizarDadosEvolutivosDTO(dadosEvolutivos);
+        return ResponseEntity.status(HttpStatus.OK).body(visualizarDadosEvolutivosDTO);
+    }
+
     @GetMapping("/gestante/{id}")
     ResponseEntity<List<DadosEvolutivos>> listarDadosEvolutivosPorGestante(@PathVariable Long id) {
-        Gestante gestante = gestanteService.buscarGestantePorId(id);
-        List<DadosEvolutivos> listaDeDadosEvolutivos = service.listarDadosEvolutivosPorGestante(gestante);
-        return ResponseEntity.ok(listaDeDadosEvolutivos);
+        var gestante = gestanteService.buscarGestantePorId(id);
+        var listaDeDadosEvolutivos = service.listarDadosEvolutivosPorGestante(gestante);
+        return ResponseEntity.status(HttpStatus.OK).body(listaDeDadosEvolutivos);
     }
 
     @PostMapping("/gestante/{id}")
     ResponseEntity<CadastrarDadosEvolutivosDTO> atualizarDadosEvolutivos(@PathVariable Long id, @RequestBody DadosEvolutivos dadosEvolutivos) {
-        Gestante gestante = gestanteService.buscarGestantePorId(id);
+        var gestante = gestanteService.buscarGestantePorId(id);
         dadosEvolutivos.setGestante(gestante);
-        CadastrarDadosEvolutivosDTO cadastrarDadosEvolutivosDTO = new CadastrarDadosEvolutivosDTO(dadosEvolutivos);
+        var cadastrarDadosEvolutivosDTO = new CadastrarDadosEvolutivosDTO(dadosEvolutivos);
         service.registrarDadosEvolutivos(dadosEvolutivos);
-        return ResponseEntity.ok(cadastrarDadosEvolutivosDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cadastrarDadosEvolutivosDTO);
     }
-
-
-    // Não tá funcionando :(
-    @GetMapping("/{id}")
-    ResponseEntity<VisualizarDadosEvolutivosDTO> buscarDadosEvolutivosPorId(@PathVariable Long id) {
-        DadosEvolutivos dadosEvolutivos = service.buscarDadosEvolutivosPorId(id);
-        VisualizarDadosEvolutivosDTO visualizarDadosEvolutivosDTO = new VisualizarDadosEvolutivosDTO(dadosEvolutivos);
-        return ResponseEntity.ok(visualizarDadosEvolutivosDTO);
-
-    }
-
 }
