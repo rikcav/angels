@@ -1,7 +1,6 @@
 package com.system.angels.service.impl;
 
 import com.system.angels.domain.DadosEvolutivos;
-import com.system.angels.domain.Gestante;
 import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.exceptions.DadosEvolutivosNotFoundException;
 import com.system.angels.exceptions.GestanteNotFoundException;
