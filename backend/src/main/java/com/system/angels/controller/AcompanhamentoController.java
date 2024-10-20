@@ -3,13 +3,12 @@ package com.system.angels.controller;
 
 import com.system.angels.domain.Acompanhamento;
 import com.system.angels.domain.Gestacao;
-import com.system.angels.domain.Gestante;
 import com.system.angels.dto.create.CadastrarAcompanhamentoDTO;
 import com.system.angels.dto.response.VisualizarAcompanhamentoDTO;
 import com.system.angels.service.impl.AcompanhamentoService;
 import com.system.angels.service.impl.GestacaoService;
-import com.system.angels.service.impl.GestanteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,28 +18,32 @@ import java.util.List;
 @RequestMapping("/acompanhamentos")
 @RequiredArgsConstructor
 public class AcompanhamentoController {
-
     private final AcompanhamentoService service;
-
     private final GestacaoService gestacaoService;
 
     @GetMapping
     public ResponseEntity<List<Acompanhamento>> listarAcompanhamentos() {
-        List<Acompanhamento> acompanhamentos = service.listarAcompanhamentos();
-        return ResponseEntity.ok(acompanhamentos);
+        var acompanhamentos = service.listarAcompanhamentos();
+        return ResponseEntity.status(HttpStatus.OK).body(acompanhamentos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<VisualizarAcompanhamentoDTO> buscarAcompanhamentoPorId(@PathVariable Long id) {
-        Acompanhamento acompanhamento = service.buscarAcompanhamentoPorId(id);
-        VisualizarAcompanhamentoDTO acompanhamentoDTO = new VisualizarAcompanhamentoDTO(acompanhamento);
-        return ResponseEntity.ok(acompanhamentoDTO);
+        var acompanhamento = service.buscarAcompanhamentoPorId(id);
+        var acompanhamentoDTO = new VisualizarAcompanhamentoDTO(acompanhamento);
+        return ResponseEntity.status(HttpStatus.OK).body(acompanhamentoDTO);
+    }
+
+    @GetMapping("/listar-acompanhamento-por-gestao/{gestacaoId}")
+    public ResponseEntity<List<Acompanhamento>> listarAcompanhamentoPorGestacaoId(@PathVariable Long gestacaoId) {
+        var acompanhamentos = service.listarAcompanhamentoPorGestacaoId(gestacaoId);
+        return ResponseEntity.status(HttpStatus.OK).body(acompanhamentos);
     }
 
     @PostMapping("/{gestacaoId}")
     public ResponseEntity<CadastrarAcompanhamentoDTO> cadastrarAcompanhamento(@PathVariable Long gestacaoId, @RequestBody CadastrarAcompanhamentoDTO cadastroAcompanhamentoDTO) {
-        Acompanhamento acompanhamento = new Acompanhamento();
-        Gestacao gestacao = gestacaoService.obterGestacaoPorId(gestacaoId);
+        var acompanhamento = new Acompanhamento();
+        var gestacao = gestacaoService.obterGestacaoPorId(gestacaoId);
 
         acompanhamento.setGestacao(gestacao);
         acompanhamento.setDataAcompanhamento(cadastroAcompanhamentoDTO.getDataAcompanhamento());
@@ -53,29 +56,23 @@ public class AcompanhamentoController {
         acompanhamento.setTipo(cadastroAcompanhamentoDTO.getTipo());
         acompanhamento.setRiscoIA(cadastroAcompanhamentoDTO.getRiscoIA());
 
-        Acompanhamento adicionadoAcompanhamento = service.registrarAcompanhamento(acompanhamento);
+        var adicionadoAcompanhamento = service.registrarAcompanhamento(acompanhamento);
 
-        CadastrarAcompanhamentoDTO adicionadoAcompnhamentoDTO = new CadastrarAcompanhamentoDTO(adicionadoAcompanhamento);
+        var adicionadoAcompnhamentoDTO = new CadastrarAcompanhamentoDTO(adicionadoAcompanhamento);
 
-        return ResponseEntity.ok(adicionadoAcompnhamentoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(adicionadoAcompnhamentoDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<VisualizarAcompanhamentoDTO> atualizarAcompanhamento(@PathVariable Long id, @RequestBody Acompanhamento acompanhamentoAtualziado) {
-        Acompanhamento acompanhamento = service.atualizarAcompanhamento(id, acompanhamentoAtualziado);
-        VisualizarAcompanhamentoDTO acompanhamentoDTO = new VisualizarAcompanhamentoDTO(acompanhamento);
-        return ResponseEntity.ok(acompanhamentoDTO);
+        var acompanhamento = service.atualizarAcompanhamento(id, acompanhamentoAtualziado);
+        var acompanhamentoDTO = new VisualizarAcompanhamentoDTO(acompanhamento);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(acompanhamentoDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarAcompanhamento(@PathVariable Long id) {
         service.deletarAcompanhamento(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/listar-acompanhamento-por-gestao/{gestacaoId}")
-    public ResponseEntity<List<Acompanhamento>> listarAcompanhamentoPorGestacaoId(@PathVariable Long gestacaoId) {
-        List<Acompanhamento> acompanhamentos = service.listarAcompanhamentoPorGestacaoId(gestacaoId);
-        return ResponseEntity.ok(acompanhamentos);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
