@@ -20,22 +20,27 @@ public class GestanteService implements iGestanteService {
         this.gestanteRepository = gestanteRepository;
     }
 
+    @Override
     public List<Gestante> listarGestantes() {
         return gestanteRepository.findAll();
     }
 
+    @Override
     public Gestante buscarGestantePorId(Long id) {
         return gestanteRepository.findById(id).orElseThrow(() -> new GestanteNotFoundException("Gestante com o id " + id + " não foi encontrada"));
     }
 
+    @Override
     public Gestante buscarGestantePorCpf(String cpf) {
         return gestanteRepository.findGestanteByCpf(cpf).orElseThrow(() -> new GestanteNotFoundException("Gestante com o cpf " + cpf + " não foi encontrada"));
     }
 
+    @Override
     public Gestante registrarGestante(Gestante gestante) {
         return gestanteRepository.save(gestante);
     }
 
+    @Override
     public Gestante atualizarGestante(Long id, Gestante gestanteAtualizada) {
         var gestante = gestanteRepository.findById(id).orElseThrow(() -> new GestanteNotFoundException("Gestante com o id " + id + " não foi encontrada"));
 
@@ -48,6 +53,7 @@ public class GestanteService implements iGestanteService {
         return registrarGestante(gestante);
     }
 
+    @Override
     public void deletarGestante(Long id) {
         var gestante = gestanteRepository.findById(id).orElseThrow(() -> new GestanteNotFoundException("Gestante com o id " + id + " não foi encontrada"));
         gestanteRepository.delete(gestante);

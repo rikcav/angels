@@ -24,25 +24,30 @@ public class AcompanhamentoService implements iAcompanhamentoService {
         this.gestacaoRepository = gestacaoRepository;
     }
 
+    @Override
     public List<Acompanhamento> listarAcompanhamentos() {
         return acompanhamentoRepository.findAll();
     }
 
+    @Override
     public Acompanhamento buscarAcompanhamentoPorId(Long id) {
         return acompanhamentoRepository.findById(id).orElseThrow(
                 () -> new AcompanhamentoNotFoundException("Acompanhamento com id" + id + " não encontrado"));
     }
 
+    @Override
     public Acompanhamento registrarAcompanhamento(Acompanhamento acompanhamento) {
         return acompanhamentoRepository.save(acompanhamento);
     }
 
+    @Override
     public void deletarAcompanhamento(Long id) {
         var acompanhamento = acompanhamentoRepository.findById(id).orElseThrow(
                 () -> new AcompanhamentoNotFoundException("Acompanhamento com id" + id + " não encontrado"));
         acompanhamentoRepository.delete(acompanhamento);
     }
 
+    @Override
     public Acompanhamento atualizarAcompanhamento(Long id, Acompanhamento acompanhamentoAtualizado) {
         Acompanhamento acompanhamento = buscarAcompanhamentoPorId(id);
         acompanhamento.setDataAcompanhamento(acompanhamentoAtualizado.getDataAcompanhamento());
@@ -57,6 +62,7 @@ public class AcompanhamentoService implements iAcompanhamentoService {
         return acompanhamentoRepository.save(acompanhamento);
     }
 
+    @Override
     public List<Acompanhamento> listarAcompanhamentoPorGestacaoId(Long gestacaoId) {
         return acompanhamentoRepository.findByGestacaoId(gestacaoId);
     }

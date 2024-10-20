@@ -25,6 +25,7 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
         return dadosEvolutivosRepository.findAll();
     }
 
+    @Override
     public List<DadosEvolutivos> listarDadosEvolutivosPorGestante(Gestante gestante) {
         return dadosEvolutivosRepository.findAllByGestante_id(gestante.getId());
     }
@@ -35,10 +36,12 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
         return listaDeDadosEvolutivos.get(listaDeDadosEvolutivos.size() - 1);
     }
 
+    @Override
     public DadosEvolutivos buscarDadosEvolutivosPorId(Long id) {
         return dadosEvolutivosRepository.findById(id).orElseThrow(() -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
     }
 
+    @Override
     public DadosEvolutivos registrarDadosEvolutivos(DadosEvolutivos dadosEvolutivos) {
         return dadosEvolutivosRepository.save(dadosEvolutivos);
     }
