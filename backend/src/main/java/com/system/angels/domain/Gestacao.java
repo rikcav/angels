@@ -1,5 +1,6 @@
 package com.system.angels.domain;
 
+import com.system.angels.domain.enums.FatorRH;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class Gestacao {
     private Date dataInicioGestacao;
 
     @Column(nullable = false)
-    private String fatorRh;
+    private FatorRH fatorRh;
 
     @Column(nullable = false)
     private boolean fuma;

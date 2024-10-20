@@ -1,5 +1,6 @@
 package com.system.angels.domain;
 
+import com.system.angels.domain.enums.Sexo;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,5 +27,5 @@ public class Gestante {
     private int raca;
 
     @Column(nullable = false)
-    private String sexo;
+    private Sexo sexo;
 }

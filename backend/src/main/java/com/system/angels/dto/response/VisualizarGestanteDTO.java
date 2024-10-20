@@ -2,6 +2,7 @@ package com.system.angels.dto.response;
 
 import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.domain.Gestante;
+import com.system.angels.domain.enums.Sexo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ public class VisualizarGestanteDTO {
     private String nome;
     private Date dataNascimento;
     private String cpf;
-    private String sexo;
+    private Sexo sexo;
     private String municipio;
     private boolean emRisco;
     private int quantidadeAbortos;
