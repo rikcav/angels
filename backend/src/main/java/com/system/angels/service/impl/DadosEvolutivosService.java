@@ -29,8 +29,9 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
     }
 
     public DadosEvolutivos ultimosDadosEvolutivosPorGestante(Long gestanteId) {
-        var listaDeDadosEvolutivos = dadosEvolutivosRepository.findAllByGestante_id(gestanteId);
-        return listaDeDadosEvolutivos.get(listaDeDadosEvolutivos.size() - 1);
+        var listaDeDadosEvolutivos = dadosEvolutivosRepository.findFirstByGestante_idOrderByGestanteIdDesc(gestanteId).orElseThrow(
+                () -> new DadosEvolutivosNotFoundException("Não foram encontrados dados evolutivos para a gestante com id " + gestanteId));
+        return listaDeDadosEvolutivos;
     }
 
     public DadosEvolutivos buscarDadosEvolutivosPorId(Long id) {
