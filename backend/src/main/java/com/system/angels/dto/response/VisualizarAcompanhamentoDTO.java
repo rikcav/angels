@@ -2,6 +2,8 @@ package com.system.angels.dto.response;
 
 import com.system.angels.domain.Acompanhamento;
 import com.system.angels.domain.Gestante;
+import com.system.angels.domain.enums.RealizadoPor;
+import com.system.angels.domain.enums.TipoAcompanhamento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,13 +22,13 @@ public class VisualizarAcompanhamentoDTO {
     private Long id;
     private Long gestacaoId;
     private Date dataAcompanhamento;
-    private String realizadoPor;  // Pode ser "médico" ou "enfermeiro"
+    private RealizadoPor realizadoPor;  // Pode ser "médico" ou "enfermeiro"
     private BigDecimal pesoAtual;
     private int idadeGestacional;
     private String pressaoArterial;
     private Integer batimentosCardiacosFeto;  // Pode ser vazio
     private Integer alturaUterina;  // Pode ser vazio
-    private String tipo;  // Pode ser "pré-natal de rotina", "ocorrência" ou "volta"
+    private TipoAcompanhamento tipo;  // Pode ser "pré-natal de rotina", "ocorrência" ou "volta"
     private Boolean riscoIA;
 
     public VisualizarAcompanhamentoDTO(Acompanhamento acompanhamento) {

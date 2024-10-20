@@ -1,5 +1,6 @@
 package com.system.angels.dto.create;
 
+import com.system.angels.domain.enums.FatorRH;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class CadastrarGestacaoDTO {
     private int frequenciaUsoAlcool;
     private Date dataUltimaMenstruacao;
     private Date dataInicioGestacao;
-    private String fatorRh;
+    private FatorRH fatorRh;
     private boolean fuma;
     private int quantidadeCigarrosDia;
     private int usoDrogas;

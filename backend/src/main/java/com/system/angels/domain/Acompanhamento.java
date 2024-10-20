@@ -1,5 +1,7 @@
 package com.system.angels.domain;
 
+import com.system.angels.domain.enums.RealizadoPor;
+import com.system.angels.domain.enums.TipoAcompanhamento;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,7 +24,7 @@ public class Acompanhamento {
     private Date dataAcompanhamento;
 
     @Column(nullable = false)
-    private String realizadoPor;
+    private RealizadoPor realizadoPor;
 
     @Column(nullable = false)
     private BigDecimal pesoAtual;
@@ -40,7 +42,7 @@ public class Acompanhamento {
     private Integer alturaUterina;
 
     @Column(nullable = false)
-    private String tipo;
+    private TipoAcompanhamento tipo;
 
     @Column(nullable = false)
     private Boolean riscoIA;
