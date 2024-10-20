@@ -1,8 +1,7 @@
 package com.system.angels.controller;
 
 import com.system.angels.domain.DadosEvolutivos;
-import com.system.angels.domain.Gestante;
-import com.system.angels.dto.create.CadastrarDadosEvolutivosDTO;
+import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.dto.response.VisualizarDadosEvolutivosDTO;
 import com.system.angels.service.impl.DadosEvolutivosService;
 import com.system.angels.service.impl.GestanteService;
@@ -29,17 +28,13 @@ public class DadosEvolutivosController {
 
     @GetMapping("/gestante/{id}")
     ResponseEntity<List<DadosEvolutivos>> listarDadosEvolutivosPorGestante(@PathVariable Long id) {
-        var gestante = gestanteService.buscarGestantePorId(id);
-        var listaDeDadosEvolutivos = service.listarDadosEvolutivosPorGestante(gestante);
-        return ResponseEntity.status(HttpStatus.OK).body(listaDeDadosEvolutivos);
+        var dadosEvolutivos = service.listarDadosEvolutivosPorGestante(id);
+        return ResponseEntity.status(HttpStatus.OK).body(dadosEvolutivos);
     }
 
     @PostMapping("/gestante/{id}")
-    ResponseEntity<CadastrarDadosEvolutivosDTO> atualizarDadosEvolutivos(@PathVariable Long id, @RequestBody DadosEvolutivos dadosEvolutivos) {
-        var gestante = gestanteService.buscarGestantePorId(id);
-        dadosEvolutivos.setGestante(gestante);
-        var cadastrarDadosEvolutivosDTO = new CadastrarDadosEvolutivosDTO(dadosEvolutivos);
-        service.registrarDadosEvolutivos(dadosEvolutivos);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cadastrarDadosEvolutivosDTO);
+    ResponseEntity<DadosEvolutivos> atualizarDadosEvolutivos(@PathVariable Long id, @RequestBody DadosEvolutivosDTO dadosEvolutivosDTO) {
+        var dadosEvolutivos = service.registrarDadosEvolutivos(dadosEvolutivosDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dadosEvolutivos);
     }
 }

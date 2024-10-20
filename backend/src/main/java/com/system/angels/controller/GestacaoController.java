@@ -40,33 +40,33 @@ public class GestacaoController {
         return ResponseEntity.status(HttpStatus.OK).body(visualizarGestacaoDTO);
     }
 
-    @PostMapping("/{gestanteId}")
-    public ResponseEntity<CadastrarGestacaoDTO> adicionarGestacao(@PathVariable Long gestanteId, @RequestBody CadastrarGestacaoDTO gestacaoDTO) {
-        var gestacao = new Gestacao();
-        var gestante = gestanteService.buscarGestantePorId(gestanteId);
-
-        gestacao.setGestante(gestante);
-        gestacao.setConsumoAlcool(gestacaoDTO.isConsumoAlcool());
-        gestacao.setFrequenciaUsoAlcool(gestacaoDTO.getFrequenciaUsoAlcool());
-        gestacao.setDataUltimaMenstruacao(gestacaoDTO.getDataUltimaMenstruacao());
-        gestacao.setDataInicioGestacao(gestacaoDTO.getDataInicioGestacao());
-        gestacao.setFatorRh(gestacaoDTO.getFatorRh());
-        gestacao.setFuma(gestacaoDTO.isFuma());
-        gestacao.setQuantidadeCigarrosDia(gestacaoDTO.getQuantidadeCigarrosDia());
-        gestacao.setUsoDrogas(gestacaoDTO.getUsoDrogas());
-        gestacao.setGravidezPlanejada(gestacaoDTO.isGravidezPlanejada());
-        gestacao.setGrupoSanguineo(gestacaoDTO.getGrupoSanguineo());
-        gestacao.setPesoAntesGestacao(gestacaoDTO.getPesoAntesGestacao());
-        gestacao.setRiscoGestacional(gestacaoDTO.getRiscoGestacional());
-        gestacao.setVacinaHepatiteB(gestacaoDTO.isVacinaHepatiteB());
-        gestacao.setSituacaoGestacional(gestacaoDTO.getSituacaoGestacional());
-
-        var gestacaoAdicionada = service.adicionarGestacao(gestacao);
-
-        var gestacaoAdicionadaDTO = new CadastrarGestacaoDTO(gestacaoAdicionada);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(gestacaoAdicionadaDTO);
-    }
+//    @PostMapping("/{gestanteId}")
+//    public ResponseEntity<CadastrarGestacaoDTO> adicionarGestacao(@PathVariable Long gestanteId, @RequestBody CadastrarGestacaoDTO gestacaoDTO) {
+//        var gestacao = new Gestacao();
+//        var gestante = gestanteService.buscarGestantePorId(gestanteId);
+//
+//        gestacao.setGestante(gestante);
+//        gestacao.setConsumoAlcool(gestacaoDTO.isConsumoAlcool());
+//        gestacao.setFrequenciaUsoAlcool(gestacaoDTO.getFrequenciaUsoAlcool());
+//        gestacao.setDataUltimaMenstruacao(gestacaoDTO.getDataUltimaMenstruacao());
+//        gestacao.setDataInicioGestacao(gestacaoDTO.getDataInicioGestacao());
+//        gestacao.setFatorRh(gestacaoDTO.getFatorRh());
+//        gestacao.setFuma(gestacaoDTO.isFuma());
+//        gestacao.setQuantidadeCigarrosDia(gestacaoDTO.getQuantidadeCigarrosDia());
+//        gestacao.setUsoDrogas(gestacaoDTO.getUsoDrogas());
+//        gestacao.setGravidezPlanejada(gestacaoDTO.isGravidezPlanejada());
+//        gestacao.setGrupoSanguineo(gestacaoDTO.getGrupoSanguineo());
+//        gestacao.setPesoAntesGestacao(gestacaoDTO.getPesoAntesGestacao());
+//        gestacao.setRiscoGestacional(gestacaoDTO.getRiscoGestacional());
+//        gestacao.setVacinaHepatiteB(gestacaoDTO.isVacinaHepatiteB());
+//        gestacao.setSituacaoGestacional(gestacaoDTO.getSituacaoGestacional());
+//
+//        var gestacaoAdicionada = service.adicionarGestacao(gestacao);
+//
+//        var gestacaoAdicionadaDTO = new CadastrarGestacaoDTO(gestacaoAdicionada);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(gestacaoAdicionadaDTO);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<AtualizarGestacaoDTO> atualizarGestacao(@PathVariable Long id, @RequestBody Gestacao atualizarGestacaoDTO) {

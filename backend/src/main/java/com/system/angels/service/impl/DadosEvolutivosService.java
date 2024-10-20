@@ -4,7 +4,9 @@ import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.domain.Gestante;
 import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.exceptions.DadosEvolutivosNotFoundException;
+import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.repository.DadosEvolutivosRepository;
+import com.system.angels.repository.GestanteRepository;
 import com.system.angels.service.iDadosEvolutivosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,37 +17,40 @@ import java.util.Random;
 @Service
 public class DadosEvolutivosService implements iDadosEvolutivosService {
     private final DadosEvolutivosRepository dadosEvolutivosRepository;
+    private final GestanteRepository gestanteRepository;
 
     @Autowired
-    public DadosEvolutivosService(DadosEvolutivosRepository dadosEvolutivosRepository) {
+    public DadosEvolutivosService(DadosEvolutivosRepository dadosEvolutivosRepository, GestanteRepository gestanteRepository) {
         this.dadosEvolutivosRepository = dadosEvolutivosRepository;
+        this.gestanteRepository = gestanteRepository;
     }
 
-    public List<DadosEvolutivos> listarDadosEvolutivos() {
-        return dadosEvolutivosRepository.findAll();
+    public List<DadosEvolutivos> listarDadosEvolutivosPorGestante(Long gestanteId) {
+        return dadosEvolutivosRepository.findAllByGestante_id(gestanteId);
     }
 
-    public List<DadosEvolutivos> listarDadosEvolutivosPorGestante(Gestante gestante) {
-        return dadosEvolutivosRepository.findAllByGestante_id(gestante.getId());
-    }
-
-    public DadosEvolutivos ultimosDadosEvolutivosPorGestante(Gestante gestante) {
-        List<DadosEvolutivos> listaDeDadosEvolutivos = listarDadosEvolutivosPorGestante(gestante);
-
+    public DadosEvolutivos ultimosDadosEvolutivosPorGestante(Long gestanteId) {
+        var listaDeDadosEvolutivos = dadosEvolutivosRepository.findAllByGestante_id(gestanteId);
         return listaDeDadosEvolutivos.get(listaDeDadosEvolutivos.size() - 1);
     }
 
     public DadosEvolutivos buscarDadosEvolutivosPorId(Long id) {
-        return dadosEvolutivosRepository.findById(id).orElseThrow(() -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
+        return dadosEvolutivosRepository.findById(id).orElseThrow(
+                () -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
     }
 
-    public DadosEvolutivos registrarDadosEvolutivos(DadosEvolutivos dadosEvolutivos) {
+    public DadosEvolutivos registrarDadosEvolutivos(DadosEvolutivosDTO dadosEvolutivosDTO) {
+        var dadosEvolutivos = dtoToEntity(dadosEvolutivosDTO);
         return dadosEvolutivosRepository.save(dadosEvolutivos);
     }
 
     private DadosEvolutivos dtoToEntity(DadosEvolutivosDTO dadosEvolutivosDTO) {
+        var gestante = gestanteRepository.findById(dadosEvolutivosDTO.gestanteId()).orElseThrow(
+                () -> new GestanteNotFoundException("Gestante com id " + dadosEvolutivosDTO.gestanteId() + " não encontrada"));
+
         var dadosEvolutivos = new DadosEvolutivos();
 
+        dadosEvolutivos.setGestante(gestante);
         dadosEvolutivos.setId(new Random().nextLong());
         dadosEvolutivos.setMunicipio(dadosEvolutivosDTO.municipio());
         dadosEvolutivos.setDiagnosticoDesnutricao(dadosEvolutivosDTO.diagnosticoDesnutricao());
@@ -83,6 +88,6 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
         dadosEvolutivos.setContato(dadosEvolutivosDTO.contato());
         dadosEvolutivos.setContatoEmergencia(dadosEvolutivosDTO.contatoEmergencia());
 
-        return registrarDadosEvolutivos(dadosEvolutivos);
+        return dadosEvolutivosRepository.save(dadosEvolutivos);
     }
 }
