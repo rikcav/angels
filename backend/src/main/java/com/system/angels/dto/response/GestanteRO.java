@@ -2,12 +2,14 @@ package com.system.angels.dto.response;
 
 import java.util.Date;
 
+import com.system.angels.domain.enums.Sexo;
+
 public record GestanteRO(
         Long id,
         String nome,
         Date dataNascimento,
         String cpf,
-        String sexo,
+        Sexo sexo,
         String municipio,
         boolean emRisco,
         int quantidadeAbortos,
