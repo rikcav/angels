@@ -1,5 +1,6 @@
 package com.system.angels.dto.update;
 
+import com.system.angels.domain.enums.Sexo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,5 @@ public class AtualizarGestanteDTO {
     private Date dataNascimento;
     private String cpf;
     private int raca;
-    private String sexo;
+    private Sexo sexo;
 }

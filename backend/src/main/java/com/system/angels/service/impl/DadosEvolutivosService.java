@@ -29,25 +29,9 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
         return dadosEvolutivosRepository.findAllByGestante_id(gestanteId).stream().map(this::entityToRo).toList();
     }
 
-    @Override
-    public List<DadosEvolutivos> listarDadosEvolutivosPorGestante(Gestante gestante) {
-        return dadosEvolutivosRepository.findAllByGestante_id(gestante.getId());
-    }
-
-    public DadosEvolutivos ultimosDadosEvolutivosPorGestante(Gestante gestante) {
-        List<DadosEvolutivos> listaDeDadosEvolutivos = listarDadosEvolutivosPorGestante(gestante);
-
-        return listaDeDadosEvolutivos.get(listaDeDadosEvolutivos.size() - 1);
-    }
-
-    @Override
-    public DadosEvolutivos buscarDadosEvolutivosPorId(Long id) {
-        return dadosEvolutivosRepository.findById(id).orElseThrow(() -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
-    }
-
     public DadosEvolutivosRO dadosEvolutivosPorId(Long id) {
         var dadosEvolutivos = dadosEvolutivosRepository.findById(id).orElseThrow(
-                () -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
+            () -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
         return (entityToRo(dadosEvolutivos));
     }
 
@@ -59,7 +43,7 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
 
     private DadosEvolutivos dtoToEntity(DadosEvolutivosDTO dadosEvolutivosDTO) {
         var gestante = gestanteRepository.findById(dadosEvolutivosDTO.gestanteId()).orElseThrow(
-                () -> new GestanteNotFoundException("Gestante com id " + dadosEvolutivosDTO.gestanteId() + " não encontrada"));
+            () -> new GestanteNotFoundException("Gestante com id " + dadosEvolutivosDTO.gestanteId() + " não encontrada"));
 
         var dadosEvolutivos = new DadosEvolutivos();
 
@@ -106,43 +90,43 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
 
     private DadosEvolutivosRO entityToRo(DadosEvolutivos dadosEvolutivos) {
         return new DadosEvolutivosRO(
-                dadosEvolutivos.getId(),
-                dadosEvolutivos.getGestante().getId(),
-                dadosEvolutivos.getMunicipio(),
-                dadosEvolutivos.getDiagnosticoDesnutricao(),
-                dadosEvolutivos.isEnergiaEletricaDomicilio(),
-                dadosEvolutivos.getEscolaridade(),
-                dadosEvolutivos.getTipoMoradia(),
-                dadosEvolutivos.isMoradiaRedeEsgoto(),
-                dadosEvolutivos.getRendaFamiliar(),
-                dadosEvolutivos.isTratamentoAgua(),
-                dadosEvolutivos.isAmamentacao(),
-                dadosEvolutivos.isChefeFamilia(),
-                dadosEvolutivos.getDataUltimaGestacao(),
-                dadosEvolutivos.isEmRisco(),
-                dadosEvolutivos.getEstadoCivil(),
-                dadosEvolutivos.getQuantidadeAbortos(),
-                dadosEvolutivos.getQuantidadeFilhosVivos(),
-                dadosEvolutivos.getQuantidadeGemelares(),
-                dadosEvolutivos.getQuantidadeGestacao(),
-                dadosEvolutivos.getQuantidadeNascidosMortos(),
-                dadosEvolutivos.getQuantidadeNascidosVivos(),
-                dadosEvolutivos.getQuantidadeObitosSemana1(),
-                dadosEvolutivos.getQuantidadeObitosAposSemana1(),
-                dadosEvolutivos.getQuantidadePartos(),
-                dadosEvolutivos.getQuantidadePartosCesarios(),
-                dadosEvolutivos.getQuantidadePartosVaginais(),
-                dadosEvolutivos.getQuantidadeRnPeso2500_4000(),
-                dadosEvolutivos.getQuantidadeRnPesoMaior4000(),
-                dadosEvolutivos.getQuantidadeRnPesoMenor2500(),
-                dadosEvolutivos.isHipertensao(),
-                dadosEvolutivos.isDiabetes(),
-                dadosEvolutivos.isCirurgiaPelvica(),
-                dadosEvolutivos.isInfeccaoUrinaria(),
-                dadosEvolutivos.isMaFormacaoCongenita(),
-                dadosEvolutivos.isFamiliarGemeos(),
-                dadosEvolutivos.getContato(),
-                dadosEvolutivos.getContatoEmergencia()
+            dadosEvolutivos.getId(),
+            dadosEvolutivos.getGestante().getId(),
+            dadosEvolutivos.getMunicipio(),
+            dadosEvolutivos.getDiagnosticoDesnutricao(),
+            dadosEvolutivos.isEnergiaEletricaDomicilio(),
+            dadosEvolutivos.getEscolaridade(),
+            dadosEvolutivos.getTipoMoradia(),
+            dadosEvolutivos.isMoradiaRedeEsgoto(),
+            dadosEvolutivos.getRendaFamiliar(),
+            dadosEvolutivos.isTratamentoAgua(),
+            dadosEvolutivos.isAmamentacao(),
+            dadosEvolutivos.isChefeFamilia(),
+            dadosEvolutivos.getDataUltimaGestacao(),
+            dadosEvolutivos.isEmRisco(),
+            dadosEvolutivos.getEstadoCivil(),
+            dadosEvolutivos.getQuantidadeAbortos(),
+            dadosEvolutivos.getQuantidadeFilhosVivos(),
+            dadosEvolutivos.getQuantidadeGemelares(),
+            dadosEvolutivos.getQuantidadeGestacao(),
+            dadosEvolutivos.getQuantidadeNascidosMortos(),
+            dadosEvolutivos.getQuantidadeNascidosVivos(),
+            dadosEvolutivos.getQuantidadeObitosSemana1(),
+            dadosEvolutivos.getQuantidadeObitosAposSemana1(),
+            dadosEvolutivos.getQuantidadePartos(),
+            dadosEvolutivos.getQuantidadePartosCesarios(),
+            dadosEvolutivos.getQuantidadePartosVaginais(),
+            dadosEvolutivos.getQuantidadeRnPeso2500_4000(),
+            dadosEvolutivos.getQuantidadeRnPesoMaior4000(),
+            dadosEvolutivos.getQuantidadeRnPesoMenor2500(),
+            dadosEvolutivos.isHipertensao(),
+            dadosEvolutivos.isDiabetes(),
+            dadosEvolutivos.isCirurgiaPelvica(),
+            dadosEvolutivos.isInfeccaoUrinaria(),
+            dadosEvolutivos.isMaFormacaoCongenita(),
+            dadosEvolutivos.isFamiliarGemeos(),
+            dadosEvolutivos.getContato(),
+            dadosEvolutivos.getContatoEmergencia()
         );
     }
 }
