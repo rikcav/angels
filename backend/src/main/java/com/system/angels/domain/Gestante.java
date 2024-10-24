@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,4 +29,7 @@ public class Gestante {
 
     @Column(nullable = false)
     private Sexo sexo;
+
+    @OneToMany(mappedBy = "gestante", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DadosEvolutivos> dadosEvolutivos;
 }
