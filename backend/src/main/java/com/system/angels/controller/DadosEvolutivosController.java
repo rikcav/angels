@@ -2,7 +2,7 @@ package com.system.angels.controller;
 
 import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.dto.response.DadosEvolutivosRO;
-import com.system.angels.service.impl.DadosEvolutivosService;
+import com.system.angels.service.iDadosEvolutivosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,22 +13,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/dados-evolutivos")
 public class DadosEvolutivosController {
-    private final DadosEvolutivosService dadosEvolutivosService;
+    private final iDadosEvolutivosService dadosEvolutivosService;
 
     @Autowired
-    public DadosEvolutivosController(DadosEvolutivosService dadosEvolutivosService) {
+    public DadosEvolutivosController(iDadosEvolutivosService dadosEvolutivosService) {
         this.dadosEvolutivosService = dadosEvolutivosService;
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<DadosEvolutivosRO> buscarDadosEvolutivosPorId(@PathVariable Long id) {
-        var dadosEvolutivosRO = dadosEvolutivosService.buscarDadosEvolutivosPorId(id);
+    ResponseEntity<DadosEvolutivosRO> dadosEvolutivosPorId(@PathVariable Long id) {
+        var dadosEvolutivosRO = dadosEvolutivosService.dadosEvolutivosPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(dadosEvolutivosRO);
     }
 
     @GetMapping("/gestante/{id}")
-    ResponseEntity<List<DadosEvolutivosRO>> listarDadosEvolutivosPorGestante(@PathVariable Long id) {
-        var dadosEvolutivos = dadosEvolutivosService.listarDadosEvolutivosPorGestante(id);
+    ResponseEntity<List<DadosEvolutivosRO>> dadosEvolutivosPorGestante(@PathVariable Long id) {
+        var dadosEvolutivos = dadosEvolutivosService.dadosEvolutivosPorGestante(id);
         return ResponseEntity.status(HttpStatus.OK).body(dadosEvolutivos);
     }
 

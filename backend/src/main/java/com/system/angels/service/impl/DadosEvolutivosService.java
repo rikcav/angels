@@ -25,17 +25,11 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
         this.gestanteRepository = gestanteRepository;
     }
 
-    public List<DadosEvolutivosRO> listarDadosEvolutivosPorGestante(Long gestanteId) {
+    public List<DadosEvolutivosRO> dadosEvolutivosPorGestante(Long gestanteId) {
         return dadosEvolutivosRepository.findAllByGestante_id(gestanteId).stream().map(this::entityToRo).toList();
     }
 
-    public DadosEvolutivos ultimosDadosEvolutivosPorGestante(Long gestanteId) {
-        var listaDeDadosEvolutivos = dadosEvolutivosRepository.findFirstByGestante_idOrderByGestanteIdDesc(gestanteId).orElseThrow(
-                () -> new DadosEvolutivosNotFoundException("Não foram encontrados dados evolutivos para a gestante com id " + gestanteId));
-        return listaDeDadosEvolutivos;
-    }
-
-    public DadosEvolutivosRO buscarDadosEvolutivosPorId(Long id) {
+    public DadosEvolutivosRO dadosEvolutivosPorId(Long id) {
         var dadosEvolutivos = dadosEvolutivosRepository.findById(id).orElseThrow(
                 () -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
         return (entityToRo(dadosEvolutivos));
