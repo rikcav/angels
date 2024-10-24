@@ -1,12 +1,9 @@
 package com.system.angels.controller;
 
-import com.system.angels.domain.DadosEvolutivos;
-import com.system.angels.domain.Gestante;
-import com.system.angels.dto.create.CadastrarGestanteEDadosEvolutivosDTO;
-import com.system.angels.dto.response.VisualizarGestanteDTO;
-import com.system.angels.service.impl.DadosEvolutivosService;
+import com.system.angels.dto.create.GestanteDTO;
+import com.system.angels.dto.response.GestanteRO;
 import com.system.angels.service.impl.GestanteService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,59 +12,47 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/gestantes")
-@RequiredArgsConstructor
 public class GestanteController {
-    private final GestanteService service;
-    private final DadosEvolutivosService dadosEvolutivosService;
+    private final GestanteService gestanteService;
+
+    @Autowired
+    public GestanteController(GestanteService gestanteService) {
+        this.gestanteService = gestanteService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<Gestante>> listarGestantes() {
-        var gestantes = service.listarGestantes();
-        return ResponseEntity.status(HttpStatus.OK).body(gestantes);
+    public ResponseEntity<List<GestanteRO>> gestantes() {
+        var gestantesRO = gestanteService.gestantes();
+        return ResponseEntity.status(HttpStatus.OK).body(gestantesRO);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VisualizarGestanteDTO> buscarGestantePorId(@PathVariable Long id) {
-        var gestante = service.buscarGestantePorId(id);
-        var dadosEvolutivos = dadosEvolutivosService.ultimosDadosEvolutivosPorGestante(gestante);
-        var gestanteDTO = new VisualizarGestanteDTO(gestante, dadosEvolutivos);
-
-        return ResponseEntity.status(HttpStatus.OK).body(gestanteDTO);
+    public ResponseEntity<GestanteRO> gestantePorId(@PathVariable Long id) {
+        var gestanteRO = gestanteService.gestantePorId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(gestanteRO);
     }
 
     @GetMapping("/cpf/{cpf}")
-    public ResponseEntity<VisualizarGestanteDTO> buscarGestantePorCpf(@PathVariable String cpf) {
-        var gestante = service.buscarGestantePorCpf(cpf);
-        var dadosEvolutivos = dadosEvolutivosService.ultimosDadosEvolutivosPorGestante(gestante);
-        var gestanteDTO = new VisualizarGestanteDTO(gestante, dadosEvolutivos);
-
-        return ResponseEntity.status(HttpStatus.OK).body(gestanteDTO);
+    public ResponseEntity<GestanteRO> gestantePorCpf(@PathVariable String cpf) {
+        var gestanteRO = gestanteService.gestantePorCpf(cpf);
+        return ResponseEntity.status(HttpStatus.OK).body(gestanteRO);
     }
 
     @PostMapping
-    public ResponseEntity<CadastrarGestanteEDadosEvolutivosDTO> cadastrarGestante(@RequestBody CadastrarGestanteEDadosEvolutivosDTO gestanteEDadosEvolutivosDTO) {
-        var gestante = gestanteEDadosEvolutivosDTO.getGestante();
-        var dadosEvolutivos = gestanteEDadosEvolutivosDTO.getDadosEvolutivos();
-        dadosEvolutivos.setGestante(gestante);
-
-        service.registrarGestante(gestante);
-        dadosEvolutivosService.registrarDadosEvolutivos(dadosEvolutivos);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(gestanteEDadosEvolutivosDTO);
+    public ResponseEntity<GestanteRO> cadastrarGestante(@RequestBody GestanteDTO gestanteDTO) {
+        var gestanteRO = gestanteService.registrarGestante(gestanteDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(gestanteRO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VisualizarGestanteDTO> atualizarGestante(@PathVariable Long id, @RequestBody Gestante gestanteAtualizada) {
-        var gestante = service.atualizarGestante(id, gestanteAtualizada);
-        var dadosEvolutivos = dadosEvolutivosService.ultimosDadosEvolutivosPorGestante(gestante);
-        var gestanteDTO = new VisualizarGestanteDTO(gestante, dadosEvolutivos);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(gestanteDTO);
+    public ResponseEntity<GestanteRO> atualizarGestante(@PathVariable Long id, @RequestBody GestanteDTO gestanteDTO) {
+        var gestanteRO = gestanteService.atualizarGestante(id, gestanteDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(gestanteRO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarGestante(@PathVariable Long id) {
-        service.deletarGestante(id);
+        gestanteService.deletarGestante(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

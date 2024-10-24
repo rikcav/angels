@@ -1,9 +1,10 @@
-package com.system.angels.dto.create;
+package com.system.angels.dto.response;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-public record DadosEvolutivosDTO(
+public record DadosEvolutivosRO(
+        Long id,
         Long gestanteId,
         String municipio,
         int diagnosticoDesnutricao,

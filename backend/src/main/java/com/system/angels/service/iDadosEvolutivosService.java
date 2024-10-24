@@ -3,11 +3,15 @@ package com.system.angels.service;
 import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.domain.Gestante;
 import java.util.List;
+import com.system.angels.dto.create.DadosEvolutivosDTO;
+import com.system.angels.dto.response.DadosEvolutivosRO;
+
+import java.util.List;
 
 public interface iDadosEvolutivosService {
-  List<DadosEvolutivos> listarDadosEvolutivosPorGestante(Gestante gestante);
+    DadosEvolutivosRO dadosEvolutivosPorId(Long id);
 
-  DadosEvolutivos buscarDadosEvolutivosPorId(Long id);
+    List<DadosEvolutivosRO> dadosEvolutivosPorGestante(Long gestanteId);
 
-  DadosEvolutivos registrarDadosEvolutivos(DadosEvolutivos dadosEvolutivos);
+    DadosEvolutivosRO registrarDadosEvolutivos(DadosEvolutivosDTO dadosEvolutivosDTO);
 }

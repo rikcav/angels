@@ -3,8 +3,12 @@ package com.system.angels.dto.create;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public record DadosEvolutivosDTO(
-        Long gestanteId,
+public record GestanteDadosEvolutivosDTO(
+        String nome,
+        Date dataNascimento,
+        String cpf,
+        int raca,
+        String sexo,
         String municipio,
         int diagnosticoDesnutricao,
         boolean energiaEletricaDomicilio,
