@@ -24,35 +24,39 @@ public class GestanteService implements iGestanteService {
         this.dadosEvolutivosRepository = dadosEvolutivosRepository;
     }
 
-    public List<Gestante> listarGestantes() {
-        return gestanteRepository.findAll();
+    public List<GestanteRO> gestantes() {
+        return gestanteRepository.findAll().stream().map(this::entityToRO).toList();
     }
 
-    public GestanteRO buscarGestantePorId(Long id) {
+    public GestanteRO gestantePorId(Long id) {
         var gestante = gestanteRepository.findById(id).orElseThrow(
                 () -> new GestanteNotFoundException("Gestante com o id " + id + " não foi encontrada"));
 
         return entityToRO(gestante);
     }
 
-    public Gestante buscarGestantePorCpf(String cpf) {
-        return gestanteRepository.findGestanteByCpf(cpf).orElseThrow(
+    public GestanteRO gestantePorCpf(String cpf) {
+        var gestante = gestanteRepository.findGestanteByCpf(cpf).orElseThrow(
                 () -> new GestanteNotFoundException("Gestante com o cpf " + cpf + " não foi encontrada"));
+        return entityToRO(gestante);
     }
 
-    public Gestante registrarGestante(GestanteDTO gestanteDTO) {
+    public GestanteRO registrarGestante(GestanteDTO gestanteDTO) {
         var gestante = dtoToEntity(gestanteDTO);
-        return gestanteRepository.save(gestante);
+        var savedGestante = gestanteRepository.save(gestante);
+        return entityToRO(savedGestante);
     }
 
-    public Gestante atualizarGestante(Long id, GestanteDTO gestanteDTO) {
+    public GestanteRO atualizarGestante(Long id, GestanteDTO gestanteDTO) {
         var gestante = gestanteRepository.findById(id).orElseThrow(
                 () -> new GestanteNotFoundException("Gestante com o id " + id + " não foi encontrada"));
 
         var updatedGestante = dtoToEntity(gestanteDTO);
         updatedGestante.setId(gestante.getId());
 
-        return gestanteRepository.save(updatedGestante);
+        var savedGestante = gestanteRepository.save(updatedGestante);
+
+        return entityToRO(savedGestante);
     }
 
     public void deletarGestante(Long id) {
@@ -75,8 +79,8 @@ public class GestanteService implements iGestanteService {
     }
 
     private GestanteRO entityToRO(Gestante gestante) {
-        var dadosEvolutivosLista = dadosEvolutivosRepository.findAllByGestante_id(gestante.getId());
-        var dadosEvolutivos = dadosEvolutivosLista.get(dadosEvolutivosLista.size() - 1);
+        var dadosEvolutivos = dadosEvolutivosRepository.findFirstByGestante_idOrderByGestanteIdDesc(gestante.getId())
+                .orElse(null);
 
         return new GestanteRO(
                 gestante.getId(),
@@ -84,16 +88,16 @@ public class GestanteService implements iGestanteService {
                 gestante.getDataNascimento(),
                 gestante.getCpf(),
                 gestante.getSexo(),
-                dadosEvolutivos.getMunicipio(),
-                dadosEvolutivos.isEmRisco(),
-                dadosEvolutivos.getQuantidadeAbortos(),
-                dadosEvolutivos.getQuantidadeFilhosVivos(),
-                dadosEvolutivos.getQuantidadeGemelares(),
-                dadosEvolutivos.getQuantidadeGestacao(),
-                dadosEvolutivos.getQuantidadeNascidosMortos(),
-                dadosEvolutivos.getQuantidadeNascidosVivos(),
-                dadosEvolutivos.isHipertensao(),
-                dadosEvolutivos.isDiabetes(),
-                dadosEvolutivos.isMaFormacaoCongenita());
+                dadosEvolutivos != null ? dadosEvolutivos.getMunicipio() : null,
+                dadosEvolutivos != null && dadosEvolutivos.isEmRisco(),
+                dadosEvolutivos != null ? dadosEvolutivos.getQuantidadeAbortos() : 0,
+                dadosEvolutivos != null ? dadosEvolutivos.getQuantidadeFilhosVivos() : 0,
+                dadosEvolutivos != null ? dadosEvolutivos.getQuantidadeGemelares() : 0,
+                dadosEvolutivos != null ? dadosEvolutivos.getQuantidadeGestacao() : 0,
+                dadosEvolutivos != null ? dadosEvolutivos.getQuantidadeNascidosMortos() : 0,
+                dadosEvolutivos != null ? dadosEvolutivos.getQuantidadeNascidosVivos() : 0,
+                dadosEvolutivos != null && dadosEvolutivos.isHipertensao(),
+                dadosEvolutivos != null && dadosEvolutivos.isDiabetes(),
+                dadosEvolutivos != null && dadosEvolutivos.isMaFormacaoCongenita());
     }
 }
