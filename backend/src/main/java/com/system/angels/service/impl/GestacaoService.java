@@ -24,6 +24,7 @@ public class GestacaoService implements iGestacaoService {
         this.gestanteRepository = gestanteRepository;
     }
 
+    @Override
     public Gestacao adicionarGestacao(Gestacao gestacao) {
         return gestacaoRepository.save(gestacao);
     }
@@ -44,6 +45,7 @@ public class GestacaoService implements iGestacaoService {
         return gestacaoRepository.findAll();
     }
 
+    @Override
     public Gestacao atualizarGestacao(Long id, Gestacao atualizarGestacao) {
         var gestacao = gestacaoRepository.findById(atualizarGestacao.getId()).orElseThrow(
                 () -> new GestacaoNotFoundException("Gestação com id " + id + " não encontrada"));
@@ -66,10 +68,12 @@ public class GestacaoService implements iGestacaoService {
         return atualizarGestacao;
     }
 
+    @Override
     public void deletarGestacao(Long id) {
         gestacaoRepository.deleteById(id);
     }
 
+    @Override
     public List<Gestacao> listarGestacaoPorGestanteId(Long gestanteId) {
         return gestacaoRepository.findByGestanteId(gestanteId);
     }

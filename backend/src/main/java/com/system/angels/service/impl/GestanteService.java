@@ -24,6 +24,16 @@ public class GestanteService implements iGestanteService {
         this.dadosEvolutivosRepository = dadosEvolutivosRepository;
     }
 
+
+    @Override
+    public Gestante registrarGestante(Gestante gestante) {
+        return gestanteRepository.save(gestante);
+    }
+
+    @Override
+    public Gestante atualizarGestante(Long id, Gestante gestanteAtualizada) {
+        var gestante = gestanteRepository.findById(id).orElseThrow(() -> new GestanteNotFoundException("Gestante com o id " + id + " não foi encontrada"));
+      
     public List<GestanteRO> gestantes() {
         return gestanteRepository.findAll().stream().map(this::entityToRO).toList();
     }
@@ -59,6 +69,7 @@ public class GestanteService implements iGestanteService {
         return entityToRO(savedGestante);
     }
 
+    @Override
     public void deletarGestante(Long id) {
         var gestante = gestanteRepository.findById(id).orElseThrow(
                 () -> new GestanteNotFoundException("Gestante com o id " + id + " não foi encontrada"));

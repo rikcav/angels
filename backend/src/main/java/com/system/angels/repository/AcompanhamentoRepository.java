@@ -11,4 +11,5 @@ public interface AcompanhamentoRepository extends JpaRepository<Acompanhamento, 
 
     public List<Acompanhamento> findByGestacaoId(Long gestacaoId);
 
+
 }
