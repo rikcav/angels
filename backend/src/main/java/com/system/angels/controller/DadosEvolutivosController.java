@@ -1,8 +1,7 @@
 package com.system.angels.controller;
 
-import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.dto.create.DadosEvolutivosDTO;
-import com.system.angels.dto.response.VisualizarDadosEvolutivosDTO;
+import com.system.angels.dto.response.DadosEvolutivosRO;
 import com.system.angels.service.impl.DadosEvolutivosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,21 +21,20 @@ public class DadosEvolutivosController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<VisualizarDadosEvolutivosDTO> buscarDadosEvolutivosPorId(@PathVariable Long id) {
-        var dadosEvolutivos = dadosEvolutivosService.buscarDadosEvolutivosPorId(id);
-        var visualizarDadosEvolutivosDTO = new VisualizarDadosEvolutivosDTO(dadosEvolutivos);
-        return ResponseEntity.status(HttpStatus.OK).body(visualizarDadosEvolutivosDTO);
+    ResponseEntity<DadosEvolutivosRO> buscarDadosEvolutivosPorId(@PathVariable Long id) {
+        var dadosEvolutivosRO = dadosEvolutivosService.buscarDadosEvolutivosPorId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(dadosEvolutivosRO);
     }
 
     @GetMapping("/gestante/{id}")
-    ResponseEntity<List<DadosEvolutivos>> listarDadosEvolutivosPorGestante(@PathVariable Long id) {
+    ResponseEntity<List<DadosEvolutivosRO>> listarDadosEvolutivosPorGestante(@PathVariable Long id) {
         var dadosEvolutivos = dadosEvolutivosService.listarDadosEvolutivosPorGestante(id);
         return ResponseEntity.status(HttpStatus.OK).body(dadosEvolutivos);
     }
 
     @PostMapping
-    ResponseEntity<DadosEvolutivos> atualizarDadosEvolutivos(@RequestBody DadosEvolutivosDTO dadosEvolutivosDTO) {
-        var dadosEvolutivos = dadosEvolutivosService.registrarDadosEvolutivos(dadosEvolutivosDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dadosEvolutivos);
+    ResponseEntity<DadosEvolutivosRO> atualizarDadosEvolutivos(@RequestBody DadosEvolutivosDTO dadosEvolutivosDTO) {
+        var dadosEvolutivosRO = dadosEvolutivosService.registrarDadosEvolutivos(dadosEvolutivosDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dadosEvolutivosRO);
     }
 }

@@ -2,6 +2,7 @@ package com.system.angels.service.impl;
 
 import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.dto.create.DadosEvolutivosDTO;
+import com.system.angels.dto.response.DadosEvolutivosRO;
 import com.system.angels.exceptions.DadosEvolutivosNotFoundException;
 import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.repository.DadosEvolutivosRepository;
@@ -24,8 +25,8 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
         this.gestanteRepository = gestanteRepository;
     }
 
-    public List<DadosEvolutivos> listarDadosEvolutivosPorGestante(Long gestanteId) {
-        return dadosEvolutivosRepository.findAllByGestante_id(gestanteId);
+    public List<DadosEvolutivosRO> listarDadosEvolutivosPorGestante(Long gestanteId) {
+        return dadosEvolutivosRepository.findAllByGestante_id(gestanteId).stream().map(this::entityToRo).toList();
     }
 
     public DadosEvolutivos ultimosDadosEvolutivosPorGestante(Long gestanteId) {
@@ -34,14 +35,16 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
         return listaDeDadosEvolutivos;
     }
 
-    public DadosEvolutivos buscarDadosEvolutivosPorId(Long id) {
-        return dadosEvolutivosRepository.findById(id).orElseThrow(
+    public DadosEvolutivosRO buscarDadosEvolutivosPorId(Long id) {
+        var dadosEvolutivos = dadosEvolutivosRepository.findById(id).orElseThrow(
                 () -> new DadosEvolutivosNotFoundException("Dados evolutivos com o id " + id + " não foram encontrados"));
+        return (entityToRo(dadosEvolutivos));
     }
 
-    public DadosEvolutivos registrarDadosEvolutivos(DadosEvolutivosDTO dadosEvolutivosDTO) {
+    public DadosEvolutivosRO registrarDadosEvolutivos(DadosEvolutivosDTO dadosEvolutivosDTO) {
         var dadosEvolutivos = dtoToEntity(dadosEvolutivosDTO);
-        return dadosEvolutivosRepository.save(dadosEvolutivos);
+        var savedDadosEvolutivos = dadosEvolutivosRepository.save(dadosEvolutivos);
+        return entityToRo(savedDadosEvolutivos);
     }
 
     private DadosEvolutivos dtoToEntity(DadosEvolutivosDTO dadosEvolutivosDTO) {
@@ -89,5 +92,47 @@ public class DadosEvolutivosService implements iDadosEvolutivosService {
         dadosEvolutivos.setContatoEmergencia(dadosEvolutivosDTO.contatoEmergencia());
 
         return dadosEvolutivosRepository.save(dadosEvolutivos);
+    }
+
+    private DadosEvolutivosRO entityToRo(DadosEvolutivos dadosEvolutivos) {
+        return new DadosEvolutivosRO(
+                dadosEvolutivos.getId(),
+                dadosEvolutivos.getGestante().getId(),
+                dadosEvolutivos.getMunicipio(),
+                dadosEvolutivos.getDiagnosticoDesnutricao(),
+                dadosEvolutivos.isEnergiaEletricaDomicilio(),
+                dadosEvolutivos.getEscolaridade(),
+                dadosEvolutivos.getTipoMoradia(),
+                dadosEvolutivos.isMoradiaRedeEsgoto(),
+                dadosEvolutivos.getRendaFamiliar(),
+                dadosEvolutivos.isTratamentoAgua(),
+                dadosEvolutivos.isAmamentacao(),
+                dadosEvolutivos.isChefeFamilia(),
+                dadosEvolutivos.getDataUltimaGestacao(),
+                dadosEvolutivos.isEmRisco(),
+                dadosEvolutivos.getEstadoCivil(),
+                dadosEvolutivos.getQuantidadeAbortos(),
+                dadosEvolutivos.getQuantidadeFilhosVivos(),
+                dadosEvolutivos.getQuantidadeGemelares(),
+                dadosEvolutivos.getQuantidadeGestacao(),
+                dadosEvolutivos.getQuantidadeNascidosMortos(),
+                dadosEvolutivos.getQuantidadeNascidosVivos(),
+                dadosEvolutivos.getQuantidadeObitosSemana1(),
+                dadosEvolutivos.getQuantidadeObitosAposSemana1(),
+                dadosEvolutivos.getQuantidadePartos(),
+                dadosEvolutivos.getQuantidadePartosCesarios(),
+                dadosEvolutivos.getQuantidadePartosVaginais(),
+                dadosEvolutivos.getQuantidadeRnPeso2500_4000(),
+                dadosEvolutivos.getQuantidadeRnPesoMaior4000(),
+                dadosEvolutivos.getQuantidadeRnPesoMenor2500(),
+                dadosEvolutivos.isHipertensao(),
+                dadosEvolutivos.isDiabetes(),
+                dadosEvolutivos.isCirurgiaPelvica(),
+                dadosEvolutivos.isInfeccaoUrinaria(),
+                dadosEvolutivos.isMaFormacaoCongenita(),
+                dadosEvolutivos.isFamiliarGemeos(),
+                dadosEvolutivos.getContato(),
+                dadosEvolutivos.getContatoEmergencia()
+        );
     }
 }
