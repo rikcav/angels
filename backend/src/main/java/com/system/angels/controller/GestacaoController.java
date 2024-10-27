@@ -3,6 +3,7 @@ package com.system.angels.controller;
 import com.system.angels.domain.Gestacao;
 import com.system.angels.domain.Gestante;
 import com.system.angels.dto.create.CadastrarGestacaoDTO;
+import com.system.angels.dto.response.GestacaoComGestanteDTO;
 import com.system.angels.dto.response.VisualizarGestacaoDTO;
 import com.system.angels.dto.update.AtualizarGestacaoDTO;
 import com.system.angels.service.impl.GestacaoService;
@@ -22,9 +23,12 @@ public class GestacaoController {
     private final GestanteService gestanteService;
 
     @GetMapping
-    public ResponseEntity<List<Gestacao>> obterTodasGestacoes() {
+    public ResponseEntity<List<GestacaoComGestanteDTO>> obterTodasGestacoes() {
         var gestacoes = service.obterTodasGestacoes();
-        return ResponseEntity.ok(gestacoes);
+        var gestacoesDTO = gestacoes.stream()
+            .map(GestacaoComGestanteDTO::new)
+            .toList();
+        return ResponseEntity.ok(gestacoesDTO);
     }
 
     @GetMapping("/gestacao/{gestanteId}")

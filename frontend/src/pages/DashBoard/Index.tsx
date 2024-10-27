@@ -30,8 +30,8 @@ export function Dashboard() {
 
   const filteredList = pregnanciesList.filter(
     (item) =>
-      item.gestante?.nome &&
-      item.gestante?.nome.toLowerCase().includes(searchName.toLowerCase())
+      item.nomeGestante &&
+      item.nomeGestante.toLowerCase().includes(searchName.toLowerCase())
   );
 
   const handleFollowUp = (gestacaoId: Number) => {
@@ -51,14 +51,14 @@ export function Dashboard() {
         <PregnancyCard
           key={index}
           id={1}
-          pregnantName={item.gestante?.nome}
+          pregnantName={item.nomeGestante}
           weeks={currentDate.diff(item.dataInicioGestacao, 'weeks').toString()}
           gestationalRisk={true}
           onClickAdd={() => handleFollowUp(item.id || 0)}
           pregnancyStatus={item.situacaoGestacional}
-          onClickFunc={() => handleNavigatePregnancies(item.gestante?.id)}
+          onClickFunc={() => handleNavigatePregnancies(item.gestanteId)}
           onClickThreeDots={() =>
-            handlePregnancyScreen(item.id || 0, item.gestante?.id || 0)
+            handlePregnancyScreen(item.id || 0, item.gestanteId || 0)
           }
         />
       ));
