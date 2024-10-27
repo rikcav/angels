@@ -1,5 +1,6 @@
 package com.system.angels.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.system.angels.domain.enums.FatorRH;
 import jakarta.persistence.*;
 
@@ -21,6 +22,7 @@ public class Gestacao {
 
     @ManyToOne
     @JoinColumn(name = "gestante_id", nullable = false)
+    @JsonIgnore
     private Gestante gestante;
 
     @Column(nullable = false)
