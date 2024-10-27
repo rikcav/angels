@@ -25,7 +25,7 @@ export const PregnancyFollowUpSchema = z.object({
     .min(2, 'Informe a pressão arterial'),
   alturaUterina: z.number().optional(),
   batimentosCardiacosFeto: z.number().optional(),
-  tipo: z.enum(['pré-natal de rotina', 'ocorrência', 'volta'], {
+  tipo: z.enum(['PRENATAL_ROTINA', 'OCORRENCIA', 'VOLTA'], {
     required_error: 'Selecione um tipo'
   }),
   realizadoPor: z.string({ required_error: 'Selecione uma opção' })

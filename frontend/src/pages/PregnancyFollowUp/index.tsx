@@ -50,15 +50,15 @@ export function PregnancyFollowUp() {
 
   const selectList = [
     {
-      value: 'pré-natal de rotina',
+      value: 'PRENATAL_ROTINA',
       label: 'Pré-natal de rotina'
     },
     {
-      value: 'ocorrência',
+      value: 'OCORRENCIA',
       label: 'Ocorrência'
     },
     {
-      value: 'volta',
+      value: 'VOLTA',
       label: 'Volta'
     }
   ];
