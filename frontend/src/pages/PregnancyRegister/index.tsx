@@ -239,7 +239,7 @@ export default function PregnancyRegister() {
   const handlePregnancyRegister = () => {
     try {
       const data: PregnancyRegisterInterface = {
-        gestanteId: gestanteId,
+        gestante_id: gestanteId,
         dataUltimaMenstruacao: period,
         dataInicioGestacao: beginning,
         pesoAntesGestacao: parseInt(weight),
@@ -256,7 +256,7 @@ export default function PregnancyRegister() {
         quantidadeCigarrosDia: parseInt(numberCigarettes)
       };
       PregnancyRegisterSchema.parse(data);
-      postGestacao(gestanteId, data).then((resp) => {
+      postGestacao(data).then((resp) => {
         navigate(`/pregnancies/${gestanteId}`);
       });
     } catch (error) {
@@ -321,8 +321,8 @@ export default function PregnancyRegister() {
               label="Fator RH"
               firstOption="+"
               secondOption="-"
-              firstValue={'+'}
-              secondValue={'-'}
+              firstValue={'POSITIVO'}
+              secondValue={'NEGATIVO'}
               value={rh}
               radioFunction={handleChangeRh}
             ></RadioSelect>

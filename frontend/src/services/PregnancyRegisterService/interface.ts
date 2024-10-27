@@ -1,6 +1,6 @@
 export interface PregnancyRegisterInterface {
   dataUltimaMenstruacao: string | string[] | undefined;
-  gestanteId: number | undefined;
+  gestante_id: number | undefined;
   dataInicioGestacao: string | string[] | undefined;
   fatorRh: string | undefined;
   frequenciaUsoAlcool: number | undefined;

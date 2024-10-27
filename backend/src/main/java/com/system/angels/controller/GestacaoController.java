@@ -3,7 +3,10 @@ package com.system.angels.controller;
 import com.system.angels.domain.Gestacao;
 import com.system.angels.domain.Gestante;
 import com.system.angels.dto.create.CadastrarGestacaoDTO;
+import com.system.angels.dto.create.GestacaoDTO;
+import com.system.angels.dto.response.DadosEvolutivosRO;
 import com.system.angels.dto.response.GestacaoComGestanteDTO;
+import com.system.angels.dto.response.GestacaoRO;
 import com.system.angels.dto.response.VisualizarGestacaoDTO;
 import com.system.angels.dto.update.AtualizarGestacaoDTO;
 import com.system.angels.service.impl.GestacaoService;
@@ -20,7 +23,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GestacaoController {
     private final GestacaoService service;
-    private final GestanteService gestanteService;
 
     @GetMapping
     public ResponseEntity<List<GestacaoComGestanteDTO>> obterTodasGestacoes() {
@@ -44,33 +46,14 @@ public class GestacaoController {
         return ResponseEntity.status(HttpStatus.OK).body(visualizarGestacaoDTO);
     }
 
-//    @PostMapping("/{gestanteId}")
-//    public ResponseEntity<CadastrarGestacaoDTO> adicionarGestacao(@PathVariable Long gestanteId, @RequestBody CadastrarGestacaoDTO gestacaoDTO) {
-//        var gestacao = new Gestacao();
-//        var gestante = gestanteService.buscarGestantePorId(gestanteId);
-//
-//        gestacao.setGestante(gestante);
-//        gestacao.setConsumoAlcool(gestacaoDTO.isConsumoAlcool());
-//        gestacao.setFrequenciaUsoAlcool(gestacaoDTO.getFrequenciaUsoAlcool());
-//        gestacao.setDataUltimaMenstruacao(gestacaoDTO.getDataUltimaMenstruacao());
-//        gestacao.setDataInicioGestacao(gestacaoDTO.getDataInicioGestacao());
-//        gestacao.setFatorRh(gestacaoDTO.getFatorRh());
-//        gestacao.setFuma(gestacaoDTO.isFuma());
-//        gestacao.setQuantidadeCigarrosDia(gestacaoDTO.getQuantidadeCigarrosDia());
-//        gestacao.setUsoDrogas(gestacaoDTO.getUsoDrogas());
-//        gestacao.setGravidezPlanejada(gestacaoDTO.isGravidezPlanejada());
-//        gestacao.setGrupoSanguineo(gestacaoDTO.getGrupoSanguineo());
-//        gestacao.setPesoAntesGestacao(gestacaoDTO.getPesoAntesGestacao());
-//        gestacao.setRiscoGestacional(gestacaoDTO.getRiscoGestacional());
-//        gestacao.setVacinaHepatiteB(gestacaoDTO.isVacinaHepatiteB());
-//        gestacao.setSituacaoGestacional(gestacaoDTO.getSituacaoGestacional());
-//
-//        var gestacaoAdicionada = service.adicionarGestacao(gestacao);
-//
-//        var gestacaoAdicionadaDTO = new CadastrarGestacaoDTO(gestacaoAdicionada);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(gestacaoAdicionadaDTO);
-//    }
+    @PostMapping
+    public ResponseEntity<GestacaoRO> adicionarGestacao(@RequestBody
+    GestacaoDTO gestacaoDTO) {
+        System.out.println(gestacaoDTO);
+        var gestacaoRO = service.adicionarGestacao(gestacaoDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(gestacaoRO);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<AtualizarGestacaoDTO> atualizarGestacao(@PathVariable Long id, @RequestBody Gestacao atualizarGestacaoDTO) {

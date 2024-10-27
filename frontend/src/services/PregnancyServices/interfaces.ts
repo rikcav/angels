@@ -12,7 +12,8 @@ export interface PregnancyInterface {
   fatorRh: string;
   frequenciaUsoAlcool: number;
   fuma: boolean;
-  gestante: PregnantInterface;
+  gestanteId: number;
+  nomeGestante: string;
   gravidezPlanejada: boolean;
   grupoSanguineo: number;
   id: number;

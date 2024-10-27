@@ -1,7 +1,13 @@
 package com.system.angels.service.impl;
 
+import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.domain.Gestacao;
+import com.system.angels.domain.Gestante;
+import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.dto.create.GestacaoDTO;
+import com.system.angels.dto.response.DadosEvolutivosRO;
+import com.system.angels.dto.response.GestacaoRO;
+import com.system.angels.dto.response.GestanteRO;
 import com.system.angels.exceptions.GestacaoNotFoundException;
 import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.repository.GestacaoRepository;
@@ -24,9 +30,17 @@ public class GestacaoService implements iGestacaoService {
         this.gestanteRepository = gestanteRepository;
     }
 
+    //    public DadosEvolutivosRO registrarDadosEvolutivos(DadosEvolutivosDTO dadosEvolutivosDTO) {
+    //        var dadosEvolutivos = dtoToEntity(dadosEvolutivosDTO);
+    //        var savedDadosEvolutivos = dadosEvolutivosRepository.save(dadosEvolutivos);
+    //        return entityToRo(savedDadosEvolutivos);
+    //    }
+
     @Override
-    public Gestacao adicionarGestacao(Gestacao gestacao) {
-        return gestacaoRepository.save(gestacao);
+    public GestacaoRO adicionarGestacao(GestacaoDTO gestacaoDTO) {
+        var gestacao = dtoToEntity(gestacaoDTO);
+        var savedGestacao = gestacaoRepository.save(gestacao);
+        return entityToRo(savedGestacao);
     }
 
     @Override
@@ -102,5 +116,25 @@ public class GestacaoService implements iGestacaoService {
         gestacao.setSituacaoGestacional(gestacaoDTO.situacaoGestacional());
 
         return gestacao;
+    }
+
+    private GestacaoRO entityToRo(Gestacao gestacao) {
+        return new GestacaoRO(
+            gestacao.getGestante().getId(),
+            gestacao.isConsumoAlcool(),
+            gestacao.getFrequenciaUsoAlcool(),
+            gestacao.getDataUltimaMenstruacao(),
+            gestacao.getDataInicioGestacao(),
+            gestacao.getFatorRh(),
+            gestacao.isFuma(),
+            gestacao.getQuantidadeCigarrosDia(),
+            gestacao.getUsoDrogas(),
+            gestacao.isGravidezPlanejada(),
+            gestacao.getGrupoSanguineo(),
+            gestacao.getPesoAntesGestacao(),
+            gestacao.getRiscoGestacional(),
+            gestacao.isVacinaHepatiteB(),
+            gestacao.getSituacaoGestacional()
+        );
     }
 }

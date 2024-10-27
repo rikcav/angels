@@ -2,6 +2,8 @@ package com.system.angels.service;
 
 import com.system.angels.domain.Gestacao;
 
+import com.system.angels.dto.create.GestacaoDTO;
+import com.system.angels.dto.response.GestacaoRO;
 import java.util.List;
 
 public interface iGestacaoService {
@@ -12,7 +14,7 @@ public interface iGestacaoService {
     
     List<Gestacao> obterTodasGestacoes();
 
-    Gestacao adicionarGestacao(Gestacao gestacao);
+    GestacaoRO adicionarGestacao(GestacaoDTO gestacaoDTO);
 
     Gestacao atualizarGestacao(Long id, Gestacao atualizarGestacao);
 

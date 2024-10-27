@@ -60,7 +60,7 @@ export default function Pregnancies() {
   const renderCards = () => {
     const currentDate = moment();
     return pregnanciesData
-      .filter((item) => item.gestante.id === parseInt(params.id || ''))
+      .filter((item) => item.gestanteId === parseInt(params.id || ''))
       .slice(currentPage, currentPage + 4)
       .map((item, index) => (
         <PregnancyCard
