@@ -12,11 +12,11 @@ export const raceList = [
 ];
 
 export const genderList = [
-  { value: 'masculino', label: 'Masculino' },
-  { value: 'feminino', label: 'Feminino' },
-  { value: 'não_binário', label: 'Não Binário' },
-  { value: 'agênero', label: 'Agênero' },
-  { value: 'outro', label: 'Outro' }
+  { value: 'MASCULINO', label: 'Masculino' },
+  { value: 'FEMININO', label: 'Feminino' },
+  { value: 'NAO_BINARIO', label: 'Não Binário' },
+  { value: 'AGENERO', label: 'Agênero' },
+  { value: 'OUTRO', label: 'Outro' }
 ];
 
 export const maritalStatusList = [

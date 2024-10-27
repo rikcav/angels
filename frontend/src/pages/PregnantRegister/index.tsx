@@ -677,13 +677,7 @@ export function PregnantRegister() {
       cpf: cpf
     },
     dadosEvolutivos: {
-      gestante: {
-        nome: name,
-        dataNascimento: birthDate?.toString(),
-        raca: parseInt(race),
-        sexo: gender,
-        cpf: cpf
-      },
+      gestanteId: 0,
       chefeFamilia: headOfHousehold,
       estadoCivil: parseInt(maritalStatus),
       escolaridade: parseInt(educationLevel),
@@ -722,22 +716,39 @@ export function PregnantRegister() {
   };
 
   const postPregnant = async () => {
-    const response = await PostPregnant(pregnantData);
-    if (response?.status == 200) {
-      successNotification('Gestante cadastrada com sucesso!');
-      navigate(`/pregnancies/${response.data.gestante.id}`);
+    if (pregnantData.gestante) {
+      const response = await PostPregnant(pregnantData.gestante);
+      if (response?.status == 201) {
+        const gestanteId = response.data.id;
+        if (pregnantData.dadosEvolutivos != undefined) {
+          pregnantData.dadosEvolutivos.gestanteId = gestanteId;
+        }
+
+        // await postEvolutionData();
+        successNotification('Gestante cadastrada com sucesso!');
+
+        // navigate(`/pregnancies/${response.data.id}`);
+      }
     }
   };
 
   const postEvolutionData = async () => {
     if (params.id && pregnantData.dadosEvolutivos) {
+      pregnantData.dadosEvolutivos.gestanteId = parseInt(params.id);
       const response = await PostPregnantEvolutionData(
-        parseInt(params.id),
         pregnantData.dadosEvolutivos
       );
       if (response?.status == 200) {
         successNotification('Dados atualizados com sucesso!');
         navigate(`/pregnancies/${params.id}`);
+      }
+    } else if (pregnantData.dadosEvolutivos) {
+      const response = await PostPregnantEvolutionData(
+        pregnantData.dadosEvolutivos
+      );
+
+      if (response?.status == 201) {
+        successNotification('Dados cadastrados com sucesso!');
       }
     }
   };
@@ -758,14 +769,17 @@ export function PregnantRegister() {
     }
   };
 
-  const Register = () => {
+  const Register = async () => {
     try {
       if (firstPregnant == 2) {
         pregnantSchemaPartTwo.parse(pregnantSecondData);
         if (params.id) {
           postEvolutionData();
         } else {
-          postPregnant();
+          console.log('Entrou no else como deveria com esses dados');
+          console.log(pregnantData);
+          await postPregnant();
+          await postEvolutionData();
         }
       } else {
         pregnantSchemaPartTwoFirstPregnant.parse(pregnantSecondData);

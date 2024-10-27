@@ -257,8 +257,8 @@ export function PregnancyFollowUp() {
             <RadioSelect
               label="Atendido por"
               firstOption="Médico"
-              firstValue={'médico'}
-              secondValue={'enfermeiro'}
+              firstValue={'MEDICO'}
+              secondValue={'ENFERMEIRO'}
               secondOption="Enfermeiro"
               value={radio}
               radioFunction={radioOnChange}
