@@ -6,9 +6,9 @@ spring:
     path match:
       matching-strategy: ant-path-matcher
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/angels_three
-    password: Lucdb752
-    username: root
+    url: jdbc:mysql://${DB_ADDRESS}/${DB_NAME}
+    password: ${DB_PASSWORD}
+    username: ${DB_USER}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-timeout: 60000
