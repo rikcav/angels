@@ -31,6 +31,7 @@ public class AtualizarGestacaoDTO {
     private int riscoGestacional;
     private boolean vacinaHepatiteB;
     private int situacaoGestacional;
+    private boolean riscoIA;
 
     public AtualizarGestacaoDTO(Gestacao gestacao) {
         this.id = gestacao.getId();
@@ -49,6 +50,7 @@ public class AtualizarGestacaoDTO {
         this.riscoGestacional = gestacao.getRiscoGestacional();
         this.vacinaHepatiteB = gestacao.isVacinaHepatiteB();
         this.situacaoGestacional = gestacao.getSituacaoGestacional();
+        this.riscoIA = gestacao.isRiscoIA();
     }
     
 }

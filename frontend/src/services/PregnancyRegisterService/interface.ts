@@ -14,4 +14,5 @@ export interface PregnancyRegisterInterface {
   usoDrogas: number | undefined;
   vacinaHepatiteB: boolean | undefined;
   consumoAlcool: boolean | undefined;
+  riscoIA: boolean | undefined;
 }

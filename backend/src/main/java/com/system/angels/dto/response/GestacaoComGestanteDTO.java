@@ -32,6 +32,7 @@ public class GestacaoComGestanteDTO {
   private int riscoGestacional;
   private boolean vacinaHepatiteB;
   private int situacaoGestacional;
+  private boolean riscoIA;
 
   public GestacaoComGestanteDTO(Gestacao gestacao) {
     this.id = gestacao.getId();
@@ -51,5 +52,6 @@ public class GestacaoComGestanteDTO {
     this.riscoGestacional = gestacao.getRiscoGestacional();
     this.vacinaHepatiteB = gestacao.isVacinaHepatiteB();
     this.situacaoGestacional = gestacao.getSituacaoGestacional();
+    this.riscoIA = gestacao.isRiscoIA();
   }
 }

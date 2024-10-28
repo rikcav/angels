@@ -18,6 +18,7 @@ public record GestacaoRO(
   int grupoSanguineo,
   BigDecimal pesoAntesGestacao,
   int riscoGestacional,
+  boolean riscoIA,
   boolean vacinaHepatiteB,
   int situacaoGestacional) {
 }

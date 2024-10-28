@@ -62,6 +62,9 @@ public class Gestacao {
     private int riscoGestacional;
 
     @Column(nullable = false)
+    private boolean riscoIA;
+
+    @Column(nullable = false)
     private boolean vacinaHepatiteB;
 
     @Column(nullable = false)

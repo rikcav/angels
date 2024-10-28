@@ -2,6 +2,7 @@ export interface PregnancyInterface {
   id?: number;
   gestanteId?: number;
   nomeGestante: string;
+  riscoIA?: boolean;
   // gestante?: PregnantInfoInterface;
   consumoAlcool: boolean;
   frequenciaUsoAlcool: number;

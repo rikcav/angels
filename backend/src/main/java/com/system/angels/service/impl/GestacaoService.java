@@ -30,12 +30,6 @@ public class GestacaoService implements iGestacaoService {
         this.gestanteRepository = gestanteRepository;
     }
 
-    //    public DadosEvolutivosRO registrarDadosEvolutivos(DadosEvolutivosDTO dadosEvolutivosDTO) {
-    //        var dadosEvolutivos = dtoToEntity(dadosEvolutivosDTO);
-    //        var savedDadosEvolutivos = dadosEvolutivosRepository.save(dadosEvolutivos);
-    //        return entityToRo(savedDadosEvolutivos);
-    //    }
-
     @Override
     public GestacaoRO adicionarGestacao(GestacaoDTO gestacaoDTO) {
         var gestacao = dtoToEntity(gestacaoDTO);
@@ -78,6 +72,7 @@ public class GestacaoService implements iGestacaoService {
         gestacao.setRiscoGestacional(atualizarGestacao.getRiscoGestacional());
         gestacao.setVacinaHepatiteB(atualizarGestacao.isVacinaHepatiteB());
         gestacao.setSituacaoGestacional(atualizarGestacao.getSituacaoGestacional());
+        gestacao.setRiscoIA(atualizarGestacao.isRiscoIA());
 
         return atualizarGestacao;
     }
@@ -114,6 +109,7 @@ public class GestacaoService implements iGestacaoService {
         gestacao.setRiscoGestacional(gestacaoDTO.riscoGestacional());
         gestacao.setVacinaHepatiteB(gestacaoDTO.vacinaHepatiteB());
         gestacao.setSituacaoGestacional(gestacaoDTO.situacaoGestacional());
+        gestacao.setRiscoIA(gestacaoDTO.riscoIA());
 
         return gestacao;
     }
@@ -133,6 +129,7 @@ public class GestacaoService implements iGestacaoService {
             gestacao.getGrupoSanguineo(),
             gestacao.getPesoAntesGestacao(),
             gestacao.getRiscoGestacional(),
+            gestacao.isRiscoIA(),
             gestacao.isVacinaHepatiteB(),
             gestacao.getSituacaoGestacional()
         );

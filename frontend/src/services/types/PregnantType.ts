@@ -9,7 +9,7 @@ export interface PregnantInterface {
 export interface PregnantInfoInterface {
   id?: number;
   nome?: string;
-  dataNascimento?: string | string[] | undefined;
+  dataNascimento?: string | undefined;
   cpf?: string;
   raca?: number;
   sexo?: string;

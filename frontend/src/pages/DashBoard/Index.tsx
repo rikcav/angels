@@ -53,7 +53,7 @@ export function Dashboard() {
           id={1}
           pregnantName={item.nomeGestante}
           weeks={currentDate.diff(item.dataInicioGestacao, 'weeks').toString()}
-          gestationalRisk={true}
+          gestationalRisk={item.riscoIA != undefined ? item.riscoIA : false}
           onClickAdd={() => handleFollowUp(item.id || 0)}
           pregnancyStatus={item.situacaoGestacional}
           onClickFunc={() => handleNavigatePregnancies(item.gestanteId)}

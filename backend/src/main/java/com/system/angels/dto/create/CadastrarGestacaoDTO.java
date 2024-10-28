@@ -31,6 +31,7 @@ public class CadastrarGestacaoDTO {
     private int grupoSanguineo;
     private BigDecimal pesoAntesGestacao;
     private int riscoGestacional;
+    private boolean riscoIA;
     private boolean vacinaHepatiteB;
     private int situacaoGestacional;
 
@@ -50,6 +51,7 @@ public class CadastrarGestacaoDTO {
         this.riscoGestacional = gestacao.getRiscoGestacional();
         this.vacinaHepatiteB = gestacao.isVacinaHepatiteB();
         this.situacaoGestacional = gestacao.getSituacaoGestacional();
+        this.riscoIA = gestacao.isRiscoIA();
     }
     
 }
