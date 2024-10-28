@@ -9,13 +9,13 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "Gestacao")
 public class Gestacao {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -67,4 +67,7 @@ public class Gestacao {
     @Column(nullable = false)
     private int situacaoGestacional;
 
+    @OneToMany(mappedBy = "gestacao", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Acompanhamento> acompanhamentos;
 }
