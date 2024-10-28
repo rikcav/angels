@@ -11,5 +11,6 @@ export const postAcompanhamento = async (
     return response;
   } catch (error) {
     errorNotification('Erro ao cadastrar acompanhamento, tente novamente');
+    console.log(error);
   }
 };

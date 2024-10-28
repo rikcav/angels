@@ -1,8 +1,8 @@
-import { PregnantInfoInterface } from './PregnantType';
-
 export interface PregnancyInterface {
   id?: number;
-  gestante?: PregnantInfoInterface;
+  gestanteId?: number;
+  nomeGestante: string;
+  // gestante?: PregnantInfoInterface;
   consumoAlcool: boolean;
   frequenciaUsoAlcool: number;
   dataUltimaMenstruacao: string;

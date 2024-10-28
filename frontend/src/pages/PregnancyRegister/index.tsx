@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from './styles.ts';
 import Logo from '../../assets/angelsLogo.svg';
 import { Select } from '../../components/Select/index.tsx';
@@ -14,6 +14,10 @@ import { PregnancyRegisterInterface } from '../../services/PregnancyRegisterServ
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../components/Button/index.tsx';
 import { ArrowUUpLeft } from '@phosphor-icons/react';
+import {
+  GetPregnantEvolutionData,
+  GetPregnantInfo
+} from '../../services/PregnantServices/index.ts';
 
 export default function PregnancyRegister() {
   const navigate = useNavigate();
@@ -34,6 +38,33 @@ export default function PregnancyRegister() {
   const [planned, setPlanned] = useState<boolean>();
   const [alcoholFrequency, setAlcoholFrequency] = useState<string>('0');
   const [numberCigarettes, setNumberCigarettes] = useState<string>('0');
+  const [gestantInfo, setGestantInfo] = useState();
+  const [evolutionData, setEvolutionData] = useState();
+
+  useEffect(() => {
+    const pregnanciesRequest = async () => {
+      if (params.id) {
+        const requestResponse = await GetPregnantEvolutionData(
+          parseInt(params.id)
+        );
+        if (requestResponse?.status == 200) {
+          console.log(requestResponse);
+        }
+      }
+    };
+
+    const getPregnantInfo = async () => {
+      if (params.id) {
+        const response = await GetPregnantInfo(parseInt(params.id));
+        if (response?.status == 200) {
+          console.log(response);
+        }
+      }
+    };
+
+    pregnanciesRequest();
+    getPregnantInfo();
+  }, []);
 
   interface ErrorInterface {
     errorShow?: boolean;
@@ -239,7 +270,7 @@ export default function PregnancyRegister() {
   const handlePregnancyRegister = () => {
     try {
       const data: PregnancyRegisterInterface = {
-        gestanteId: gestanteId,
+        gestante_id: gestanteId,
         dataUltimaMenstruacao: period,
         dataInicioGestacao: beginning,
         pesoAntesGestacao: parseInt(weight),
@@ -256,7 +287,7 @@ export default function PregnancyRegister() {
         quantidadeCigarrosDia: parseInt(numberCigarettes)
       };
       PregnancyRegisterSchema.parse(data);
-      postGestacao(gestanteId, data).then((resp) => {
+      postGestacao(data).then((resp) => {
         navigate(`/pregnancies/${gestanteId}`);
       });
     } catch (error) {
@@ -321,8 +352,8 @@ export default function PregnancyRegister() {
               label="Fator RH"
               firstOption="+"
               secondOption="-"
-              firstValue={'+'}
-              secondValue={'-'}
+              firstValue={'POSITIVO'}
+              secondValue={'NEGATIVO'}
               value={rh}
               radioFunction={handleChangeRh}
             ></RadioSelect>

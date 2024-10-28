@@ -17,7 +17,7 @@ export interface PregnantInfoInterface {
 
 export interface EvolutionDataInterface {
   id?: number;
-  gestante?: PregnantInfoInterface;
+  gestanteId?: number;
   municipio?: string;
   diagnosticoDesnutricao?: number;
   energiaEletricaDomicilio?: boolean;

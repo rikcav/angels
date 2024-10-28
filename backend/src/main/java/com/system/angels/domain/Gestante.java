@@ -1,5 +1,6 @@
 package com.system.angels.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.system.angels.domain.enums.Sexo;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -31,5 +32,6 @@ public class Gestante {
     private Sexo sexo;
 
     @OneToMany(mappedBy = "gestante", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<DadosEvolutivos> dadosEvolutivos;
 }

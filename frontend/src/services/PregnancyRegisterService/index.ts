@@ -5,12 +5,9 @@ import {
 import { api } from '../api';
 import { PregnancyRegisterInterface } from './interface';
 
-export const postGestacao = async (
-  gestanteId: number,
-  gestacao: PregnancyRegisterInterface
-) => {
+export const postGestacao = async (gestacao: PregnancyRegisterInterface) => {
   try {
-    const response = await api.post(`/gestacoes/${gestanteId}`, gestacao);
+    const response = await api.post(`/gestacoes`, gestacao);
     successNotification('Gestação cadastrada com sucesso');
     return response;
   } catch (error) {
