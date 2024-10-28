@@ -17,6 +17,7 @@ public record GestacaoDTO(
         boolean gravidezPlanejada,
         int grupoSanguineo,
         BigDecimal pesoAntesGestacao,
+        boolean riscoIA,
         int riscoGestacional,
         boolean vacinaHepatiteB,
         int situacaoGestacional) {

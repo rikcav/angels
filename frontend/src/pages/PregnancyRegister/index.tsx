@@ -8,16 +8,24 @@ import { DateSelect } from '../../components/DateSelect/index.tsx';
 import { RadioChangeEvent } from 'antd';
 import { PregnancyRegisterSchema } from '../../services/types/PregnancyRegisterType.ts';
 import { ZodError } from 'zod';
-import { errorNotification } from '../../components/Notification/index.ts';
+import {
+  errorNotification,
+  successNotification
+} from '../../components/Notification/index.ts';
 import { postGestacao } from '../../services/PregnancyRegisterService/index.ts';
 import { PregnancyRegisterInterface } from '../../services/PregnancyRegisterService/interface.ts';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Button } from '../../components/Button/index.tsx';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowUUpLeft } from '@phosphor-icons/react';
 import {
   GetPregnantEvolutionData,
   GetPregnantInfo
 } from '../../services/PregnantServices/index.ts';
+import {
+  EvolutionDataInterface,
+  PregnantInfoInterface
+} from '../../services/types/PregnantType.ts';
+import { IAInterface } from '../../services/IAService/interface.ts';
+import { postIA } from '../../services/IAService/index.ts';
 
 export default function PregnancyRegister() {
   const navigate = useNavigate();
@@ -38,8 +46,8 @@ export default function PregnancyRegister() {
   const [planned, setPlanned] = useState<boolean>();
   const [alcoholFrequency, setAlcoholFrequency] = useState<string>('0');
   const [numberCigarettes, setNumberCigarettes] = useState<string>('0');
-  const [gestantInfo, setGestantInfo] = useState();
-  const [evolutionData, setEvolutionData] = useState();
+  const [gestantInfo, setGestantInfo] = useState<PregnantInfoInterface>();
+  const [evolutionData, setEvolutionData] = useState<EvolutionDataInterface>();
 
   useEffect(() => {
     const pregnanciesRequest = async () => {
@@ -48,7 +56,7 @@ export default function PregnancyRegister() {
           parseInt(params.id)
         );
         if (requestResponse?.status == 200) {
-          console.log(requestResponse);
+          setEvolutionData(requestResponse.data[0]);
         }
       }
     };
@@ -57,7 +65,7 @@ export default function PregnancyRegister() {
       if (params.id) {
         const response = await GetPregnantInfo(parseInt(params.id));
         if (response?.status == 200) {
-          console.log(response);
+          setGestantInfo(response.data);
         }
       }
     };
@@ -267,26 +275,104 @@ export default function PregnancyRegister() {
     navigate('/dashboard');
   };
 
-  const handlePregnancyRegister = () => {
+  const calcAge = (birthDate: string): number => {
+    let age = new Date().getFullYear() - new Date(birthDate).getFullYear();
+    return age;
+  };
+
+  const calcMonths = (lastPregnancyDate: string): number => {
+    let months =
+      (new Date().getFullYear() - new Date(lastPregnancyDate).getFullYear()) *
+      12;
+    months += new Date().getMonth() - new Date(lastPregnancyDate).getMonth();
+
+    if (new Date().getDate() < new Date(lastPregnancyDate).getDate()) {
+      months -= 1;
+    }
+
+    return months;
+  };
+
+  const dataIA: IAInterface = {
+    previous_weight: parseInt(weight),
+    gestational_risk: parseInt(situation),
+    schooling: evolutionData?.escolaridade,
+    has_hypertension: evolutionData?.hipertensao
+      ? evolutionData.hipertensao
+      : false,
+    has_diabetes: evolutionData?.diabetes ? evolutionData.diabetes : false,
+    has_pelvic_sugery: evolutionData?.cirurgiaPelvica
+      ? evolutionData.cirurgiaPelvica
+      : false,
+    has_urinary_infection: evolutionData?.infeccaoUrinaria
+      ? evolutionData.infeccaoUrinaria
+      : false,
+    has_congenital_malformation: evolutionData?.maFormacaoCongenita
+      ? evolutionData.maFormacaoCongenita
+      : false,
+    has_family_twinship: evolutionData?.familiarGemeos
+      ? evolutionData.familiarGemeos
+      : false,
+    amount_gestation: evolutionData?.quantidadeGestacao
+      ? evolutionData.quantidadeGestacao
+      : 0,
+    amount_abortion: evolutionData?.quantidadeAbortos
+      ? evolutionData.quantidadeAbortos
+      : 0,
+    amount_deliveries: evolutionData?.quantidadePartos
+      ? evolutionData.quantidadePartos
+      : 0,
+    amount_cesarean: evolutionData?.quantidadePartosCesarios
+      ? evolutionData.quantidadePartosCesarios
+      : 0,
+    target: 0,
+    age: calcAge(
+      gestantInfo?.dataNascimento ? gestantInfo.dataNascimento : '2024-01-01'
+    ),
+    fist_prenatal: 0,
+    time_between_pregnancies: calcMonths(
+      evolutionData?.dataUltimaGestacao
+        ? evolutionData.dataUltimaGestacao
+        : '2024-01-01'
+    )
+  };
+
+  const data: PregnancyRegisterInterface = {
+    gestante_id: gestanteId,
+    dataUltimaMenstruacao: period,
+    dataInicioGestacao: beginning,
+    pesoAntesGestacao: parseInt(weight),
+    situacaoGestacional: parseInt(situation),
+    riscoGestacional: parseInt(risc),
+    riscoIA: false,
+    grupoSanguineo: parseInt(blood),
+    fatorRh: rh,
+    vacinaHepatiteB: hepB,
+    usoDrogas: parseInt(drugs),
+    fuma: smoke,
+    gravidezPlanejada: planned,
+    consumoAlcool: alcohol,
+    frequenciaUsoAlcool: parseInt(alcoholFrequency),
+    quantidadeCigarrosDia: parseInt(numberCigarettes)
+  };
+
+  const handleCheckIA = async () => {
+    const response = await postIA(dataIA);
+    if (response?.status == 200) {
+      const isRisk = response.data.risk;
+      if (data != undefined) {
+        data.riscoIA = isRisk;
+      }
+      successNotification('Deu certo IA');
+    }
+  };
+
+  const handlePregnancyRegister = async () => {
     try {
-      const data: PregnancyRegisterInterface = {
-        gestante_id: gestanteId,
-        dataUltimaMenstruacao: period,
-        dataInicioGestacao: beginning,
-        pesoAntesGestacao: parseInt(weight),
-        situacaoGestacional: parseInt(situation),
-        riscoGestacional: parseInt(risc),
-        grupoSanguineo: parseInt(blood),
-        fatorRh: rh,
-        vacinaHepatiteB: hepB,
-        usoDrogas: parseInt(drugs),
-        fuma: smoke,
-        gravidezPlanejada: planned,
-        consumoAlcool: alcohol,
-        frequenciaUsoAlcool: parseInt(alcoholFrequency),
-        quantidadeCigarrosDia: parseInt(numberCigarettes)
-      };
       PregnancyRegisterSchema.parse(data);
+
+      // await handleCheckIA();
+
       postGestacao(data).then((resp) => {
         navigate(`/pregnancies/${gestanteId}`);
       });

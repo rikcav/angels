@@ -727,7 +727,7 @@ export function PregnantRegister() {
         // await postEvolutionData();
         successNotification('Gestante cadastrada com sucesso!');
 
-        // navigate(`/pregnancies/${response.data.id}`);
+        navigate(`/pregnancies/${response.data.id}`);
       }
     }
   };
