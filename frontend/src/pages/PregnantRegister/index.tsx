@@ -719,7 +719,9 @@ export function PregnantRegister() {
     if (pregnantData.gestante) {
       const response = await PostPregnant(pregnantData.gestante);
       if (response?.status == 201) {
+        console.log(response);
         const gestanteId = response.data.id;
+        console.log("gestante id" + gestanteId)
         if (pregnantData.dadosEvolutivos != undefined) {
           pregnantData.dadosEvolutivos.gestanteId = gestanteId;
         }
@@ -778,6 +780,7 @@ export function PregnantRegister() {
         } else {
           console.log('Entrou no else como deveria com esses dados');
           console.log(pregnantData);
+          console.log(postEvolutionData);
           await postPregnant();
           await postEvolutionData();
         }

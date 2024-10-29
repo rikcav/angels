@@ -371,7 +371,7 @@ export default function PregnancyRegister() {
     try {
       PregnancyRegisterSchema.parse(data);
 
-      // await handleCheckIA();
+      await handleCheckIA();
 
       postGestacao(data).then((resp) => {
         navigate(`/pregnancies/${gestanteId}`);
