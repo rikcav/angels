@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface DadosEvolutivosRepository extends JpaRepository<DadosEvolutivos, Long> {
     List<DadosEvolutivos> findAllByGestante_id(Long id);
 
-    Optional<DadosEvolutivos> findFirstByGestante_idOrderByGestanteIdDesc(Long id);
+    Optional<DadosEvolutivos> findFirstByGestante_idOrderByIdDesc(Long id);
 }
