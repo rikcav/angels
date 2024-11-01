@@ -1,16 +1,12 @@
 package com.system.angels.controller;
 
 import com.system.angels.domain.Gestacao;
-import com.system.angels.domain.Gestante;
-import com.system.angels.dto.create.CadastrarGestacaoDTO;
 import com.system.angels.dto.create.GestacaoDTO;
-import com.system.angels.dto.response.DadosEvolutivosRO;
 import com.system.angels.dto.response.GestacaoComGestanteDTO;
 import com.system.angels.dto.response.GestacaoRO;
 import com.system.angels.dto.response.VisualizarGestacaoDTO;
 import com.system.angels.dto.update.AtualizarGestacaoDTO;
 import com.system.angels.service.impl.GestacaoService;
-import com.system.angels.service.impl.GestanteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

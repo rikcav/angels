@@ -89,7 +89,7 @@ public class GestanteService implements iGestanteService {
     }
 
     private GestanteRO entityToRO(Gestante gestante) {
-        var dadosEvolutivos = dadosEvolutivosRepository.findFirstByGestante_idOrderByGestanteIdDesc(gestante.getId())
+        var dadosEvolutivos = dadosEvolutivosRepository.findFirstByGestante_idOrderByIdDesc(gestante.getId())
                 .orElse(null);
 
         return new GestanteRO(

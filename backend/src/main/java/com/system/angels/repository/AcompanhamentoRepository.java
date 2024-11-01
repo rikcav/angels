@@ -8,8 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AcompanhamentoRepository extends JpaRepository<Acompanhamento, Long> {
-
-    public List<Acompanhamento> findByGestacaoId(Long gestacaoId);
-
-
+    List<Acompanhamento> findByGestacaoId(Long gestacaoId);
 }

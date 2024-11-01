@@ -2,7 +2,6 @@ package com.system.angels.controller;
 
 
 import com.system.angels.domain.Acompanhamento;
-import com.system.angels.domain.Gestacao;
 import com.system.angels.dto.create.CadastrarAcompanhamentoDTO;
 import com.system.angels.dto.response.VisualizarAcompanhamentoDTO;
 import com.system.angels.service.impl.AcompanhamentoService;
