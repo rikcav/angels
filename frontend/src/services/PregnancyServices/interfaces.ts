@@ -20,7 +20,7 @@ export interface PregnancyInterface {
   pesoAntesGestacao: number;
   quantidadeCigarrosDia: number;
   riscoGestacional: number;
-  situacaoGestacional: number;
+  situacaoGestacional: string;
   usoDrogas: number;
   vacinaHepatiteB: number;
   consumoAlcool: boolean;

@@ -1,14 +1,14 @@
 export const raceList = [
-  { value: '0', label: 'Indígena' },
-  { value: '1', label: 'Branco' },
-  { value: '2', label: 'Negro' },
-  { value: '3', label: 'Pardo' },
-  { value: '4', label: 'Asiático' },
-  { value: '5', label: 'Árabe' },
-  { value: '6', label: 'Judeu' },
-  { value: '7', label: 'Europeu Oriental' },
-  { value: '8', label: 'Latino Americano' },
-  { value: '9', label: 'Africana Não Negra' }
+  { value: 'INDIGENA', label: 'Indígena' },
+  { value: 'BRANCO', label: 'Branco' },
+  { value: 'NEGRO', label: 'Negro' },
+  { value: 'PARDO', label: 'Pardo' },
+  { value: 'ASIATICO', label: 'Asiático' },
+  { value: 'ARABE', label: 'Árabe' },
+  { value: 'JUDEU', label: 'Judeu' },
+  { value: 'EUROPEU_ORIENTAL', label: 'Europeu Oriental' },
+  { value: 'LATINO_AMERICANO', label: 'Latino Americano' },
+  { value: 'AFRICANO_NAO_NEGRO', label: 'Africana Não Negra' }
 ];
 
 export const genderList = [
@@ -20,21 +20,21 @@ export const genderList = [
 ];
 
 export const maritalStatusList = [
-  { value: '0', label: 'Solteira' },
-  { value: '1', label: 'Casada' },
-  { value: '2', label: 'Viúva' },
-  { value: '3', label: 'Separada Judicialmente' },
-  { value: '4', label: 'Divorciada' },
-  { value: '5', label: 'Outro' }
+  { value: 'SOLTEIRA', label: 'Solteira' },
+  { value: 'CASADA', label: 'Casada' },
+  { value: 'VIUVA', label: 'Viúva' },
+  { value: 'SEPARADA_JUDICIALMENTE', label: 'Separada Judicialmente' },
+  { value: 'DIVORCIADA', label: 'Divorciada' },
+  { value: 'OUTRO', label: 'Outro' }
 ];
 
 export const housingTypesList = [
-  { value: '0', label: 'Palha' },
-  { value: '1', label: 'Madeira' },
-  { value: '2', label: 'Barro' },
-  { value: '3', label: 'Gesso' },
-  { value: '4', label: 'Tijolo' },
-  { value: '5', label: 'Outros' }
+  { value: 'PALHA', label: 'Palha' },
+  { value: 'MADEIRA', label: 'Madeira' },
+  { value: 'BARRO', label: 'Barro' },
+  { value: 'GESSO', label: 'Gesso' },
+  { value: 'TIJOLO', label: 'Tijolo' },
+  { value: 'OUTROS', label: 'Outros' }
 ];
 
 export const educationLevelsList = [
@@ -50,8 +50,11 @@ export const educationLevelsList = [
 ];
 
 export const malnutritionLevelsList = [
-  { value: '0', label: 'Sem Diagnóstico de Desnutrição' },
-  { value: '1', label: 'Desnutrição Leve' },
-  { value: '2', label: 'Desnutrição Moderada' },
-  { value: '3', label: 'Desnutrição Grave' }
+  {
+    value: 'SEM_DIAGNOSTICO_DE_DESNUTRICAO',
+    label: 'Sem Diagnóstico de Desnutrição'
+  },
+  { value: 'DESNUTRICAO_LEVE', label: 'Desnutrição Leve' },
+  { value: 'DESNUTRICAO_MODERADA', label: 'Desnutrição Moderada' },
+  { value: 'DESNUTRICAO_GRAVE', label: 'Desnutrição Grave' }
 ];

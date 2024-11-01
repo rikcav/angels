@@ -95,37 +95,37 @@ export default function PregnancyRegister() {
 
   const alcoolFreq = [
     {
-      value: '0',
+      value: 'BAIXO_CONSUMO',
       label: 'Baixo consumo de álcool'
     },
     {
-      value: '1',
+      value: 'LEVE_CONSUMO',
       label: 'Leve consumo de álcool'
     },
     {
-      value: '2',
+      value: 'CONSUMO_MODERADO',
       label: 'Moderado consumo de álcool'
     },
     {
-      value: '3',
+      value: 'ALTO_CONSUMO',
       label: 'Alto consumo de álcool'
     }
   ];
   const drugsUse = [
     {
-      value: '0',
+      value: 'NENHUM_CONSUMO',
       label: 'Nenhum consumo de drogas'
     },
     {
-      value: '1',
+      value: 'BAIXO_CONSUMO',
       label: 'Baixo consumo de drogas'
     },
     {
-      value: '2',
+      value: 'CONSUMO_MODERADO',
       label: 'Moderado consumo de drogas'
     },
     {
-      value: '3',
+      value: 'ALTO_CONSUMO',
       label: 'Alto consumo de drogas'
     }
   ];
@@ -147,34 +147,34 @@ export default function PregnancyRegister() {
 
   const situGest = [
     {
-      value: '0',
+      value: 'EM_ANDAMENTO',
       label: 'Em andamento'
     },
     {
-      value: '1',
+      value: 'FINALIZADA_COM_SUCESSO',
       label: 'Finalizada com sucesso'
     },
     {
-      value: '2',
+      value: 'FINALIZADA_COM_DESFECHO_NEGATIVO',
       label: 'Finalizada com desfecho negativo'
     }
   ];
 
   const gpSang = [
     {
-      value: '0',
+      value: 'O',
       label: 'O'
     },
     {
-      value: '1',
+      value: 'A',
       label: 'A'
     },
     {
-      value: '2',
+      value: 'B',
       label: 'B'
     },
     {
-      value: '3',
+      value: 'AB',
       label: 'AB'
     }
   ];
@@ -258,6 +258,9 @@ export default function PregnancyRegister() {
     setSmoke(e.target.value);
   };
   const handleChangeAlcohol = (e: RadioChangeEvent) => {
+    if (e.target.value == false) {
+      setAlcoholFrequency('NENHUM_CONSUMO');
+    }
     setAlcohol(e.target.value);
   };
 
@@ -342,17 +345,17 @@ export default function PregnancyRegister() {
     dataUltimaMenstruacao: period,
     dataInicioGestacao: beginning,
     pesoAntesGestacao: parseInt(weight),
-    situacaoGestacional: parseInt(situation),
+    situacaoGestacional: situation,
     riscoGestacional: parseInt(risc),
     riscoIA: false,
-    grupoSanguineo: parseInt(blood),
+    grupoSanguineo: blood,
     fatorRh: rh,
     vacinaHepatiteB: hepB,
-    usoDrogas: parseInt(drugs),
+    usoDrogas: drugs,
     fuma: smoke,
     gravidezPlanejada: planned,
     consumoAlcool: alcohol,
-    frequenciaUsoAlcool: parseInt(alcoholFrequency),
+    frequenciaUsoAlcool: alcoholFrequency,
     quantidadeCigarrosDia: parseInt(numberCigarettes)
   };
 

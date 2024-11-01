@@ -32,7 +32,9 @@ export const FollowUpCard: React.FC<InfoProps> = ({
         <S.CardInfoTitle>Idade Gestacional</S.CardInfoTitle>
         <S.CardInfoContent>{gestationalAge} semanas</S.CardInfoContent>
         <S.CardInfoTitle>Realizado por:</S.CardInfoTitle>
-        <S.CardInfoContent>{madeBy}</S.CardInfoContent>
+        <S.CardInfoContent>
+          {madeBy == 'ENFERMEIRO' ? 'Enfermeiro' : 'Médico'}
+        </S.CardInfoContent>
       </S.ColumnCardContainer>
       <S.ColumnCardContainer>
         <S.CardInfoTitle>Pressão arterial:</S.CardInfoTitle>
@@ -42,7 +44,13 @@ export const FollowUpCard: React.FC<InfoProps> = ({
         <S.CardInfoTitle>Altura uterina</S.CardInfoTitle>
         <S.CardInfoContent>{uterineHeight} cm</S.CardInfoContent>
         <S.CardInfoTitle>Tipo</S.CardInfoTitle>
-        <S.CardInfoContent>{type}</S.CardInfoContent>
+        <S.CardInfoContent>
+          {type == 'VOLTA'
+            ? 'Volta'
+            : type == 'OCORRENCIA'
+            ? 'Ocorrência'
+            : 'Pré-natal de rotina'}
+        </S.CardInfoContent>
       </S.ColumnCardContainer>
     </S.FollowUpCardContainer>
   );

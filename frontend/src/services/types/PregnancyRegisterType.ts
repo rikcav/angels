@@ -25,7 +25,7 @@ export const PregnancyRegisterSchema = z.object({
       invalid_type_error: 'Insira o peso'
     })
     .min(1, 'Insira o peso'),
-  situacaoGestacional: z.number({
+  situacaoGestacional: z.string({
     required_error: 'Selecione a situação gestacional',
     invalid_type_error: 'Selecione a situação gestacional'
   }),
@@ -33,7 +33,7 @@ export const PregnancyRegisterSchema = z.object({
     required_error: 'Selecione o risco gestacional',
     invalid_type_error: 'Selecione o risco gestacional'
   }),
-  grupoSanguineo: z.number({
+  grupoSanguineo: z.string({
     required_error: 'Selecione o grupo sanguíneo',
     invalid_type_error: 'Selecione o grupo sanguíneo'
   }),
@@ -41,7 +41,7 @@ export const PregnancyRegisterSchema = z.object({
     .string({ required_error: 'Insira o Fator Rh' })
     .min(1, 'Insira o Fator Rh'),
   usoDrogas: z
-    .number({
+    .string({
       required_error: 'Selecione o consumo de drogas',
       invalid_type_error: 'Selecione o consumo de drogas'
     })
@@ -56,6 +56,6 @@ export const PregnancyRegisterSchema = z.object({
   vacinaHepatiteB: z.boolean({
     required_error: 'Selecione vacina de hepatite B'
   }),
-  frequenciaUsoAlcool: z.number().optional(),
+  frequenciaUsoAlcool: z.string().optional(),
   quantidadeCigarrosDia: z.number().optional()
 });

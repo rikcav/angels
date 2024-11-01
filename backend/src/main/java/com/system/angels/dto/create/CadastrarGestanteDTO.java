@@ -1,6 +1,7 @@
 package com.system.angels.dto.create;
 
 import com.system.angels.domain.Gestante;
+import com.system.angels.domain.enums.Raca;
 import com.system.angels.domain.enums.Sexo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class CadastrarGestanteDTO {
     private String nome;
     private Date dataNascimento;
     private String cpf;
-    private int raca;
+    private Raca raca;
     private Sexo sexo;
 
     public CadastrarGestanteDTO(Gestante gestante) {

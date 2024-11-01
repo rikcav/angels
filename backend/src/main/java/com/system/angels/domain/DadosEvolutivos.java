@@ -1,6 +1,9 @@
 package com.system.angels.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.system.angels.domain.enums.DiagnosticoDesnutricao;
+import com.system.angels.domain.enums.EstadoCivil;
+import com.system.angels.domain.enums.TipoMoradia;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,7 +28,7 @@ public class DadosEvolutivos {
     private String municipio;
 
     @Column(nullable = false)
-    private int diagnosticoDesnutricao;
+    private DiagnosticoDesnutricao diagnosticoDesnutricao;
 
     @Column(nullable = false)
     private boolean energiaEletricaDomicilio;
@@ -34,7 +37,7 @@ public class DadosEvolutivos {
     private int escolaridade;
 
     @Column(nullable = false)
-    private int tipoMoradia;
+    private TipoMoradia tipoMoradia;
 
     @Column(nullable = false)
     private boolean moradiaRedeEsgoto;
@@ -58,7 +61,7 @@ public class DadosEvolutivos {
     private boolean emRisco;
 
     @Column(nullable = false)
-    private int estadoCivil;
+    private EstadoCivil estadoCivil;
 
     @Column(nullable = false)
     private int quantidadeAbortos;

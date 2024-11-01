@@ -7,7 +7,7 @@ interface InfoProps {
   weeks: string;
   pregnantName?: string;
   gestationalRisk: boolean;
-  pregnancyStatus: number;
+  pregnancyStatus: string;
   onClickFunc?: React.MouseEventHandler<HTMLDivElement>;
   onClickAdd?: React.MouseEventHandler<HTMLButtonElement>;
   onClickThreeDots?: React.MouseEventHandler<HTMLButtonElement>;
@@ -24,9 +24,9 @@ export const PregnancyCard: React.FC<InfoProps> = ({
   onClickThreeDots
 }) => {
   const pregnancyStatusDescription =
-    pregnancyStatus == 0
+    pregnancyStatus == 'EM_ANDAMENTO'
       ? 'Em andamento'
-      : pregnancyStatus == 1
+      : pregnancyStatus == 'FINALIZADA_COM_SUCESSO'
       ? 'Finalizada com sucesso'
       : 'Finalizada com desfecho negativo';
   return (
@@ -58,7 +58,7 @@ export const PregnancyCard: React.FC<InfoProps> = ({
         </S.PregnancyInfoTextContainer>
       </S.PregnancyInfoContainer>
       <S.PregnancyButtonsContainer>
-        {pregnancyStatus == 0 ? (
+        {pregnancyStatus == 'EM_ANDAMENTO' ? (
           <S.PregnancyCardButton onClick={onClickAdd}>
             <Plus weight="bold" size={28} color="#B1488A" />
           </S.PregnancyCardButton>

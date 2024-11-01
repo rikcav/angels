@@ -28,6 +28,7 @@ export const PostPregnant = async (data: PregnantInterface) => {
     const response = await api.post(`/gestantes`, data);
     return response;
   } catch (error) {
+    console.log(error);
     errorNotification('Erro ao cadastrar uma gestante, tente novamente.');
   }
 };

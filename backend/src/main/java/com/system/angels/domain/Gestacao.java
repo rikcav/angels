@@ -2,6 +2,10 @@ package com.system.angels.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.system.angels.domain.enums.FatorRH;
+import com.system.angels.domain.enums.GrupoSanguineo;
+import com.system.angels.domain.enums.SituacaoGestacional;
+import com.system.angels.domain.enums.UsoAlcool;
+import com.system.angels.domain.enums.UsoDrogas;
 import jakarta.persistence.*;
 
 import lombok.Getter;
@@ -29,7 +33,7 @@ public class Gestacao {
     private boolean consumoAlcool;
 
     @Column(nullable = false)
-    private int frequenciaUsoAlcool;
+    private UsoAlcool frequenciaUsoAlcool;
 
     @Column(nullable = false)
     private Date dataUltimaMenstruacao;
@@ -47,13 +51,13 @@ public class Gestacao {
     private int quantidadeCigarrosDia;
 
     @Column(nullable = false)
-    private int usoDrogas;
+    private UsoDrogas usoDrogas;
 
     @Column(nullable = false)
     private boolean gravidezPlanejada;
 
     @Column(nullable = false)
-    private int grupoSanguineo;
+    private GrupoSanguineo grupoSanguineo;
 
     @Column(nullable = false)
     private BigDecimal pesoAntesGestacao;
@@ -68,7 +72,7 @@ public class Gestacao {
     private boolean vacinaHepatiteB;
 
     @Column(nullable = false)
-    private int situacaoGestacional;
+    private SituacaoGestacional situacaoGestacional;
 
     @OneToMany(mappedBy = "gestacao", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

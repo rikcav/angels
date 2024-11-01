@@ -1,15 +1,18 @@
 package com.system.angels.dto.create;
 
+import com.system.angels.domain.enums.DiagnosticoDesnutricao;
+import com.system.angels.domain.enums.EstadoCivil;
+import com.system.angels.domain.enums.TipoMoradia;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public record DadosEvolutivosDTO(
         Long gestanteId,
         String municipio,
-        int diagnosticoDesnutricao,
+        DiagnosticoDesnutricao diagnosticoDesnutricao,
         boolean energiaEletricaDomicilio,
         int escolaridade,
-        int tipoMoradia,
+        TipoMoradia tipoMoradia,
         boolean moradiaRedeEsgoto,
         BigDecimal rendaFamiliar,
         boolean tratamentoAgua,
@@ -17,7 +20,7 @@ public record DadosEvolutivosDTO(
         boolean chefeFamilia,
         Date dataUltimaGestacao,
         boolean emRisco,
-        int estadoCivil,
+        EstadoCivil estadoCivil,
         int quantidadeAbortos,
         int quantidadeFilhosVivos,
         int quantidadeGemelares,

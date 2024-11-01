@@ -672,24 +672,24 @@ export function PregnantRegister() {
     gestante: {
       nome: name,
       dataNascimento: birthDate?.toString(),
-      raca: parseInt(race),
+      raca: race,
       sexo: gender,
       cpf: cpf
     },
     dadosEvolutivos: {
       gestanteId: 0,
       chefeFamilia: headOfHousehold,
-      estadoCivil: parseInt(maritalStatus),
+      estadoCivil: maritalStatus,
       escolaridade: parseInt(educationLevel),
       rendaFamiliar: parseInt(familyIncome),
       emRisco: risc,
       municipio: city,
-      tipoMoradia: parseInt(housing),
+      tipoMoradia: housing,
       energiaEletricaDomicilio: electricity,
       moradiaRedeEsgoto: sewageNetwork,
       tratamentoAgua: treatedWater,
       amamentacao: breastfeeding,
-      diagnosticoDesnutricao: parseInt(wellFed),
+      diagnosticoDesnutricao: wellFed,
       contato: contact,
       contatoEmergencia: emergencyContact,
       dataUltimaGestacao: lastPregnancyDate?.toString() || '',
@@ -776,8 +776,6 @@ export function PregnantRegister() {
         if (params.id) {
           postEvolutionData();
         } else {
-          console.log('Entrou no else como deveria com esses dados');
-          console.log(pregnantData);
           await postPregnant();
           await postEvolutionData();
         }
@@ -786,7 +784,7 @@ export function PregnantRegister() {
         postPregnant();
       }
       setProgressBar(100);
-      navigate('/dashboard');
+      // navigate('/dashboard');
     } catch (error) {
       if (error instanceof ZodError) {
         warningNotification(error.errors[0].message);
