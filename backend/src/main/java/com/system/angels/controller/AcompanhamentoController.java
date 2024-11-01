@@ -31,8 +31,11 @@ public class AcompanhamentoController {
         return ResponseEntity.ok(visualizarAcompanhamentoDTO);
     }
 
-    @PostMapping
-    public ResponseEntity<VisualizarAcompanhamentoDTO> cadastrarAcompanhamento(@RequestBody CadastrarAcompanhamentoDTO cadastrarAcompanhamentoDTO, @PathVariable Long gestacaoId) {
+    @PostMapping("/gestacoes/{gestacaoId}")
+    public ResponseEntity<VisualizarAcompanhamentoDTO> cadastrarAcompanhamento(
+            @PathVariable Long gestacaoId,
+            @RequestBody CadastrarAcompanhamentoDTO cadastrarAcompanhamentoDTO) {
+
         var acompanhamento = service.cadastrarAcompanhamento(gestacaoId, cadastrarAcompanhamentoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(acompanhamento);
     }
