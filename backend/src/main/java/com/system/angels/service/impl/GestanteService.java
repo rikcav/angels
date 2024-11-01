@@ -8,6 +8,8 @@ import com.system.angels.exceptions.InvalidRequestException;
 import com.system.angels.repository.DadosEvolutivosRepository;
 import com.system.angels.repository.GestanteRepository;
 import com.system.angels.service.iGestanteService;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -127,7 +129,8 @@ public class GestanteService implements iGestanteService {
         if (gestanteDTO.dataNascimento() == null) {
             throw new InvalidRequestException("Data de Nascimento is required.");
         }
-        if (gestanteDTO.dataNascimento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isAfter(LocalDate.now())) {
+        if (gestanteDTO.dataNascimento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isAfter(
+            LocalDate.now())) {
             throw new InvalidRequestException("Data de Nascimento cannot be in the future.");
         }
 
