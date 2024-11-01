@@ -80,45 +80,36 @@ public class DadosEvolutivosRepositoryTest {
 
     @Test
     public void testFindAllByGestante_id() {
-        // Arrange
         DadosEvolutivos dados1 = createDadosEvolutivos(gestante, "City A");
         DadosEvolutivos dados2 = createDadosEvolutivos(gestante, "City B");
         dadosEvolutivosRepository.save(dados1);
         dadosEvolutivosRepository.save(dados2);
 
-        // Act
         List<DadosEvolutivos> result = dadosEvolutivosRepository.findAllByGestante_id(gestante.getId());
 
-        // Assert
         assertThat(result).hasSize(2);
         assertThat(result).extracting(DadosEvolutivos::getMunicipio).contains("City A", "City B");
     }
 
     @Test
     public void testFindFirstByGestante_idOrderByIdDesc() {
-        // Arrange
         DadosEvolutivos dados1 = createDadosEvolutivos(gestante, "City A");
         DadosEvolutivos dados2 = createDadosEvolutivos(gestante, "City B");
         dadosEvolutivosRepository.save(dados1);
         dadosEvolutivosRepository.save(dados2);
 
-        // Act
         Optional<DadosEvolutivos> result = dadosEvolutivosRepository.findFirstByGestante_idOrderByIdDesc(gestante.getId());
 
-        // Assert
         assertThat(result).isPresent();
         assertThat(result.get().getMunicipio()).isEqualTo("City B");
     }
 
     @Test
     public void testSaveDadosEvolutivos() {
-        // Arrange
         DadosEvolutivos dados = createDadosEvolutivos(gestante, "City A");
 
-        // Act
         DadosEvolutivos savedDados = dadosEvolutivosRepository.save(dados);
 
-        // Assert
         assertThat(savedDados.getId()).isNotNull();
         assertThat(savedDados.getMunicipio()).isEqualTo("City A");
         assertThat(savedDados.getGestante().getId()).isEqualTo(gestante.getId());
@@ -126,28 +117,22 @@ public class DadosEvolutivosRepositoryTest {
 
     @Test
     public void testUpdateDadosEvolutivos() {
-        // Arrange
         DadosEvolutivos dados = createDadosEvolutivos(gestante, "City A");
         DadosEvolutivos savedDados = dadosEvolutivosRepository.save(dados);
 
-        // Act
         savedDados.setMunicipio("Updated City");
         DadosEvolutivos updatedDados = dadosEvolutivosRepository.save(savedDados);
 
-        // Assert
         assertThat(updatedDados.getMunicipio()).isEqualTo("Updated City");
     }
 
     @Test
     public void testDeleteDadosEvolutivos() {
-        // Arrange
         DadosEvolutivos dados = createDadosEvolutivos(gestante, "City A");
         DadosEvolutivos savedDados = dadosEvolutivosRepository.save(dados);
 
-        // Act
         dadosEvolutivosRepository.delete(savedDados);
 
-        // Assert
         Optional<DadosEvolutivos> deletedDados = dadosEvolutivosRepository.findById(savedDados.getId());
         assertThat(deletedDados).isNotPresent();
     }
