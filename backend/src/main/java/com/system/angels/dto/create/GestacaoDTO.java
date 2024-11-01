@@ -1,24 +1,28 @@
 package com.system.angels.dto.create;
 
 import com.system.angels.domain.enums.FatorRH;
+import com.system.angels.domain.enums.GrupoSanguineo;
+import com.system.angels.domain.enums.SituacaoGestacional;
+import com.system.angels.domain.enums.UsoAlcool;
+import com.system.angels.domain.enums.UsoDrogas;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public record GestacaoDTO(
         Long gestante_id,
         boolean consumoAlcool,
-        int frequenciaUsoAlcool,
+        UsoAlcool frequenciaUsoAlcool,
         Date dataUltimaMenstruacao,
         Date dataInicioGestacao,
         FatorRH fatorRh,
         boolean fuma,
         int quantidadeCigarrosDia,
-        int usoDrogas,
+        UsoDrogas usoDrogas,
         boolean gravidezPlanejada,
-        int grupoSanguineo,
+        GrupoSanguineo grupoSanguineo,
         BigDecimal pesoAntesGestacao,
         boolean riscoIA,
         int riscoGestacional,
         boolean vacinaHepatiteB,
-        int situacaoGestacional) {
+        SituacaoGestacional situacaoGestacional) {
 }

@@ -52,7 +52,7 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
   const [isUptadeModalOpen, setIsUptadeModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [name, setName] = useState<string>();
-  const [birthDate, setBirthDate] = useState<string | string[]>();
+  const [birthDate, setBirthDate] = useState<string | undefined>();
   const [race, setRace] = useState<string>('');
   const [gender, setGender] = useState<string>('');
   const [cpf, setCpf] = useState<string>('');
@@ -88,18 +88,25 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
     date: unknown,
     dateString: string | string[]
   ) => {
+    let dateStr: string | undefined;
+
+    if (Array.isArray(dateString)) {
+      dateStr = dateString.length > 0 ? dateString[0] : undefined;
+    } else {
+      dateStr = dateString;
+    }
+
     try {
-      pregnantSchemaPartOne.shape.dataNascimento.parse(dateString);
+      pregnantSchemaPartOne.shape.dataNascimento.parse(dateStr);
       setErrorBirthDate({ errorType: '', errorShow: false });
-      if (dateString == '') {
+      if (!dateStr) {
         setErrorBirthDate({ errorType: 'error', errorShow: true });
       }
     } catch (error) {
       console.log(error);
       setErrorBirthDate({ errorType: 'error', errorShow: true });
     }
-    console.log(date);
-    setBirthDate(dateString);
+    setBirthDate(dateStr);
   };
 
   const handleChangeRace = (value: unknown) => {
@@ -178,7 +185,7 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
     nome: name,
     dataNascimento: birthDate,
     cpf: cpf,
-    raca: parseInt(race),
+    raca: race,
     sexo: gender
   };
 
@@ -202,10 +209,6 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
     <S.Container>
       <S.ContentContainer>
         <S.ContentContainer>
-          {/* <S.LineContainer>
-            <InfoContainer name="Nome" value={pregnantInfo?.nome} />
-            <InfoContainer name="CPF" value={pregnantInfo?.cpf} />
-          </S.LineContainer> */}
           <S.LineContainer>
             <InfoContainer
               name="Nascimento"
@@ -214,7 +217,22 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
             <S.InfoEmptyContainer />
             <S.InfoEmptyContainer />
             <S.InfoEmptyContainer />
-            <InfoContainer name="Gênero" value={pregnantInfo?.sexo} />
+            <InfoContainer
+              name="Gênero"
+              value={
+                pregnantInfo?.sexo === 'MASCULINO'
+                  ? 'Masculino'
+                  : pregnantInfo?.sexo === 'FEMININO'
+                  ? 'Feminino'
+                  : pregnantInfo?.sexo === 'NAO_BINARIO'
+                  ? 'Não-Binário'
+                  : pregnantInfo?.sexo === 'AGENERO'
+                  ? 'Agênero'
+                  : pregnantInfo?.sexo === 'OUTRO'
+                  ? 'Outro'
+                  : 'Indefinido'
+              }
+            />
             <S.InfoEmptyContainer />
           </S.LineContainer>
           <S.LineContainer>

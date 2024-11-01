@@ -17,5 +17,5 @@ export interface PregnancyInterface {
   pesoAntesGestacao: number;
   riscoGestacional: number;
   vacinaHepatiteB: boolean;
-  situacaoGestacional: number;
+  situacaoGestacional: string;
 }

@@ -11,6 +11,7 @@ export const postGestacao = async (gestacao: PregnancyRegisterInterface) => {
     successNotification('Gestação cadastrada com sucesso');
     return response;
   } catch (error) {
+    console.log(error);
     errorNotification('Erro ao cadastrar gestação, tente novamente');
   }
 };

@@ -11,7 +11,7 @@ export interface PregnantInfoInterface {
   nome?: string;
   dataNascimento?: string | undefined;
   cpf?: string;
-  raca?: number;
+  raca?: string;
   sexo?: string;
 }
 
@@ -19,10 +19,10 @@ export interface EvolutionDataInterface {
   id?: number;
   gestanteId?: number;
   municipio?: string;
-  diagnosticoDesnutricao?: number;
+  diagnosticoDesnutricao?: string;
   energiaEletricaDomicilio?: boolean;
   escolaridade?: number;
-  tipoMoradia?: number;
+  tipoMoradia?: string;
   moradiaRedeEsgoto?: boolean;
   rendaFamiliar?: number;
   tratamentoAgua?: boolean;
@@ -30,7 +30,7 @@ export interface EvolutionDataInterface {
   chefeFamilia?: boolean;
   dataUltimaGestacao?: string;
   emRisco?: boolean;
-  estadoCivil?: number;
+  estadoCivil?: string;
   quantidadeAbortos?: number;
   quantidadeFilhosVivos?: number;
   quantidadeGemelares?: number;

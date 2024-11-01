@@ -1,6 +1,10 @@
 package com.system.angels.dto.response;
 
 import com.system.angels.domain.enums.FatorRH;
+import com.system.angels.domain.enums.GrupoSanguineo;
+import com.system.angels.domain.enums.SituacaoGestacional;
+import com.system.angels.domain.enums.UsoAlcool;
+import com.system.angels.domain.enums.UsoDrogas;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -20,20 +24,20 @@ public class VisualizarGestacaoDTO {
     private Long id;
     private Long gestante_id;
     private boolean consumoAlcool;
-    private int frequenciaUsoAlcool;
+    private UsoAlcool frequenciaUsoAlcool;
     private Date dataUltimaMenstruacao;
     private Date dataInicioGestacao;
     private FatorRH fatorRh;
     private boolean fuma;
     private int quantidadeCigarrosDia;
-    private int usoDrogas;
+    private UsoDrogas usoDrogas;
     private boolean gravidezPlanejada;
-    private int grupoSanguineo;
+    private GrupoSanguineo grupoSanguineo;
     private BigDecimal pesoAntesGestacao;
     private int riscoGestacional;
     private boolean riscoIA;
     private boolean vacinaHepatiteB;
-    private int situacaoGestacional;
+    private SituacaoGestacional situacaoGestacional;
 
     public VisualizarGestacaoDTO(Gestacao gestacao) {
         this.id = gestacao.getId();

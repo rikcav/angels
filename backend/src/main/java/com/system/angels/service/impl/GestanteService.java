@@ -43,6 +43,7 @@ public class GestanteService implements iGestanteService {
     }
 
     public GestanteRO registrarGestante(GestanteDTO gestanteDTO) {
+        System.out.println(gestanteDTO);
         try {
             var gestante = dtoToEntity(gestanteDTO);
             var savedGestante = gestanteRepository.save(gestante);
@@ -109,5 +110,34 @@ public class GestanteService implements iGestanteService {
                 dadosEvolutivos != null && dadosEvolutivos.isHipertensao(),
                 dadosEvolutivos != null && dadosEvolutivos.isDiabetes(),
                 dadosEvolutivos != null && dadosEvolutivos.isMaFormacaoCongenita());
+    }
+
+    private void validateGestante(GestanteDTO gestanteDTO) {
+        if (gestanteDTO.nome() == null || gestanteDTO.nome().isEmpty()) {
+            throw new InvalidRequestException("Nome is required and cannot be empty.");
+        }
+        if (gestanteDTO.nome().length() > 100) {
+            throw new InvalidRequestException("Nome should not exceed 100 characters.");
+        }
+
+        if (gestanteDTO.cpf() == null || !gestanteDTO.cpf().matches("\\d{11}")) {
+            throw new InvalidRequestException("CPF is required and must contain exactly 11 digits.");
+        }
+
+        if (gestanteDTO.dataNascimento() == null) {
+            throw new InvalidRequestException("Data de Nascimento is required.");
+        }
+        if (gestanteDTO.dataNascimento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isAfter(LocalDate.now())) {
+            throw new InvalidRequestException("Data de Nascimento cannot be in the future.");
+        }
+
+//        List<String> validRaces = List.of("0 - BRANCA", "1 - PRETA", "2 - PARDA", "3 - INDÍGENA", "4 - AMARELA");
+//        if (gestanteDTO.raca() < 0 || gestanteDTO.raca() > 4) {
+//            throw new InvalidRequestException("Raca is invalid. Must be one of the five: " + validRaces);
+//        }
+
+        if (gestanteDTO.sexo() == null) {
+            throw new InvalidRequestException("Sexo is required and cannot be null.");
+        }
     }
 }

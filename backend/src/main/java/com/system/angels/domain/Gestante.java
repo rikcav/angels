@@ -1,6 +1,7 @@
 package com.system.angels.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.system.angels.domain.enums.Raca;
 import com.system.angels.domain.enums.Sexo;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class Gestante {
     private String cpf;
 
     @Column(nullable = false)
-    private int raca;
+    private Raca raca;
 
     @Column(nullable = false)
     private Sexo sexo;

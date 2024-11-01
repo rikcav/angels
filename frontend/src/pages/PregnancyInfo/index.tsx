@@ -29,19 +29,19 @@ interface PregnancyResponseInterface {
   id: number;
   gestante_id: number;
   consumoAlcool: boolean;
-  frequenciaUsoAlcool: number;
+  frequenciaUsoAlcool: string;
   dataUltimaMenstruacao: string | null;
   dataInicioGestacao: string | null;
   fatorRh: string | null;
   fuma: boolean;
   quantidadeCigarrosDia: number;
-  usoDrogas: number;
+  usoDrogas: string;
   gravidezPlanejada: boolean;
-  grupoSanguineo: number;
+  grupoSanguineo: string;
   pesoAntesGestacao: number | null;
   riscoGestacional: number;
   vacinaHepatiteB: boolean;
-  situacaoGestacional: number;
+  situacaoGestacional: string;
 }
 
 export default function PregnancyInfo() {
@@ -97,6 +97,13 @@ export default function PregnancyInfo() {
 
   const handleNewPregnancy = () => {
     navigate(`/pregnancyRegister/${pregnantId}`);
+  };
+
+  const AlcoholFrequencyLabel = {
+    BAIXO_CONSUMO: 'Baixo consumo',
+    LEVE_CONSUMO: 'Leve consumo',
+    CONSUMO_MODERADO: 'Consumo moderado',
+    ALTO_CONSUMO: 'Alto consumo'
   };
 
   return (
@@ -204,7 +211,15 @@ export default function PregnancyInfo() {
                 Frequência Consumo de Álcool
               </S.InfoPregnancyTitleText>
               <S.InfoPregnancyValueText>
-                {pregnancyInfo?.frequenciaUsoAlcool}
+                {pregnancyInfo?.frequenciaUsoAlcool == 'BAIXO_CONSUMO'
+                  ? 'Baixo consumo'
+                  : pregnancyInfo?.frequenciaUsoAlcool == 'LEVE_CONSUMO'
+                  ? 'Leve consumo'
+                  : pregnancyInfo?.frequenciaUsoAlcool == 'CONSUMO_MODERADO'
+                  ? 'Consumo moderado'
+                  : pregnancyInfo?.frequenciaUsoAlcool == 'ALTO_CONSUMO'
+                  ? 'Alto consumo'
+                  : 'Sem consumo'}
               </S.InfoPregnancyValueText>
             </S.InfoPregnancyContainer>
             <S.InfoPregnancyContainer>
@@ -218,21 +233,13 @@ export default function PregnancyInfo() {
                 Grupo Sanguíneo
               </S.InfoPregnancyTitleText>
               <S.InfoPregnancyValueText>
-                {pregnancyInfo?.grupoSanguineo == 0
-                  ? 'O'
-                  : pregnancyInfo?.grupoSanguineo == 1
-                  ? 'A'
-                  : pregnancyInfo?.grupoSanguineo == 2
-                  ? 'B'
-                  : pregnancyInfo?.grupoSanguineo == 3
-                  ? 'AB'
-                  : 'Sem dados'}
+                {pregnancyInfo?.grupoSanguineo}
               </S.InfoPregnancyValueText>
             </S.InfoPregnancyContainer>
             <S.InfoPregnancyContainer>
               <S.InfoPregnancyTitleText>Fator RH</S.InfoPregnancyTitleText>
               <S.InfoPregnancyValueText>
-                {pregnancyInfo?.fatorRh}
+                {pregnancyInfo?.fatorRh == 'POSITIVO' ? 'Positivo' : 'Negativo'}
               </S.InfoPregnancyValueText>
             </S.InfoPregnancyContainer>
           </S.LineContainer>
@@ -270,9 +277,10 @@ export default function PregnancyInfo() {
                 Situação Gestacional
               </S.InfoPregnancyTitleText>
               <S.InfoPregnancyValueText>
-                {pregnancyInfo?.situacaoGestacional == 0
+                {pregnancyInfo?.situacaoGestacional == 'EM_ANDAMENTO'
                   ? 'Em andamento'
-                  : pregnancyInfo?.situacaoGestacional == 1
+                  : pregnancyInfo?.situacaoGestacional ==
+                    'FINALIZADA_COM_SUCESSO'
                   ? 'Finalizada com sucesso'
                   : pregnancyInfo?.situacaoGestacional
                   ? 'Finalizada com desfecho negativo'
