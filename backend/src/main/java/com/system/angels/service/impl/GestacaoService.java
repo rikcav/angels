@@ -1,13 +1,8 @@
 package com.system.angels.service.impl;
 
-import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.domain.Gestacao;
-import com.system.angels.domain.Gestante;
-import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.dto.create.GestacaoDTO;
-import com.system.angels.dto.response.DadosEvolutivosRO;
 import com.system.angels.dto.response.GestacaoRO;
-import com.system.angels.dto.response.GestanteRO;
 import com.system.angels.exceptions.GestacaoNotFoundException;
 import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.repository.GestacaoRepository;
