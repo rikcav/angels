@@ -23,6 +23,8 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '3.3.4'
 	implementation 'org.flywaydb:flyway-core'
 	//runtimeOnly 'com.h2database:h2'
+	testImplementation 'com.h2database:h2'
+
 	runtimeOnly 'mysql:mysql-connector-java:8.0.28'
 	runtimeOnly 'org.flywaydb:flyway-mysql:9.22.3'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
