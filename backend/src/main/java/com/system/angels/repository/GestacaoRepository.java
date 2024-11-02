@@ -1,7 +1,7 @@
 package com.system.angels.repository;
 
-import com.system.angels.domain.Acompanhamento;
 import com.system.angels.domain.Gestacao;
+import com.system.angels.dto.response.GestacaoRO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
