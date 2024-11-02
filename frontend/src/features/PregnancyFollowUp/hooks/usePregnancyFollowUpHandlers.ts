@@ -39,12 +39,6 @@ export function usePregnancyFollowUpHandlers(gestacaoId: number) {
     errorType: ''
   });
 
-  const selectList = [
-    { value: 'PRENATAL_ROTINA', label: 'Pré-natal de rotina' },
-    { value: 'OCORRENCIA', label: 'Ocorrência' },
-    { value: 'VOLTA', label: 'Volta' }
-  ];
-
   useEffect(() => {
     const fetchPregnancy = async () => {
       const data = await GetPregnancyById(gestacaoId);
@@ -158,7 +152,6 @@ export function usePregnancyFollowUpHandlers(gestacaoId: number) {
     weightError,
     weeksError,
     dateError,
-    selectList,
     handleChangeDate,
     handleChangeWeight,
     handleChangeWeeks,

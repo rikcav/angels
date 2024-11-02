@@ -8,6 +8,7 @@ import { InputNumber } from 'antd';
 import { ArrowUUpLeft } from '@phosphor-icons/react';
 import { useParams } from 'react-router-dom';
 import { usePregnancyFollowUpHandlers } from '../../features/PregnancyFollowUp/hooks/usePregnancyFollowUpHandlers';
+import { followUpTypeList } from '../../features/PregnancyFollowUp/SelectOption';
 
 export function PregnancyFollowUp() {
   const params = useParams();
@@ -20,7 +21,6 @@ export function PregnancyFollowUp() {
     height,
     heartBeat,
     radio,
-    selectList,
     handleChangeDate,
     handleChangeWeight,
     handleChangeWeeks,
@@ -117,7 +117,7 @@ export function PregnancyFollowUp() {
             <Select
               label="Tipo"
               defaut="Tipo de gestação"
-              list={selectList}
+              list={followUpTypeList}
               selectFunc={handleChangeType}
             ></Select>
             <RadioSelect

@@ -7,104 +7,31 @@ import {
 import * as S from './styles.ts';
 import { PregnantPersonalInfo } from '../../features/Pregnancies/PregnantPersonalInfo/index.tsx';
 import { FollowUpCard } from '../../components/FollowUpCard/index.tsx';
-import { GetFollowUpsByPregnancyId } from '../../services/FollowUpServices/index.ts';
-import { useEffect, useState } from 'react';
-import { GetPregnantInfo } from '../../services/PregnantServices/index.ts';
-import { GetPregnancyById } from '../../services/PregnancyServices/index.ts';
-import { useNavigate, useParams } from 'react-router-dom';
-
-interface FollowUpResponseInterface {
-  id: number;
-  dataAcompanhamento: string;
-  realizadoPor: string;
-  pesoAtual: number;
-  idadeGestacional: number;
-  pressaoArterial: string;
-  batimentosCardiacosFeto: number;
-  alturaUterina: number;
-  tipo: string;
-}
-
-interface PregnancyResponseInterface {
-  id: number;
-  gestante_id: number;
-  consumoAlcool: boolean;
-  frequenciaUsoAlcool: string;
-  dataUltimaMenstruacao: string | null;
-  dataInicioGestacao: string | null;
-  fatorRh: string | null;
-  fuma: boolean;
-  quantidadeCigarrosDia: number;
-  usoDrogas: string;
-  gravidezPlanejada: boolean;
-  grupoSanguineo: string;
-  pesoAntesGestacao: number | null;
-  riscoGestacional: number;
-  vacinaHepatiteB: boolean;
-  situacaoGestacional: string;
-}
+import { useParams } from 'react-router-dom';
+import { usePregnancyInfoHandlers } from '../../features/PregnancyInfo/hooks/usePregnancyInfoHandlers.ts';
+import {
+  frequenciaUsoAlcoolLabels,
+  riscoGestacionalLabels,
+  situacaoGestacionalLabels
+} from '../../features/PregnancyInfo/Labels/index.ts';
+import { PregnancyDisplayInfos } from '../../components/PregnancyDisplayInfos/index.tsx';
 
 export default function PregnancyInfo() {
-  const [followUpInfo, setFollowUpInfo] = useState<FollowUpResponseInterface[]>(
-    []
-  );
-  const [pregnancyInfo, setPregnancyInfo] =
-    useState<PregnancyResponseInterface>();
-  const [name, setName] = useState<string>('');
-  const [cpf, setCpf] = useState<string>('');
-  const [toggleInfo, setToggleInfo] = useState(false);
   const params = useParams();
-  const navigate = useNavigate();
 
   const pregnantId = Number(params?.pregnantId);
   const pregnancyId = Number(params?.pregnancyId);
 
-  useEffect(() => {
-    const getFollowUps = async () => {
-      const response = await GetFollowUpsByPregnancyId(pregnancyId);
-      if (response?.status == 200) {
-        setFollowUpInfo(response.data);
-      }
-    };
-
-    const getPregnantInfo = async () => {
-      const response = await GetPregnantInfo(pregnantId);
-      if (response?.status == 200) {
-        setName(response.data.nome);
-        setCpf(response.data.cpf);
-      }
-    };
-
-    const getPregnacyInfo = async () => {
-      const response = await GetPregnancyById(pregnancyId);
-      if (response?.status == 200) {
-        setPregnancyInfo(response.data);
-      }
-    };
-
-    getPregnantInfo();
-    getFollowUps();
-    getPregnacyInfo();
-  }, []);
-
-  const toggleShowInfos = () => {
-    setToggleInfo(!toggleInfo);
-  };
-
-  const handleBackArrow = () => {
-    navigate(`/pregnancies/${pregnantId}`);
-  };
-
-  const handleNewPregnancy = () => {
-    navigate(`/pregnancyRegister/${pregnantId}`);
-  };
-
-  const AlcoholFrequencyLabel = {
-    BAIXO_CONSUMO: 'Baixo consumo',
-    LEVE_CONSUMO: 'Leve consumo',
-    CONSUMO_MODERADO: 'Consumo moderado',
-    ALTO_CONSUMO: 'Alto consumo'
-  };
+  const {
+    followUpInfo,
+    pregnancyInfo,
+    name,
+    cpf,
+    toggleInfo,
+    toggleShowInfos,
+    handleBackArrow,
+    handleNewPregnancy
+  } = usePregnancyInfoHandlers(Number(pregnantId), Number(pregnancyId));
 
   return (
     <S.Container>
@@ -148,147 +75,49 @@ export default function PregnancyInfo() {
         />
       )}
       {toggleInfo ? (
-        <S.PregnancyInfo>
-          <S.LineContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Última menstruação
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.dataUltimaMenstruacao
-                  ? new Date(
-                      pregnancyInfo?.dataUltimaMenstruacao
-                    ).toLocaleDateString()
-                  : 'Sem dados'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Inicio da gestação
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.dataInicioGestacao
-                  ? new Date(
-                      pregnancyInfo?.dataInicioGestacao
-                    ).toLocaleDateString()
-                  : 'Sem dados'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Gravidez planejada
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.gravidezPlanejada ? 'Sim' : 'Não'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>Fuma</S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.fuma ? 'Sim' : 'Não'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Cigarros por dia
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.quantidadeCigarrosDia}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-          </S.LineContainer>
-          <S.LineContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Consumo de Álcool
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.consumoAlcool ? 'Sim' : 'Não'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Frequência Consumo de Álcool
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.frequenciaUsoAlcool == 'BAIXO_CONSUMO'
-                  ? 'Baixo consumo'
-                  : pregnancyInfo?.frequenciaUsoAlcool == 'LEVE_CONSUMO'
-                  ? 'Leve consumo'
-                  : pregnancyInfo?.frequenciaUsoAlcool == 'CONSUMO_MODERADO'
-                  ? 'Consumo moderado'
-                  : pregnancyInfo?.frequenciaUsoAlcool == 'ALTO_CONSUMO'
-                  ? 'Alto consumo'
-                  : 'Sem consumo'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>Uso de drogas</S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.usoDrogas ? 'Sim' : 'Não'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Grupo Sanguíneo
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.grupoSanguineo}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>Fator RH</S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.fatorRh == 'POSITIVO' ? 'Positivo' : 'Negativo'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-          </S.LineContainer>
-          <S.LineContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Peso antes da gestação
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.pesoAntesGestacao} kg
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Risco Gestacional
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.riscoGestacional == 0
-                  ? 'Alto'
-                  : pregnancyInfo?.riscoGestacional == 1
-                  ? 'Habitual'
-                  : 'Não informado'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Vacina Hepatite B
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.vacinaHepatiteB ? 'Sim' : 'Não'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-            <S.InfoPregnancyContainer>
-              <S.InfoPregnancyTitleText>
-                Situação Gestacional
-              </S.InfoPregnancyTitleText>
-              <S.InfoPregnancyValueText>
-                {pregnancyInfo?.situacaoGestacional == 'EM_ANDAMENTO'
-                  ? 'Em andamento'
-                  : pregnancyInfo?.situacaoGestacional ==
-                    'FINALIZADA_COM_SUCESSO'
-                  ? 'Finalizada com sucesso'
-                  : pregnancyInfo?.situacaoGestacional
-                  ? 'Finalizada com desfecho negativo'
-                  : 'Sem dados'}
-              </S.InfoPregnancyValueText>
-            </S.InfoPregnancyContainer>
-          </S.LineContainer>
-        </S.PregnancyInfo>
+        <PregnancyDisplayInfos
+          consumoAlcool={pregnancyInfo?.consumoAlcool ? 'Sim' : 'Não'}
+          dataInicioGestacao={
+            pregnancyInfo?.dataInicioGestacao
+              ? new Date(pregnancyInfo?.dataInicioGestacao).toLocaleDateString()
+              : 'Sem dados'
+          }
+          dataUltimaMenstruacao={
+            pregnancyInfo?.dataUltimaMenstruacao
+              ? new Date(
+                  pregnancyInfo?.dataUltimaMenstruacao
+                ).toLocaleDateString()
+              : 'Sem dados'
+          }
+          fatorRh={
+            pregnancyInfo?.fatorRh == 'POSITIVO' ? 'Positivo' : 'Negativo'
+          }
+          frequenciaUsoAlcool={
+            frequenciaUsoAlcoolLabels[
+              pregnancyInfo?.frequenciaUsoAlcool ?? ''
+            ] || 'Sem consumo'
+          }
+          fuma={pregnancyInfo?.fuma ? 'Sim' : 'Não'}
+          gravidezPlanejada={pregnancyInfo?.gravidezPlanejada ? 'Sim' : 'Não'}
+          grupoSanguineo={pregnancyInfo?.grupoSanguineo || ''}
+          pesoAntesGestacao={pregnancyInfo?.pesoAntesGestacao || 0}
+          quantidadeCigarrosDia={pregnancyInfo?.quantidadeCigarrosDia || 0}
+          riscoGestacional={
+            riscoGestacionalLabels[pregnancyInfo?.riscoGestacional ?? -1] ||
+            'Não informado'
+          }
+          situacaoGestacional={
+            situacaoGestacionalLabels[
+              pregnancyInfo?.situacaoGestacional ?? ''
+            ] || 'Sem dados'
+          }
+          usoDrogas={
+            frequenciaUsoAlcoolLabels[
+              pregnancyInfo?.frequenciaUsoAlcool ?? ''
+            ] || 'Sem consumo'
+          }
+          vacinaHepatiteB={pregnancyInfo?.vacinaHepatiteB ? 'Sim' : 'Não'}
+        />
       ) : (
         <></>
       )}
