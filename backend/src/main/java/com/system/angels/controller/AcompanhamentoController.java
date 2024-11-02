@@ -4,6 +4,9 @@ package com.system.angels.controller;
 import com.system.angels.domain.Acompanhamento;
 import com.system.angels.dto.create.CadastrarAcompanhamentoDTO;
 import com.system.angels.dto.response.VisualizarAcompanhamentoDTO;
+import com.system.angels.exceptions.GestacaoNotFoundException;
+import com.system.angels.exceptions.GestanteNotFoundException;
+import com.system.angels.repository.GestacaoRepository;
 import com.system.angels.service.impl.AcompanhamentoService;
 import com.system.angels.service.impl.GestacaoService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import java.util.List;
 public class AcompanhamentoController {
     private final AcompanhamentoService service;
     private final GestacaoService gestacaoService;
+    private final GestacaoRepository gestacaoRepository;
 
     @GetMapping
     public ResponseEntity<List<Acompanhamento>> listarAcompanhamentos() {
@@ -42,7 +46,7 @@ public class AcompanhamentoController {
     @PostMapping("/{gestacaoId}")
     public ResponseEntity<CadastrarAcompanhamentoDTO> cadastrarAcompanhamento(@PathVariable Long gestacaoId, @RequestBody CadastrarAcompanhamentoDTO cadastroAcompanhamentoDTO) {
         var acompanhamento = new Acompanhamento();
-        var gestacao = gestacaoService.obterGestacaoPorId(gestacaoId);
+        var gestacao = gestacaoRepository.findById(gestacaoId).orElseThrow(() -> new GestacaoNotFoundException("Gestação com id " + gestacaoId + " não encontrada"));
 
         acompanhamento.setGestacao(gestacao);
         acompanhamento.setDataAcompanhamento(cadastroAcompanhamentoDTO.getDataAcompanhamento());

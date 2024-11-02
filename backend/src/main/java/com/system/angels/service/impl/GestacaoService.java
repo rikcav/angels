@@ -1,15 +1,12 @@
 package com.system.angels.service.impl;
 
-import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.domain.Gestacao;
-import com.system.angels.domain.Gestante;
-import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.dto.create.GestacaoDTO;
-import com.system.angels.dto.response.DadosEvolutivosRO;
+import com.system.angels.dto.response.GestacaoComGestanteDTO;
 import com.system.angels.dto.response.GestacaoRO;
-import com.system.angels.dto.response.GestanteRO;
 import com.system.angels.exceptions.GestacaoNotFoundException;
 import com.system.angels.exceptions.GestanteNotFoundException;
+import com.system.angels.exceptions.InvalidRequestException;
 import com.system.angels.repository.GestacaoRepository;
 import com.system.angels.repository.GestanteRepository;
 import com.system.angels.service.iGestacaoService;
@@ -31,16 +28,18 @@ public class GestacaoService implements iGestacaoService {
     }
 
     @Override
-    public GestacaoRO adicionarGestacao(GestacaoDTO gestacaoDTO) {
+    public GestacaoRO registrarGestacao(GestacaoDTO gestacaoDTO) {
         var gestacao = dtoToEntity(gestacaoDTO);
         var savedGestacao = gestacaoRepository.save(gestacao);
         return entityToRo(savedGestacao);
     }
 
     @Override
-    public Gestacao obterGestacaoPorId(Long id) {
-        return gestacaoRepository.findById(id).orElseThrow(
+    public GestacaoRO gestacaoPorId(Long id) {
+        var gestacao = gestacaoRepository.findById(id).orElseThrow(
                 () -> new GestacaoNotFoundException("Gestação com id " + id + " não encontrada"));
+
+        return entityToRo(gestacao);
     }
 
     @Override
@@ -49,42 +48,42 @@ public class GestacaoService implements iGestacaoService {
     }
 
     @Override
-    public List<Gestacao> obterTodasGestacoes() {
-        return gestacaoRepository.findAll();
+    public List<GestacaoComGestanteDTO> gestacoes() {
+//        var gestacoesDTO = gestacoes.stream()
+//            .map(GestacaoComGestanteDTO::new)
+//            .toList();
+        return gestacaoRepository.findAll().stream().map(GestacaoComGestanteDTO::new).toList();
     }
 
     @Override
-    public Gestacao atualizarGestacao(Long id, Gestacao atualizarGestacao) {
-        var gestacao = gestacaoRepository.findById(atualizarGestacao.getId()).orElseThrow(
+    public GestacaoRO atualizarGestacao(Long id, GestacaoDTO gestacaoDTO) {
+        try {
+            var gestacao = gestacaoRepository.findById(id).orElseThrow(
                 () -> new GestacaoNotFoundException("Gestação com id " + id + " não encontrada"));
 
-        gestacao.setConsumoAlcool(atualizarGestacao.isConsumoAlcool());
-        gestacao.setFrequenciaUsoAlcool(atualizarGestacao.getFrequenciaUsoAlcool());
-        gestacao.setDataUltimaMenstruacao(atualizarGestacao.getDataUltimaMenstruacao());
-        gestacao.setDataInicioGestacao(atualizarGestacao.getDataInicioGestacao());
-        gestacao.setFatorRh(atualizarGestacao.getFatorRh());
-        gestacao.setFuma(atualizarGestacao.isFuma());
-        gestacao.setQuantidadeCigarrosDia(atualizarGestacao.getQuantidadeCigarrosDia());
-        gestacao.setUsoDrogas(atualizarGestacao.getUsoDrogas());
-        gestacao.setGravidezPlanejada(atualizarGestacao.isGravidezPlanejada());
-        gestacao.setGrupoSanguineo(atualizarGestacao.getGrupoSanguineo());
-        gestacao.setPesoAntesGestacao(atualizarGestacao.getPesoAntesGestacao());
-        gestacao.setRiscoGestacional(atualizarGestacao.getRiscoGestacional());
-        gestacao.setVacinaHepatiteB(atualizarGestacao.isVacinaHepatiteB());
-        gestacao.setSituacaoGestacional(atualizarGestacao.getSituacaoGestacional());
-        gestacao.setRiscoIA(atualizarGestacao.isRiscoIA());
+            var updatedGestacao = dtoToEntity(gestacaoDTO);
+            updatedGestacao.setId(gestacao.getId());
 
-        return atualizarGestacao;
+            var savedGestacao = gestacaoRepository.save(updatedGestacao);
+
+            return entityToRo(savedGestacao);
+        } catch (InvalidRequestException e) {
+            throw new InvalidRequestException(e.getMessage(), e);
+        }
     }
 
     @Override
     public void deletarGestacao(Long id) {
-        gestacaoRepository.deleteById(id);
+        var gestacao = gestacaoRepository.findById(id).orElseThrow(
+            () -> new GestacaoNotFoundException("Gestação com id " + id + " não encontrada"));
+        gestacaoRepository.delete(gestacao);
     }
 
     @Override
-    public List<Gestacao> listarGestacaoPorGestanteId(Long gestanteId) {
-        return gestacaoRepository.findByGestanteId(gestanteId);
+    public List<GestacaoRO> gestacaoPorGestanteId(Long gestanteId) {
+        return gestacaoRepository.findByGestanteId(gestanteId).stream()
+            .map(this::entityToRo)
+            .toList();
     }
 
     private Gestacao dtoToEntity(GestacaoDTO gestacaoDTO) {

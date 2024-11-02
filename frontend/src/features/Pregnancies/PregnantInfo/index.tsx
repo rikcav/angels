@@ -103,7 +103,6 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
         setErrorBirthDate({ errorType: 'error', errorShow: true });
       }
     } catch (error) {
-      console.log(error);
       setErrorBirthDate({ errorType: 'error', errorShow: true });
     }
     setBirthDate(dateStr);
