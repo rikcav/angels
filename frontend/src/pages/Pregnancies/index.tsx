@@ -2,8 +2,6 @@ import {
   ArrowCircleDown,
   ArrowCircleUp,
   ArrowUUpLeft,
-  CaretCircleDoubleLeft,
-  CaretCircleDoubleRight,
   PlusCircle
 } from '@phosphor-icons/react';
 import { PregnancyCard } from '../../components/PregnancyCard';
@@ -14,6 +12,7 @@ import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { Empty } from 'antd';
 import { usePregnanciesHandlers } from '../../features/Pregnancies/hooks/usePregnanciesHandlers';
+import { Pagination } from '../../components/Pagination';
 
 export default function Pregnancies() {
   const params = useParams();
@@ -38,7 +37,6 @@ export default function Pregnancies() {
   const renderCards = () => {
     const currentDate = moment();
     return pregnanciesData
-      .filter((item) => item.gestanteId === parseInt(params.id || ''))
       .slice(currentPage, currentPage + 4)
       .map((item, index) => (
         <PregnancyCard
@@ -97,28 +95,17 @@ export default function Pregnancies() {
         />
       )}
 
-      {pregnanciesData.length > 4 ? (
-        <S.ArrowsContainer>
-          {page == 1 ? (
-            <></>
-          ) : (
-            <CaretCircleDoubleLeft
-              size={40}
-              color="#B1488A"
-              onClick={previous}
-              cursor={'Pointer'}
-            />
-          )}
-          <CaretCircleDoubleRight
-            size={40}
-            color="#B1488A"
-            onClick={next}
-            cursor={'Pointer'}
+      <S.PaginationContainer>
+        {pregnanciesData.length > 3 && (
+          <Pagination
+            currentPage={page}
+            itemsPerPage={4}
+            onNext={next}
+            onPrevious={previous}
+            totalItems={pregnanciesData.length}
           />
-        </S.ArrowsContainer>
-      ) : (
-        <></>
-      )}
+        )}
+      </S.PaginationContainer>
     </S.Container>
   );
 }

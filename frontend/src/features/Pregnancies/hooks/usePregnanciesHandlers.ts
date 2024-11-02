@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { GetPregnancies } from '../../../services/PregnanciesServices';
+import { useNavigate } from 'react-router-dom';
 import { PregnancyInterface } from '../../../services/PregnancyServices/interfaces';
 import { GetPregnantInfo } from '../../../services/PregnantServices';
+import { GetPregnanciesByPregnantId } from '../../../services/PregnancyServices';
 
 export function usePregnanciesHandlers(pregnantId: number) {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export function usePregnanciesHandlers(pregnantId: number) {
 
   useEffect(() => {
     const pregnanciesRequest = async () => {
-      const requestResponse = await GetPregnancies();
+      const requestResponse = await GetPregnanciesByPregnantId(pregnantId);
       if (requestResponse?.status === 200) {
         setPregnanciesData(requestResponse.data);
       }

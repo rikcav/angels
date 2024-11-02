@@ -1,9 +1,4 @@
-import {
-  CaretCircleLeft,
-  CaretCircleRight,
-  DotsThreeOutline,
-  MagnifyingGlass
-} from '@phosphor-icons/react';
+import { MagnifyingGlass } from '@phosphor-icons/react';
 
 import * as S from './styles.ts';
 import SideBar from '../../components/SideBar/index.tsx';
@@ -13,6 +8,7 @@ import { Empty } from 'antd';
 import { Input } from '../../components/Input/index.tsx';
 import { Button } from '../../components/Button/index.tsx';
 import { useDashboardHandlers } from '../../features/DashBoard/hooks/useDashboardHandlers.ts';
+import { Pagination } from '../../components/Pagination/index.tsx';
 
 export function Dashboard() {
   const {
@@ -87,13 +83,13 @@ export function Dashboard() {
           )}
 
           {filteredList.length >= 4 && (
-            <S.Pagination>
-              <CaretCircleLeft size={32} color="#b1488a" onClick={previous} />
-              <label>{page}</label>
-              <DotsThreeOutline size={32} color="#b1488a" />
-              <label>{Math.ceil(filteredList.length / 3)}</label>
-              <CaretCircleRight size={32} color="#b1488a" onClick={next} />
-            </S.Pagination>
+            <Pagination
+              currentPage={page}
+              itemsPerPage={3}
+              onNext={next}
+              onPrevious={previous}
+              totalItems={filteredList.length}
+            />
           )}
         </S.CardsContainer>
       </S.Content>

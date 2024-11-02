@@ -82,6 +82,16 @@ export const CardsContainer = styled.section`
   }
 `;
 
+export const PaginationContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  @media (max-width: 1000px) {
+    justify-content: flex-start;
+  }
+`;
+
 export const EmptyBox = styled(Empty)`
   .ant-empty-description {
     color: var(--red-500) !important;
