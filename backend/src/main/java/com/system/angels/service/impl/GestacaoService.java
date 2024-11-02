@@ -115,6 +115,7 @@ public class GestacaoService implements iGestacaoService {
 
     private GestacaoRO entityToRo(Gestacao gestacao) {
         return new GestacaoRO(
+            gestacao.getId(),
             gestacao.getGestante().getId(),
             gestacao.isConsumoAlcool(),
             gestacao.getFrequenciaUsoAlcool(),

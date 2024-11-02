@@ -96,7 +96,7 @@ export default function Pregnancies() {
       )}
 
       <S.PaginationContainer>
-        {pregnanciesData.length > 3 && (
+        {pregnanciesData.length > 4 && (
           <Pagination
             currentPage={page}
             itemsPerPage={4}

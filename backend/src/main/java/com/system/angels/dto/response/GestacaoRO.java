@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public record GestacaoRO(
+  Long id,
   Long gestante_id,
   boolean consumoAlcool,
   UsoAlcool frequenciaUsoAlcool,

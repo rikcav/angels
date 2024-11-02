@@ -1,175 +1,41 @@
-import React, { useEffect, useState } from 'react';
 import * as S from './styles';
 import Logo from '../../assets/angelsLogo.svg';
 import { Input } from '../../components/Input';
 import { DateSelect } from '../../components/DateSelect';
 import { Select } from '../../components/Select';
 import { RadioSelect } from '../../components/RadioSelect';
-import { InputNumber, RadioChangeEvent, message } from 'antd';
-import { PregnancyFollowUpSchema } from '../../services/types/PregnancyFollowUpType';
-import { ZodError } from 'zod';
-import { postAcompanhamento } from '../../services/PregnancyFollowUpService';
-import { FollowUpInterface } from '../../services/PregnancyFollowUpService/interface';
+import { InputNumber } from 'antd';
 import { ArrowUUpLeft } from '@phosphor-icons/react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { GetPregnancyById } from '../../services/PregnancyServices';
+import { useParams } from 'react-router-dom';
+import { usePregnancyFollowUpHandlers } from '../../features/PregnancyFollowUp/hooks/usePregnancyFollowUpHandlers';
 
 export function PregnancyFollowUp() {
-  const navigate = useNavigate();
   const params = useParams();
   const gestacaoId = Number(params.gestacaoId);
-
-  const [gestanteId, setGestanteId] = useState<number>();
-  const [weight, setWeight] = useState<string>('');
-  const [weeks, setWeeks] = useState<string>('');
-  const [pressureS, setPressureS] = useState<string>('');
-  const [pressureD, setPressureD] = useState<string>('');
-  const [height, setHeight] = useState<string>('');
-  const [heartBeat, setHeartBeat] = useState<string>('');
-  const [radio, setRadio] = useState<string>('');
-  const [type, setType] = useState<string>('');
-  const [date, setDate] = useState<string | string[]>();
-
-  interface ErrorInterface {
-    errorShow?: boolean;
-    errorType?: '' | 'error' | 'warning' | undefined;
-  }
-
-  const [weightError, setWeightError] = useState<ErrorInterface>({
-    errorShow: false,
-    errorType: ''
-  });
-  const [weeksError, setWeeksError] = useState<ErrorInterface>({
-    errorShow: false,
-    errorType: ''
-  });
-  const [dateError, setDateError] = useState<ErrorInterface>({
-    errorShow: false,
-    errorType: ''
-  });
-
-  const selectList = [
-    {
-      value: 'PRENATAL_ROTINA',
-      label: 'Pré-natal de rotina'
-    },
-    {
-      value: 'OCORRENCIA',
-      label: 'Ocorrência'
-    },
-    {
-      value: 'VOLTA',
-      label: 'Volta'
-    }
-  ];
-
-  const handleChangeDate = (date: unknown, dateString: string | string[]) => {
-    try {
-      PregnancyFollowUpSchema.shape.dataAcompanhamento.parse(dateString);
-      setDateError({ errorType: '', errorShow: false });
-      if (dateString == '') {
-        setDateError({ errorType: 'error', errorShow: true });
-      }
-    } catch (error) {
-      setDateError({ errorType: 'error', errorShow: true });
-    }
-    setDate(dateString);
-  };
-
-  const radioOnChange = (e: RadioChangeEvent) => {
-    setRadio(e.target.value);
-  };
-
-  const handleChangeType = (value: unknown) => {
-    if (typeof value === 'string') {
-      setType(value);
-    }
-  };
-
-  const handleChangePressureD = (value: string | null) => {
-    if (typeof value === 'number') {
-      setPressureD(String(value));
-    }
-  };
-  const handleChangePressureS = (value: string | null) => {
-    if (typeof value === 'number') {
-      setPressureS(String(value));
-    }
-  };
-
-  const handleChangeWeight = (e: { target: { value: string } }) => {
-    const { value } = e.target;
-    try {
-      PregnancyFollowUpSchema.shape.pesoAtual.parse(parseInt(value));
-      setWeightError({ errorType: '', errorShow: false });
-    } catch (error) {
-      setWeightError({ errorType: 'error', errorShow: true });
-    }
-    setWeight(value);
-  };
-
-  const handleChangeWeeks = (e: { target: { value: string } }) => {
-    const { value } = e.target;
-    try {
-      PregnancyFollowUpSchema.shape.idadeGestacional.parse(parseInt(value));
-      setWeeksError({ errorType: '', errorShow: false });
-    } catch (error) {
-      setWeeksError({ errorType: 'error', errorShow: true });
-    }
-    setWeeks(value);
-  };
-  const handleChangeHeartBeat = (e: { target: { value: string } }) => {
-    const { value } = e.target;
-    setHeartBeat(value);
-  };
-
-  const handleChangeHeight = (e: { target: { value: string } }) => {
-    const { value } = e.target;
-    setHeight(value);
-  };
-
-  const handleBackArrow = () => {
-    navigate(-1);
-  };
-
-  const handlePregnancyFollowUp = () => {
-    let pressure = '';
-    if (typeof pressureD === 'string' && typeof pressureS === 'string') {
-      pressure = pressureD + '/' + pressureS;
-    }
-    try {
-      const data: FollowUpInterface = {
-        gestacaoId: gestacaoId,
-        pesoAtual: parseInt(weight),
-        idadeGestacional: parseInt(weeks),
-        pressaoArterial: pressure,
-        batimentosCardiacosFeto: parseInt(heartBeat),
-        alturaUterina: parseInt(height),
-        tipo: type,
-        dataAcompanhamento: date,
-        realizadoPor: radio,
-        riscoIA: false
-      };
-      PregnancyFollowUpSchema.parse(data);
-      postAcompanhamento(gestacaoId, data).then(() => {
-        navigate(`/pregnancies/${gestanteId}`);
-      });
-    } catch (error) {
-      if (error instanceof ZodError) {
-        console.log(error);
-        message.error(error.issues[0].message);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const pregnancy = async () => {
-      await GetPregnancyById(gestacaoId).then((data) => {
-        setGestanteId(data?.data.gestante_id);
-      });
-    };
-    pregnancy();
-  }, []);
+  const {
+    weight,
+    weeks,
+    pressureS,
+    pressureD,
+    height,
+    heartBeat,
+    radio,
+    selectList,
+    handleChangeDate,
+    handleChangeWeight,
+    handleChangeWeeks,
+    handleChangePressureS,
+    handleChangePressureD,
+    handleChangeHeartBeat,
+    handleChangeHeight,
+    handleChangeType,
+    radioOnChange,
+    handlePregnancyFollowUp,
+    handleBackArrow,
+    weightError,
+    weeksError,
+    dateError
+  } = usePregnancyFollowUpHandlers(gestacaoId);
 
   return (
     <S.Container>
