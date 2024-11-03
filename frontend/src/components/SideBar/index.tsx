@@ -8,9 +8,10 @@ import { SignOut, IdentificationBadge } from '@phosphor-icons/react';
 import Logo from '../../assets/angelsLogo.svg';
 import { useNavigate } from 'react-router-dom';
 import { GetPregnantByCpf } from '../../services/PregnantServices';
-import { pregnantSchemaPartOne } from '../../types/schemas/PregnantRegisterSchema';
 import { InputMask } from '../InputMask';
 import { ErrorInterface } from '../../types/interfaces/ErrorType';
+import { isValidCpf } from '../../utils/cpfValidator';
+import { warningNotification } from '../Notification';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
@@ -26,14 +27,12 @@ const SideBar: React.FC = () => {
   const handleChangeCpf = (e: { target: { value: string } }) => {
     const { value } = e.target;
 
-    const inputValue = value.replace(/\D/g, '');
-    try {
-      pregnantSchemaPartOne.shape.cpf.parse(inputValue);
+    if (isValidCpf(value)) {
       setErrorCpf({ errorType: '', errorShow: false });
-    } catch (error) {
+    } else {
       setErrorCpf({ errorType: 'error', errorShow: true });
     }
-    setCpf(inputValue);
+    setCpf(value);
   };
 
   const getPregnantByCpf = async (cpf: string) => {
@@ -51,7 +50,11 @@ const SideBar: React.FC = () => {
   };
 
   const handleOk = () => {
-    getPregnantByCpf(cpf);
+    if (errorCpf.errorShow == false) {
+      getPregnantByCpf(cpf);
+    } else {
+      warningNotification('Digite um CPF válido!');
+    }
   };
 
   const handleCancel = () => {

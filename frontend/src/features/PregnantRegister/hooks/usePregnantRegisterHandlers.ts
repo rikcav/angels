@@ -18,6 +18,7 @@ import {
   pregnantSchemaPartTwo,
   pregnantSchemaPartTwoFirstPregnant
 } from '../../../types/schemas/PregnantRegisterSchema';
+import { isValidCpf } from '../../../utils/cpfValidator';
 
 export function usePregnantRegisterHandlers() {
   const navigate = useNavigate();
@@ -298,14 +299,13 @@ export function usePregnantRegisterHandlers() {
 
   const handleChangeCpf = (e: { target: { value: string } }) => {
     const { value } = e.target;
-    const inputValue = value.replace(/\D/g, '');
-    try {
-      pregnantSchemaPartOne.shape.cpf.parse(inputValue);
+
+    if (isValidCpf(value)) {
       setErrorCpf({ errorType: '', errorShow: false });
-    } catch (error) {
+    } else {
       setErrorCpf({ errorType: 'error', errorShow: true });
     }
-    setCpf(inputValue);
+    setCpf(value);
   };
 
   const handleChangeHeadOfHousehold = (e: RadioChangeEvent) => {
