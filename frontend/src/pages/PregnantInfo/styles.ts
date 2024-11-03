@@ -16,18 +16,6 @@ export const InfoEmptyContainer = styled.div`
   }
 `;
 
-export const LineContainer = styled.section`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  @media (max-width: 850px) {
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 8px;
-  }
-`;
-
 export const Container = styled.div`
   padding-top: 50px;
   padding-left: 110px;

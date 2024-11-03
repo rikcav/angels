@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { InfoContainer } from './components/InfoContainer';
 import * as S from './styles';
 import {
   DeletePregnant,
@@ -11,7 +10,6 @@ import {
   PencilSimple,
   TrashSimple
 } from '@phosphor-icons/react';
-import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '../../components/Input';
 import { DateSelect } from '../../components/DateSelect';
@@ -25,6 +23,7 @@ import {
   raceList
 } from '../../features/PregnantRegister/SelectOptions';
 import { successNotification } from '../../components/Notification';
+import { PregnantDetails } from '../../components/PregnantDetails';
 interface PregantReposnseInterface {
   id?: number;
   nome?: string;
@@ -176,7 +175,7 @@ export default function PregnantInfo() {
     nome: name,
     dataNascimento: birthDate,
     cpf: cpf,
-    raca: parseInt(race),
+    raca: race,
     sexo: gender
   };
 
@@ -223,64 +222,7 @@ export default function PregnantInfo() {
             />
           </section>
         </S.TitleContainer>
-        <S.ContentContainer>
-          <S.LineContainer>
-            <InfoContainer name="Nome" value={pregnantInfo?.nome} />
-            <InfoContainer name="CPF" value={pregnantInfo?.cpf} />
-          </S.LineContainer>
-          <S.LineContainer>
-            <InfoContainer
-              name="Nascimento"
-              value={moment(pregnantInfo?.dataNascimento).format('DD/MM/YYYY')}
-            />
-            <InfoContainer name="Gênero" value={pregnantInfo?.sexo} />
-          </S.LineContainer>
-          <S.LineContainer>
-            <InfoContainer name="Município" value={pregnantInfo?.municipio} />
-            <InfoContainer
-              name="Risco"
-              value={pregnantInfo?.emRisco == true ? 'Sim' : 'Não'}
-            />
-            <InfoContainer
-              name="Hipertesão"
-              value={pregnantInfo?.hipertensao == true ? 'Sim' : 'Não'}
-            />
-            <InfoContainer
-              name="Diabete"
-              value={pregnantInfo?.diabetes == true ? 'Sim' : 'Não'}
-            />
-            <InfoContainer
-              name="Má formação congênita"
-              value={pregnantInfo?.maFormacaoCongenita == true ? 'Sim' : 'Não'}
-            />
-          </S.LineContainer>
-          <S.LineContainer>
-            <InfoContainer
-              name="Abortos"
-              value={pregnantInfo?.quantidadeAbortos?.toString()}
-            />
-            <InfoContainer
-              name="Filhos Vivos"
-              value={pregnantInfo?.quantidadeFilhosVivos?.toString()}
-            />
-            <InfoContainer
-              name="Gemelares"
-              value={pregnantInfo?.quantidadeGemelares?.toString()}
-            />
-            <InfoContainer
-              name="Gestações"
-              value={pregnantInfo?.quantidadeGestacao?.toString()}
-            />
-            <InfoContainer
-              name="Nascidos vivos"
-              value={pregnantInfo?.quantidadeNascidosVivos?.toString()}
-            />
-            <InfoContainer
-              name="Nascidos mortos"
-              value={pregnantInfo?.quantidadeNascidosMortos?.toString()}
-            />
-          </S.LineContainer>
-        </S.ContentContainer>
+        <PregnantDetails pregnantInfo={pregnantInfo} />
         <S.InfoModal
           open={isUptadeModalOpen}
           onOk={handleUptadeOk}

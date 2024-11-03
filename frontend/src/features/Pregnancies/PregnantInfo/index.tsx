@@ -1,6 +1,6 @@
 import { PencilSimple, TrashSimple } from '@phosphor-icons/react';
 import * as S from './styles';
-import { InfoContainer } from '../../../pages/PregnantInfo/components/InfoContainer';
+import { InfoContainer } from '../../../components/InfoContainer';
 import moment from 'moment';
 import { Input } from '../../../components/Input';
 import { DateSelect } from '../../../components/DateSelect';
