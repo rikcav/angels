@@ -49,4 +49,10 @@ public class AcompanhamentoController {
         service.deletarAcompanhamento(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/gestacao/{gestacaoId}")
+    public ResponseEntity<List<Acompanhamento>> listarAcompanhamentoPorGestacaoId(@PathVariable Long gestacaoId) {
+        var acompanhamentos = service.listarAcompanhamentoPorGestacaoId(gestacaoId);
+        return ResponseEntity.status(HttpStatus.OK).body(acompanhamentos);
+    }
 }
