@@ -139,8 +139,8 @@ public class GestanteService implements iGestanteService {
 //            throw new InvalidRequestException("Raca is invalid. Must be one of the five: " + validRaces);
 //        }
 
-        if (gestanteDTO.sexo() == null) {
-            throw new InvalidRequestException("Sexo is required and cannot be null.");
-        }
+//        if (gestanteDTO.sexo() != null) {
+//            throw new InvalidRequestException("Sexo is required and cannot be null.");
+//        }
     }
 }

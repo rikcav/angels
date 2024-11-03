@@ -1,7 +1,7 @@
 package com.system.angels.service.impl;
 
 import com.system.angels.domain.Acompanhamento;
-import com.system.angels.dto.create.AcompanhamentoDTO;
+import com.system.angels.dto.create.CadastrarAcompanhamentoDTO;
 import com.system.angels.exceptions.AcompanhamentoNotFoundException;
 import com.system.angels.exceptions.GestacaoNotFoundException;
 import com.system.angels.repository.AcompanhamentoRepository;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class AcompanhamentoService implements iAcompanhamentoService {
@@ -32,7 +31,7 @@ public class AcompanhamentoService implements iAcompanhamentoService {
     @Override
     public Acompanhamento buscarAcompanhamentoPorId(Long id) {
         return acompanhamentoRepository.findById(id).orElseThrow(
-                () -> new AcompanhamentoNotFoundException("Acompanhamento com id" + id + " não encontrado"));
+                () -> new AcompanhamentoNotFoundException("Acompanhamento com id " + id + " não encontrado"));
     }
 
     @Override
@@ -43,7 +42,7 @@ public class AcompanhamentoService implements iAcompanhamentoService {
     @Override
     public void deletarAcompanhamento(Long id) {
         var acompanhamento = acompanhamentoRepository.findById(id).orElseThrow(
-                () -> new AcompanhamentoNotFoundException("Acompanhamento com id" + id + " não encontrado"));
+                () -> new AcompanhamentoNotFoundException("Acompanhamento com id " + id + " não encontrado"));
         acompanhamentoRepository.delete(acompanhamento);
     }
 
@@ -67,23 +66,26 @@ public class AcompanhamentoService implements iAcompanhamentoService {
         return acompanhamentoRepository.findByGestacaoId(gestacaoId);
     }
 
-    private Acompanhamento dtoToEntity(AcompanhamentoDTO acompanhamentoDTO) {
-        var gestacao = gestacaoRepository.findById(acompanhamentoDTO.gestacao_id()).orElseThrow(
-                () -> new GestacaoNotFoundException("Gestação com id " + acompanhamentoDTO.gestacao_id() + " não encontrada"));
-
+    @Override
+    public CadastrarAcompanhamentoDTO cadastrarAcompanhamento(Long gestacaoId, CadastrarAcompanhamentoDTO cadastroAcompanhamentoDTO) {
         var acompanhamento = new Acompanhamento();
+        var gestacao = gestacaoRepository.findById(gestacaoId).orElseThrow(() -> new GestacaoNotFoundException("Gestação com id " + gestacaoId + " não encontrada"));
 
         acompanhamento.setGestacao(gestacao);
-        acompanhamento.setId(new Random().nextLong());
-        acompanhamento.setDataAcompanhamento(acompanhamentoDTO.dataAcompanhamento());
-        acompanhamento.setRealizadoPor(acompanhamentoDTO.realizadoPor());
-        acompanhamento.setPesoAtual(acompanhamentoDTO.pesoAtual());
-        acompanhamento.setIdadeGestacional(acompanhamentoDTO.idadeGestacional());
-        acompanhamento.setPressaoArterial(acompanhamentoDTO.pressaoArterial());
-        acompanhamento.setBatimentosCardiacosFeto(acompanhamentoDTO.batimentosCardiacosFeto());
-        acompanhamento.setAlturaUterina(acompanhamentoDTO.alturaUterina());
-        acompanhamento.setTipo(acompanhamentoDTO.tipo());
+        acompanhamento.setDataAcompanhamento(cadastroAcompanhamentoDTO.getDataAcompanhamento());
+        acompanhamento.setRealizadoPor(cadastroAcompanhamentoDTO.getRealizadoPor());
+        acompanhamento.setPesoAtual(cadastroAcompanhamentoDTO.getPesoAtual());
+        acompanhamento.setIdadeGestacional(cadastroAcompanhamentoDTO.getIdadeGestacional());
+        acompanhamento.setPressaoArterial(cadastroAcompanhamentoDTO.getPressaoArterial());
+        acompanhamento.setBatimentosCardiacosFeto(cadastroAcompanhamentoDTO.getBatimentosCardiacosFeto());
+        acompanhamento.setAlturaUterina(cadastroAcompanhamentoDTO.getAlturaUterina());
+        acompanhamento.setTipo(cadastroAcompanhamentoDTO.getTipo());
+        acompanhamento.setRiscoIA(cadastroAcompanhamentoDTO.getRiscoIA());
 
-        return acompanhamento;
+        var adicionadoAcompanhamento = registrarAcompanhamento(acompanhamento);
+
+        return new CadastrarAcompanhamentoDTO(adicionadoAcompanhamento);
+
     }
 }
+
