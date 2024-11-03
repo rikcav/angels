@@ -2,65 +2,41 @@ import {
   ArrowCircleDown,
   ArrowCircleUp,
   ArrowUUpLeft,
-  CaretCircleDoubleLeft,
-  CaretCircleDoubleRight,
   PlusCircle
 } from '@phosphor-icons/react';
 import { PregnancyCard } from '../../components/PregnancyCard';
 import { PregnantPersonalInfo } from '../../features/Pregnancies/PregnantPersonalInfo';
 import * as S from './styles';
-import { useEffect, useState } from 'react';
-import { GetPregnancies } from '../../services/PregnancyServices';
-import { PregnancyInterface } from '../../services/PregnancyServices/interfaces';
 import { PregnantInfo } from '../../features/Pregnancies/PregnantInfo';
-import { GetPregnantInfo } from '../../services/PregnantServices';
 import moment from 'moment';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Empty } from 'antd';
+import { usePregnanciesHandlers } from '../../features/Pregnancies/hooks/usePregnanciesHandlers';
+import { Pagination } from '../../components/Pagination';
 
 export default function Pregnancies() {
   const params = useParams();
-  const navigate = useNavigate();
+  const pregnantId = parseInt(params.id || '');
 
-  if (params.id == undefined) {
-    return null;
-  }
-
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const [page, setPage] = useState<number>(1);
-  const [name, setName] = useState<string>('');
-  const [cpf, setCpf] = useState<string>('');
-  const [pregnanciesData, setPregnanciesData] = useState<PregnancyInterface[]>(
-    []
-  );
-  const [toggleInfo, setToggleInfo] = useState(false);
-
-  useEffect(() => {
-    const pregnanciesRequest = async () => {
-      const requestResponse = await GetPregnancies();
-      if (requestResponse?.status == 200) {
-        setPregnanciesData(requestResponse.data);
-      }
-    };
-
-    const getPregnantInfo = async () => {
-      if (params.id) {
-        const response = await GetPregnantInfo(parseInt(params.id));
-        if (response?.status == 200) {
-          setName(response.data.nome);
-          setCpf(response.data.cpf);
-        }
-      }
-    };
-
-    pregnanciesRequest();
-    getPregnantInfo();
-  }, []);
+  const {
+    currentPage,
+    page,
+    name,
+    cpf,
+    pregnanciesData,
+    toggleInfo,
+    previous,
+    next,
+    handleNewPregnancy,
+    handleFollowUp,
+    handlePregnancyScreen,
+    handleBackArrow,
+    toggleExpandInfo
+  } = usePregnanciesHandlers(pregnantId);
 
   const renderCards = () => {
     const currentDate = moment();
     return pregnanciesData
-      .filter((item) => item.gestanteId === parseInt(params.id || ''))
       .slice(currentPage, currentPage + 4)
       .map((item, index) => (
         <PregnancyCard
@@ -75,40 +51,6 @@ export default function Pregnancies() {
           }
         />
       ));
-  };
-
-  const previous = () => {
-    if (currentPage - 4 >= 0) {
-      setCurrentPage(currentPage - 4);
-      setPage((prev) => prev - 1);
-    }
-  };
-
-  const toggleExpandInfo = () => {
-    setToggleInfo(!toggleInfo);
-  };
-
-  const next = () => {
-    if (currentPage + 4 < pregnanciesData.length) {
-      setCurrentPage(currentPage + 4);
-      setPage((prev) => prev + 1);
-    }
-  };
-
-  const handleNewPregnancy = () => {
-    navigate(`/pregnancyRegister/${params.id}`);
-  };
-
-  const handleFollowUp = (gestacaoId: Number) => {
-    navigate(`/pregnancyFollowUp/${gestacaoId}`);
-  };
-
-  const handlePregnancyScreen = (gestacaoId: Number, gestanteId: Number) => {
-    navigate(`/pregnancyInfo/${gestacaoId}/${gestanteId}`);
-  };
-
-  const handleBackArrow = () => {
-    navigate('/dashboard');
   };
 
   return (
@@ -143,7 +85,7 @@ export default function Pregnancies() {
         />
       )}
 
-      {toggleInfo ? <PregnantInfo id={parseInt(params.id)} /> : <></>}
+      {toggleInfo ? <PregnantInfo id={pregnantId} /> : <></>}
       {pregnanciesData.length > 0 ? (
         <S.CardsContainer>{renderCards()}</S.CardsContainer>
       ) : (
@@ -153,28 +95,17 @@ export default function Pregnancies() {
         />
       )}
 
-      {pregnanciesData.length > 4 ? (
-        <S.ArrowsContainer>
-          {page == 1 ? (
-            <></>
-          ) : (
-            <CaretCircleDoubleLeft
-              size={40}
-              color="#B1488A"
-              onClick={previous}
-              cursor={'Pointer'}
-            />
-          )}
-          <CaretCircleDoubleRight
-            size={40}
-            color="#B1488A"
-            onClick={next}
-            cursor={'Pointer'}
+      <S.PaginationContainer>
+        {pregnanciesData.length > 4 && (
+          <Pagination
+            currentPage={page}
+            itemsPerPage={4}
+            onNext={next}
+            onPrevious={previous}
+            totalItems={pregnanciesData.length}
           />
-        </S.ArrowsContainer>
-      ) : (
-        <></>
-      )}
+        )}
+      </S.PaginationContainer>
     </S.Container>
   );
 }
