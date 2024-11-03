@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from 'react';
-import { PregnancyInterface } from '../../services/types/PregnaciesType';
+import { PregnancyInterface } from '../../services/interfaces/PregnaciesType';
 import { GetPregnancies } from '../../services/PregnanciesServices';
 
 interface DataContextType {

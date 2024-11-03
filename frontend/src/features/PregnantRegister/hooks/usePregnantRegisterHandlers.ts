@@ -16,12 +16,8 @@ import {
   pregnantSchemaPartOne,
   pregnantSchemaPartTwo,
   pregnantSchemaPartTwoFirstPregnant
-} from '../../../services/types/PregnantType';
-
-interface ErrorInterface {
-  errorShow?: boolean;
-  errorType?: '' | 'warning' | 'error' | undefined;
-}
+} from '../../../services/interfaces/PregnantType';
+import { ErrorInterface } from '../../../services/interfaces/ErrorType';
 
 export function usePregnantRegisterHandlers() {
   const navigate = useNavigate();

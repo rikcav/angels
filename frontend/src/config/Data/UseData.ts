@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { PregnancyInterface } from '../../services/types/PregnaciesType';
+import { PregnancyInterface } from '../../services/interfaces/PregnaciesType';
 import { DataContext } from './DataProvider';
 
 interface DataContextType {

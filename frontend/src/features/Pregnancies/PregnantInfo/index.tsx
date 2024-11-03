@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import {
   PregnantInfoInterface,
   pregnantSchemaPartOne
-} from '../../../services/types/PregnantType';
+} from '../../../services/interfaces/PregnantType';
 import {
   DeletePregnant,
   GetPregnantInfo,

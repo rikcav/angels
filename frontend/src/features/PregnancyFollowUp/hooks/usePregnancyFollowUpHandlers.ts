@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PregnancyFollowUpSchema } from '../../../services/types/PregnancyFollowUpType';
+import { PregnancyFollowUpSchema } from '../../../services/interfaces/PregnancyFollowUpType';
 import { ZodError } from 'zod';
 import { postAcompanhamento } from '../../../services/PregnancyFollowUpService';
 import { GetPregnancyById } from '../../../services/PregnancyServices';
 import { FollowUpInterface } from '../../../services/PregnancyFollowUpService/interface';
 import { message, RadioChangeEvent } from 'antd';
-
-interface ErrorInterface {
-  errorShow?: boolean;
-  errorType?: '' | 'error' | 'warning' | undefined;
-}
+import { ErrorInterface } from '../../../services/interfaces/ErrorType';
 
 export function usePregnancyFollowUpHandlers(gestacaoId: number) {
   const navigate = useNavigate();

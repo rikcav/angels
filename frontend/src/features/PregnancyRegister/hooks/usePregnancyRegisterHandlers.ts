@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PregnancyRegisterSchema } from '../../../services/types/PregnancyRegisterType';
+import { PregnancyRegisterSchema } from '../../../services/interfaces/PregnancyRegisterType';
 import { ZodError } from 'zod';
 import {
   errorNotification,
@@ -17,13 +17,9 @@ import { PregnancyRegisterInterface } from '../../../services/PregnancyRegisterS
 import {
   EvolutionDataInterface,
   PregnantInfoInterface
-} from '../../../services/types/PregnantType';
+} from '../../../services/interfaces/PregnantType';
 import { IAInterface } from '../../../services/IAService/interface';
-
-interface ErrorInterface {
-  errorShow?: boolean;
-  errorType?: '' | 'warning' | 'error' | undefined;
-}
+import { ErrorInterface } from '../../../services/interfaces/ErrorType';
 
 export function usePregnancyRegisterHandlers(gestanteId: number) {
   const navigate = useNavigate();

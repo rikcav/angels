@@ -10,7 +10,7 @@ import Logo from '../../assets/angelsLogo.svg';
 import { Input } from '../Input';
 import { useNavigate } from 'react-router-dom';
 import { GetPregnantByCpf } from '../../services/PregnantServices';
-import { pregnantSchemaPartOne } from '../../services/types/PregnantType';
+import { pregnantSchemaPartOne } from '../../services/interfaces/PregnantType';
 interface ErrorInterface {
   errorShow?: boolean;
   errorType?: '' | 'error' | 'warning' | undefined;

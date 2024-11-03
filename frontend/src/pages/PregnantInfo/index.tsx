@@ -17,13 +17,14 @@ import { Select } from '../../components/Select';
 import {
   PregnantInfoInterface,
   pregnantSchemaPartOne
-} from '../../services/types/PregnantType';
+} from '../../services/interfaces/PregnantType';
 import {
   genderList,
   raceList
 } from '../../features/PregnantRegister/SelectOptions';
 import { successNotification } from '../../components/Notification';
 import { PregnantDetails } from '../../components/PregnantDetails';
+import { ErrorInterface } from '../../services/interfaces/ErrorType';
 interface PregantReposnseInterface {
   id?: number;
   nome?: string;
@@ -43,10 +44,6 @@ interface PregantReposnseInterface {
   maFormacaoCongenita?: boolean;
 }
 
-interface ErrorInterface {
-  errorShow?: boolean;
-  errorType?: '' | 'error' | 'warning' | undefined;
-}
 export default function PregnantInfo() {
   const navigate = useNavigate();
   const [pregnantInfo, setPregnantInfo] = useState<PregantReposnseInterface>();
