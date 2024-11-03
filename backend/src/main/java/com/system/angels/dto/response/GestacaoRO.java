@@ -10,7 +10,7 @@ import java.util.Date;
 
 public record GestacaoRO(
   Long id,
-  Long gestante_id,
+  Long gestanteId,
   boolean consumoAlcool,
   UsoAlcool frequenciaUsoAlcool,
   Date dataUltimaMenstruacao,

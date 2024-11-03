@@ -6,7 +6,7 @@ import { DateSelect } from '../../components/DateSelect';
 import { RadioSelect } from '../../components/RadioSelect';
 import { Button } from '../../components/Button';
 import { ArrowLeft, ArrowRight, ArrowUUpLeft } from '@phosphor-icons/react';
-import { InputMask } from '../../features/PregnantRegister/InputMask';
+import { InputMask } from '../../components/InputMask';
 import {
   educationLevelsList,
   genderList,

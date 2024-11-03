@@ -5,16 +5,12 @@ import { UserCircle } from '@phosphor-icons/react';
 import { SidebarContainer, SidebarItem, TextItem } from './styles';
 import { SignOut, IdentificationBadge } from '@phosphor-icons/react';
 
-// importando a logo
 import Logo from '../../assets/angelsLogo.svg';
-import { Input } from '../Input';
 import { useNavigate } from 'react-router-dom';
 import { GetPregnantByCpf } from '../../services/PregnantServices';
-import { pregnantSchemaPartOne } from '../../services/interfaces/PregnantType';
-interface ErrorInterface {
-  errorShow?: boolean;
-  errorType?: '' | 'error' | 'warning' | undefined;
-}
+import { pregnantSchemaPartOne } from '../../types/schemas/PregnantRegisterSchema';
+import { InputMask } from '../InputMask';
+import { ErrorInterface } from '../../types/interfaces/ErrorType';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
@@ -59,6 +55,7 @@ const SideBar: React.FC = () => {
   };
 
   const handleCancel = () => {
+    setErrorCpf({ errorType: '', errorShow: false });
     setIsModalOpen(false);
   };
 
@@ -94,11 +91,12 @@ const SideBar: React.FC = () => {
         okText="Verificar"
       >
         <label>Verifique se a gestante já está cadastrada no sistema</label>
-        <Input
+        <InputMask
+          mask={'999.999.999-99'}
           label="Cpf"
           placeHolder="Digite o cpf da gestante"
-          inputFunction={handleChangeCpf}
           type="text"
+          inputFunction={handleChangeCpf}
           value={cpf}
           errorShow={errorCpf?.errorShow}
           status={errorCpf?.errorType}

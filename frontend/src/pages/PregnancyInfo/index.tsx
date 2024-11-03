@@ -99,7 +99,7 @@ export default function PregnancyInfo() {
           }
           fuma={pregnancyInfo?.fuma ? 'Sim' : 'Não'}
           gravidezPlanejada={pregnancyInfo?.gravidezPlanejada ? 'Sim' : 'Não'}
-          grupoSanguineo={pregnancyInfo?.grupoSanguineo || ''}
+          grupoSanguineo={`${pregnancyInfo?.grupoSanguineo}` || ''}
           pesoAntesGestacao={pregnancyInfo?.pesoAntesGestacao || 0}
           quantidadeCigarrosDia={pregnancyInfo?.quantidadeCigarrosDia || 0}
           riscoGestacional={
@@ -126,14 +126,18 @@ export default function PregnancyInfo() {
       {followUpInfo.map((item, index) => (
         <FollowUpCard
           key={index}
-          bloodPressure={item.pressaoArterial}
-          date={new Date(item.dataAcompanhamento).toLocaleDateString()}
-          gestationalAge={item.idadeGestacional}
-          heartRate={item.batimentosCardiacosFeto}
-          madeBy={item.realizadoPor}
-          type={item.tipo}
-          uterineHeight={item.alturaUterina}
-          weight={item.pesoAtual}
+          bloodPressure={item.pressaoArterial || ''}
+          date={
+            typeof item.dataAcompanhamento === 'string'
+              ? new Date(item.dataAcompanhamento).toLocaleDateString()
+              : ''
+          }
+          gestationalAge={item.idadeGestacional || 0}
+          heartRate={item.batimentosCardiacosFeto || 0}
+          madeBy={item.realizadoPor || ''}
+          type={item.tipo || ''}
+          uterineHeight={item.alturaUterina || 0}
+          weight={item.pesoAtual || 0}
         />
       ))}
     </S.Container>

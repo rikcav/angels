@@ -6,10 +6,7 @@ import { Moment } from 'moment';
 
 interface DateProps {
   label?: string;
-  inputFunction?: (
-    date: unknown | string,
-    dateString: string | string[]
-  ) => void;
+  inputFunction?: (date: unknown | string, dateString: string) => void;
   placeHolder?: string;
   infoText?: string;
   status?: '' | 'warning' | 'error' | undefined;

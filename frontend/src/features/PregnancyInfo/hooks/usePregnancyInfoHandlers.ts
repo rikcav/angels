@@ -3,47 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { GetFollowUpsByPregnancyId } from '../../../services/FollowUpServices';
 import { GetPregnantInfo } from '../../../services/PregnantServices';
 import { GetPregnancyById } from '../../../services/PregnancyServices';
-
-interface FollowUpResponseInterface {
-  id: number;
-  dataAcompanhamento: string;
-  realizadoPor: string;
-  pesoAtual: number;
-  idadeGestacional: number;
-  pressaoArterial: string;
-  batimentosCardiacosFeto: number;
-  alturaUterina: number;
-  tipo: string;
-}
-
-interface PregnancyResponseInterface {
-  id: number;
-  gestante_id: number;
-  consumoAlcool: boolean;
-  frequenciaUsoAlcool: string;
-  dataUltimaMenstruacao: string | null;
-  dataInicioGestacao: string | null;
-  fatorRh: string | null;
-  fuma: boolean;
-  quantidadeCigarrosDia: number;
-  usoDrogas: string;
-  gravidezPlanejada: boolean;
-  grupoSanguineo: string;
-  pesoAntesGestacao: number | null;
-  riscoGestacional: number;
-  vacinaHepatiteB: boolean;
-  situacaoGestacional: string;
-}
+import { PregnancyInterface } from '../../../types/interfaces/PregnanciesType';
+import { FollowUpInterface } from '../../../types/interfaces/PregnancyFollowUpType';
 
 export function usePregnancyInfoHandlers(
   pregnantId: number,
   pregnancyId: number
 ) {
-  const [followUpInfo, setFollowUpInfo] = useState<FollowUpResponseInterface[]>(
-    []
-  );
-  const [pregnancyInfo, setPregnancyInfo] =
-    useState<PregnancyResponseInterface>();
+  const [followUpInfo, setFollowUpInfo] = useState<FollowUpInterface[]>([]);
+  const [pregnancyInfo, setPregnancyInfo] = useState<PregnancyInterface>();
   const [name, setName] = useState<string>('');
   const [cpf, setCpf] = useState<string>('');
   const [toggleInfo, setToggleInfo] = useState(false);

@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useEffect, useState } from 'react';
-import { PregnancyInterface } from '../../services/interfaces/PregnaciesType';
-import { GetPregnancies } from '../../services/PregnanciesServices';
+import { PregnancyInterface } from '../../types/interfaces/PregnanciesType';
+import { GetPregnancies } from '../../services/PregnancyServices';
 
 interface DataContextType {
   pregnanciesList: Array<PregnancyInterface>;
