@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PregnancyInterface } from '../../../services/PregnancyServices/interfaces';
 import { GetPregnantInfo } from '../../../services/PregnantServices';
 import { GetPregnanciesByPregnantId } from '../../../services/PregnancyServices';
+import { PregnancyInterface } from '../../../types/interfaces/PregnanciesType';
 
 export function usePregnanciesHandlers(pregnantId: number) {
   const navigate = useNavigate();

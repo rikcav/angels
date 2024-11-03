@@ -41,13 +41,13 @@ export default function Pregnancies() {
       .map((item, index) => (
         <PregnancyCard
           key={index}
-          id={item.id}
-          gestationalRisk={true}
+          id={item.id || 0}
+          gestationalRisk={item.riscoIA || false}
           pregnancyStatus={item.situacaoGestacional}
           weeks={currentDate.diff(item.dataInicioGestacao, 'weeks').toString()}
-          onClickAdd={() => handleFollowUp(item?.id)}
+          onClickAdd={() => handleFollowUp(item?.id || 0)}
           onClickThreeDots={() =>
-            handlePregnancyScreen(item?.id, parseInt(params.id || ''))
+            handlePregnancyScreen(item?.id || 0, parseInt(params.id || ''))
           }
         />
       ));
