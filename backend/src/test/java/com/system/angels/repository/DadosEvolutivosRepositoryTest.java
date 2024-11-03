@@ -2,7 +2,7 @@ package com.system.angels.repository;
 
 import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.domain.Gestante;
-import com.system.angels.domain.enums.Sexo;
+import com.system.angels.domain.enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class DadosEvolutivosRepositoryTest {
         gestante.setCpf("12345678901");
         gestante.setNome("Maria");
         gestante.setDataNascimento(new Date());
-        gestante.setRaca(0);
+        gestante.setRaca(Raca.NEGRO);
         gestante.setSexo(Sexo.FEMININO);
         gestanteRepository.save(gestante);
     }
@@ -41,10 +41,10 @@ public class DadosEvolutivosRepositoryTest {
         DadosEvolutivos dados = new DadosEvolutivos();
         dados.setGestante(gestante);
         dados.setMunicipio(municipio);
-        dados.setDiagnosticoDesnutricao(2);
+        dados.setDiagnosticoDesnutricao(DiagnosticoDesnutricao.SEM_DIAGNOSTICO_DE_DESNUTRICAO);
         dados.setEnergiaEletricaDomicilio(true);
         dados.setEscolaridade(3);
-        dados.setTipoMoradia(1);
+        dados.setTipoMoradia(TipoMoradia.TIJOLO);
         dados.setMoradiaRedeEsgoto(true);
         dados.setRendaFamiliar(new BigDecimal("1500.00"));
         dados.setTratamentoAgua(true);
@@ -52,7 +52,7 @@ public class DadosEvolutivosRepositoryTest {
         dados.setChefeFamilia(false);
         dados.setDataUltimaGestacao(new Date());
         dados.setEmRisco(false);
-        dados.setEstadoCivil(1);
+        dados.setEstadoCivil(EstadoCivil.CASADA);
         dados.setQuantidadeAbortos(0);
         dados.setQuantidadeFilhosVivos(1);
         dados.setQuantidadeGemelares(0);

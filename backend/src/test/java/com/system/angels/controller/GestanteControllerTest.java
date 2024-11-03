@@ -1,6 +1,7 @@
 package com.system.angels.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.system.angels.domain.enums.Raca;
 import com.system.angels.domain.enums.Sexo;
 import com.system.angels.dto.create.GestanteDTO;
 import com.system.angels.dto.response.GestanteRO;
@@ -43,7 +44,7 @@ public class GestanteControllerTest {
                 "Maria Silva",
                 new Date(),
                 "12345678900",
-                1,
+                Raca.NEGRO,
                 Sexo.FEMININO);
         gestanteRO = new GestanteRO(
                 1L,
