@@ -11,17 +11,13 @@ import {
   PostPregnantEvolutionData
 } from '../../../services/PregnantServices';
 import { RadioChangeEvent } from 'antd';
+import { PregnantInterface } from '../../../types/interfaces/PregnantType';
+import { ErrorInterface } from '../../../types/interfaces/ErrorType';
 import {
-  PregnantInterface,
   pregnantSchemaPartOne,
   pregnantSchemaPartTwo,
   pregnantSchemaPartTwoFirstPregnant
-} from '../../../services/types/PregnantType';
-
-interface ErrorInterface {
-  errorShow?: boolean;
-  errorType?: '' | 'warning' | 'error' | undefined;
-}
+} from '../../../types/schemas/PregnantRegisterSchema';
 
 export function usePregnantRegisterHandlers() {
   const navigate = useNavigate();

@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PregnancyFollowUpSchema } from '../../../services/types/PregnancyFollowUpType';
 import { ZodError } from 'zod';
 import { postAcompanhamento } from '../../../services/PregnancyFollowUpService';
 import { GetPregnancyById } from '../../../services/PregnancyServices';
-import { FollowUpInterface } from '../../../services/PregnancyFollowUpService/interface';
 import { message, RadioChangeEvent } from 'antd';
-
-interface ErrorInterface {
-  errorShow?: boolean;
-  errorType?: '' | 'error' | 'warning' | undefined;
-}
+import { ErrorInterface } from '../../../types/interfaces/ErrorType';
+import { PregnancyFollowUpSchema } from '../../../types/schemas/FollowUpRegisterSchema';
+import { FollowUpInterface } from '../../../types/interfaces/PregnancyFollowUpType';
 
 export function usePregnancyFollowUpHandlers(gestacaoId: number) {
   const navigate = useNavigate();
@@ -123,7 +119,7 @@ export function usePregnancyFollowUpHandlers(gestacaoId: number) {
       batimentosCardiacosFeto: parseInt(heartBeat),
       alturaUterina: parseInt(height),
       tipo: type,
-      dataAcompanhamento: date,
+      dataAcompanhamento: date || '',
       realizadoPor: radio,
       riscoIA: false
     };

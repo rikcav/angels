@@ -1,29 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PregnancyRegisterSchema } from '../../../services/types/PregnancyRegisterType';
 import { ZodError } from 'zod';
 import {
   errorNotification,
   successNotification
 } from '../../../components/Notification';
-import { postGestacao } from '../../../services/PregnancyRegisterService';
 import {
   GetPregnantEvolutionData,
   GetPregnantInfo
 } from '../../../services/PregnantServices';
 import { postIA } from '../../../services/IAService';
 import { RadioChangeEvent } from 'antd';
-import { PregnancyRegisterInterface } from '../../../services/PregnancyRegisterService/interface';
 import {
   EvolutionDataInterface,
   PregnantInfoInterface
-} from '../../../services/types/PregnantType';
-import { IAInterface } from '../../../services/IAService/interface';
-
-interface ErrorInterface {
-  errorShow?: boolean;
-  errorType?: '' | 'warning' | 'error' | undefined;
-}
+} from '../../../types/interfaces/PregnantType';
+import { ErrorInterface } from '../../../types/interfaces/ErrorType';
+import { PregnancyRegisterSchema } from '../../../types/schemas/PregnancyRegisterSchema';
+import { IAInterface } from '../../../types/interfaces/IAPregnancyType';
+import { PregnancyRegisterInterface } from '../../../types/interfaces/PregnanciesType';
+import { postGestacao } from '../../../services/PregnancyServices';
 
 export function usePregnancyRegisterHandlers(gestanteId: number) {
   const navigate = useNavigate();

@@ -3,7 +3,7 @@ import { api } from '../api';
 import {
   EvolutionDataInterface,
   PregnantInterface
-} from '../types/PregnantType';
+} from '../../types/interfaces/PregnantType';
 
 export const GetPregnantByCpf = async (cpf: string) => {
   try {

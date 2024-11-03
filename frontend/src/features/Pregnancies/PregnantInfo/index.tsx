@@ -8,9 +8,9 @@ import { Select } from '../../../components/Select';
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import {
-  PregnantInfoInterface,
-  pregnantSchemaPartOne
-} from '../../../services/types/PregnantType';
+  PregantResponseInterface,
+  PregnantInfoInterface
+} from '../../../types/interfaces/PregnantType';
 import {
   DeletePregnant,
   GetPregnantInfo,
@@ -18,29 +18,8 @@ import {
 } from '../../../services/PregnantServices';
 import { successNotification } from '../../../components/Notification';
 import { genderList, raceList } from '../../PregnantRegister/SelectOptions';
-interface PregantReposnseInterface {
-  id?: number;
-  nome?: string;
-  dataNascimento?: string;
-  cpf?: string;
-  sexo?: string;
-  municipio?: string;
-  emRisco?: boolean;
-  quantidadeAbortos?: number;
-  quantidadeFilhosVivos?: number;
-  quantidadeGemelares?: number;
-  quantidadeGestacao?: number;
-  quantidadeNascidosMortos?: number;
-  quantidadeNascidosVivos?: number;
-  hipertensao?: boolean;
-  diabetes?: boolean;
-  maFormacaoCongenita?: boolean;
-}
-
-interface ErrorInterface {
-  errorShow?: boolean;
-  errorType?: '' | 'error' | 'warning' | undefined;
-}
+import { ErrorInterface } from '../../../types/interfaces/ErrorType';
+import { pregnantSchemaPartOne } from '../../../types/schemas/PregnantRegisterSchema';
 
 interface PregnantInfoProps {
   id: number;
@@ -48,7 +27,7 @@ interface PregnantInfoProps {
 
 export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
   const navigate = useNavigate();
-  const [pregnantInfo, setPregnantInfo] = useState<PregantReposnseInterface>();
+  const [pregnantInfo, setPregnantInfo] = useState<PregantResponseInterface>();
   const [isUptadeModalOpen, setIsUptadeModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [name, setName] = useState<string>();
@@ -134,10 +113,6 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
 
   const reloadPag = () => {
     setReload((prev) => prev + 1);
-  };
-
-  const showUptadeModal = () => {
-    setIsUptadeModalOpen(true);
   };
 
   const handleUptadeOk = () => {

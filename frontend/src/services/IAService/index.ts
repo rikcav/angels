@@ -1,6 +1,6 @@
 import { errorNotification } from '../../components/Notification';
+import { IAInterface } from '../../types/interfaces/IAPregnancyType';
 import { apiIA } from '../api';
-import { IAInterface } from './interface';
 
 export const postIA = async (data: IAInterface) => {
   try {

@@ -14,16 +14,15 @@ import { useNavigate } from 'react-router-dom';
 import { Input } from '../../components/Input';
 import { DateSelect } from '../../components/DateSelect';
 import { Select } from '../../components/Select';
-import {
-  PregnantInfoInterface,
-  pregnantSchemaPartOne
-} from '../../services/types/PregnantType';
+import { PregnantInfoInterface } from '../../types/interfaces/PregnantType';
 import {
   genderList,
   raceList
 } from '../../features/PregnantRegister/SelectOptions';
 import { successNotification } from '../../components/Notification';
 import { PregnantDetails } from '../../components/PregnantDetails';
+import { ErrorInterface } from '../../types/interfaces/ErrorType';
+import { pregnantSchemaPartOne } from '../../types/schemas/PregnantRegisterSchema';
 interface PregantReposnseInterface {
   id?: number;
   nome?: string;
@@ -43,17 +42,13 @@ interface PregantReposnseInterface {
   maFormacaoCongenita?: boolean;
 }
 
-interface ErrorInterface {
-  errorShow?: boolean;
-  errorType?: '' | 'error' | 'warning' | undefined;
-}
 export default function PregnantInfo() {
   const navigate = useNavigate();
   const [pregnantInfo, setPregnantInfo] = useState<PregantReposnseInterface>();
   const [isUptadeModalOpen, setIsUptadeModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [name, setName] = useState<string>();
-  const [birthDate, setBirthDate] = useState<string | string[]>();
+  const [birthDate, setBirthDate] = useState<string>();
   const [race, setRace] = useState<string>('');
   const [gender, setGender] = useState<string>('');
   const [cpf, setCpf] = useState<string>('');
@@ -85,10 +80,7 @@ export default function PregnantInfo() {
     setName(value);
   };
 
-  const handleChangeBirthDate = (
-    date: unknown,
-    dateString: string | string[]
-  ) => {
+  const handleChangeBirthDate = (date: unknown, dateString: string) => {
     try {
       pregnantSchemaPartOne.shape.dataNascimento.parse(dateString);
       setErrorBirthDate({ errorType: '', errorShow: false });

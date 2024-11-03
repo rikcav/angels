@@ -1,6 +1,6 @@
 import { errorNotification } from '../../components/Notification';
+import { FollowUpInterface } from '../../types/interfaces/PregnancyFollowUpType';
 import { api } from '../api';
-import { FollowUpInterface } from './interface';
 
 export const postAcompanhamento = async (
   gestanteId: number,
