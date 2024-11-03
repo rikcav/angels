@@ -1,6 +1,7 @@
 package com.system.angels.service;
 
 import com.system.angels.domain.Gestante;
+import com.system.angels.domain.enums.Raca;
 import com.system.angels.domain.enums.Sexo;
 import com.system.angels.dto.create.GestanteDTO;
 import com.system.angels.dto.response.GestanteRO;
@@ -46,7 +47,7 @@ public class GestanteServiceTest {
                 "Maria",
                 new Date(),
                 "12345678901",
-                1,
+                Raca.NEGRO,
                 Sexo.FEMININO
         );
 
@@ -55,7 +56,7 @@ public class GestanteServiceTest {
         gestante.setNome("Maria");
         gestante.setDataNascimento(new Date());
         gestante.setCpf("12345678901");
-        gestante.setRaca(1);
+        gestante.setRaca(Raca.NEGRO);
         gestante.setSexo(Sexo.FEMININO);
     }
 

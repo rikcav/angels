@@ -2,6 +2,9 @@ package com.system.angels.service;
 
 import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.domain.Gestante;
+import com.system.angels.domain.enums.DiagnosticoDesnutricao;
+import com.system.angels.domain.enums.EstadoCivil;
+import com.system.angels.domain.enums.TipoMoradia;
 import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.dto.response.DadosEvolutivosRO;
 import com.system.angels.exceptions.DadosEvolutivosNotFoundException;
@@ -52,10 +55,10 @@ public class DadosEvolutivosServiceTest {
         dadosEvolutivos.setId(1L);
         dadosEvolutivos.setGestante(gestante);
         dadosEvolutivos.setMunicipio("City A");
-        dadosEvolutivos.setDiagnosticoDesnutricao(1);
+        dadosEvolutivos.setDiagnosticoDesnutricao(DiagnosticoDesnutricao.SEM_DIAGNOSTICO_DE_DESNUTRICAO);
         dadosEvolutivos.setEnergiaEletricaDomicilio(true);
         dadosEvolutivos.setEscolaridade(2);
-        dadosEvolutivos.setTipoMoradia(1);
+        dadosEvolutivos.setTipoMoradia(TipoMoradia.TIJOLO);
         dadosEvolutivos.setMoradiaRedeEsgoto(true);
         dadosEvolutivos.setRendaFamiliar(new BigDecimal("1500.50"));
         dadosEvolutivos.setTratamentoAgua(true);
@@ -63,7 +66,7 @@ public class DadosEvolutivosServiceTest {
         dadosEvolutivos.setChefeFamilia(false);
         dadosEvolutivos.setDataUltimaGestacao(new Date());
         dadosEvolutivos.setEmRisco(false);
-        dadosEvolutivos.setEstadoCivil(1);
+        dadosEvolutivos.setEstadoCivil(EstadoCivil.CASADA);
         dadosEvolutivos.setQuantidadeAbortos(0);
         dadosEvolutivos.setQuantidadeFilhosVivos(1);
         dadosEvolutivos.setQuantidadeGemelares(0);
@@ -88,9 +91,14 @@ public class DadosEvolutivosServiceTest {
         dadosEvolutivos.setContatoEmergencia("2222222222");
 
         dadosEvolutivosDTO = new DadosEvolutivosDTO(
-                1L, "City A", 1, true, 2, 1, true, new BigDecimal("1500.50"), true,
-                true, false, new Date(), false, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1,
-                1, 0, 0, false, false, false, false, false, false, "1111111111", "2222222222"
+                1L, "City A", DiagnosticoDesnutricao.SEM_DIAGNOSTICO_DE_DESNUTRICAO, true,
+                2, TipoMoradia.TIJOLO, true, new BigDecimal("1500.50"), true,
+                true, false, new Date(), false, EstadoCivil.CASADA, 0, 1,
+                0, 1, 0, 1, 0,
+                0, 1, 0, 1,
+                1, 0, 0, false,
+                false, false, false, false, false,
+                "1111111111", "2222222222"
         );
     }
 

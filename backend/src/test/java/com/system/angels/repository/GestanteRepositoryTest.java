@@ -1,6 +1,7 @@
 package com.system.angels.repository;
 
 import com.system.angels.domain.Gestante;
+import com.system.angels.domain.enums.Raca;
 import com.system.angels.domain.enums.Sexo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class GestanteRepositoryTest {
         gestante.setCpf(cpf);
         gestante.setNome(nome);
         gestante.setDataNascimento(java.sql.Date.valueOf(LocalDate.of(1990, 1, 1)));
-        gestante.setRaca(0);
+        gestante.setRaca(Raca.NEGRO);
         gestante.setSexo(Sexo.FEMININO);
         return gestante;
     }

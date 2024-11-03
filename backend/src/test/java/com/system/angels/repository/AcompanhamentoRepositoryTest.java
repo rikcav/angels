@@ -3,10 +3,7 @@ package com.system.angels.repository;
 import com.system.angels.domain.Acompanhamento;
 import com.system.angels.domain.Gestacao;
 import com.system.angels.domain.Gestante;
-import com.system.angels.domain.enums.FatorRH;
-import com.system.angels.domain.enums.RealizadoPor;
-import com.system.angels.domain.enums.Sexo;
-import com.system.angels.domain.enums.TipoAcompanhamento;
+import com.system.angels.domain.enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,27 +36,27 @@ public class AcompanhamentoRepositoryTest {
         gestante.setCpf("12345678901");
         gestante.setNome("Maria");
         gestante.setDataNascimento(new Date());
-        gestante.setRaca(0);
+        gestante.setRaca(Raca.NEGRO);
         gestante.setSexo(Sexo.FEMININO);
         gestanteRepository.save(gestante);
 
         gestacao = new Gestacao();
         gestacao.setGestante(gestante);
         gestacao.setConsumoAlcool(true);
-        gestacao.setFrequenciaUsoAlcool(2);
+        gestacao.setFrequenciaUsoAlcool(UsoAlcool.NENHUM_CONSUMO);
         gestacao.setDataUltimaMenstruacao(new Date());
         gestacao.setDataInicioGestacao(new Date());
         gestacao.setFatorRh(FatorRH.POSITIVO);
         gestacao.setFuma(true);
         gestacao.setQuantidadeCigarrosDia(5);
-        gestacao.setUsoDrogas(1);
+        gestacao.setUsoDrogas(UsoDrogas.NENHUM_CONSUMO);
         gestacao.setGravidezPlanejada(false);
-        gestacao.setGrupoSanguineo(1);
+        gestacao.setGrupoSanguineo(GrupoSanguineo.O);
         gestacao.setPesoAntesGestacao(new BigDecimal("65.5"));
         gestacao.setRiscoGestacional(1);
         gestacao.setRiscoIA(false);
         gestacao.setVacinaHepatiteB(true);
-        gestacao.setSituacaoGestacional(1);
+        gestacao.setSituacaoGestacional(SituacaoGestacional.EM_ANDAMENTO);
         gestacaoRepository.save(gestacao);
     }
 

@@ -1,6 +1,9 @@
 package com.system.angels.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.system.angels.domain.enums.DiagnosticoDesnutricao;
+import com.system.angels.domain.enums.EstadoCivil;
+import com.system.angels.domain.enums.TipoMoradia;
 import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.dto.response.DadosEvolutivosRO;
 import com.system.angels.service.iDadosEvolutivosService;
@@ -42,16 +45,22 @@ public class DadosEvolutivosControllerTest {
     @BeforeEach
     public void setup() {
         dadosEvolutivosDTO = new DadosEvolutivosDTO(
-                1L, "City", 1, true, 2, 1, true, BigDecimal.valueOf(2000),
-                true, true, true, new Date(), false, 2, 1, 1, 0,
-                1, 1, 0, 0, 0, 1, 1, 0, 2, 1, 1, false, true, false,
-                false, true, true, "123456789", "987654321");
+                1L, "City", DiagnosticoDesnutricao.SEM_DIAGNOSTICO_DE_DESNUTRICAO, true, 2, TipoMoradia.TIJOLO,
+                true, BigDecimal.valueOf(2000), true, true, true, new Date(),
+                false, EstadoCivil.CASADA, 1, 1, 0, 1,
+                1, 0, 0, 0, 1,
+                1, 0, 2, 1, 1,
+                false, true, false, false, true, true,
+                "123456789", "987654321");
 
         dadosEvolutivosRO = new DadosEvolutivosRO(
-                1L, 1L, "City", 1, true, 2, 1, true, BigDecimal.valueOf(2000),
-                true, true, true, new Date(), false, 2, 1, 1, 0,
-                1, 1, 0, 0, 0, 1, 1, 0, 2, 1, 1, false, true, false,
-                false, true, true, "123456789", "987654321");
+                1L, 1L, "City", DiagnosticoDesnutricao.SEM_DIAGNOSTICO_DE_DESNUTRICAO, true, 2, TipoMoradia.TIJOLO,
+                true, BigDecimal.valueOf(2000), true, true, true, new Date(),
+                false, EstadoCivil.CASADA, 1, 1, 0, 1,
+                1, 0, 0, 0, 1,
+                1, 0, 2, 1, 1,
+                false, true, false, false, true, true,
+                "123456789", "987654321");
     }
 
     @Test
