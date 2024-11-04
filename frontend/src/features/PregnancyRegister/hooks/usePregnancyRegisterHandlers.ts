@@ -25,7 +25,7 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
   const navigate = useNavigate();
 
   const [period, setPeriod] = useState<string | string[]>();
-  const [beginning, setBeginning] = useState<string | string[]>();
+  const [beginning, setBeginning] = useState<string | string>();
   const [weight, setWeight] = useState<string>('');
   const [situation, setSituation] = useState<string>('');
   const [risc, setRisc] = useState<string>('');
@@ -60,6 +60,7 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
     const loadPregnancyData = async () => {
       const evolutionResponse = await GetPregnantEvolutionData(gestanteId);
       if (evolutionResponse?.status === 200) {
+        console.log(evolutionResponse.data)
         setEvolutionData(evolutionResponse.data[0]);
       }
 
@@ -87,7 +88,7 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
 
   const handleChangeDateBeginning = (
     date: unknown,
-    dateString: string | string[]
+    dateString: string
   ) => {
     try {
       PregnancyRegisterSchema.shape.dataInicioGestacao.parse(dateString);
@@ -168,26 +169,37 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
       : months;
   };
 
+  const formatDate = (): string => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Adiciona 1 ao mês, pois começa do zero
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const formatDateOnly = (dateString: string): string => {
+    return dateString.split("T")[0];
+  };
+
   const dataIA: IAInterface = {
-    previous_weight: parseInt(weight),
-    gestational_risk: parseInt(situation),
-    schooling: evolutionData?.escolaridade,
-    has_hypertension: evolutionData?.hipertensao || false,
-    has_diabetes: evolutionData?.diabetes || false,
-    has_pelvic_sugery: evolutionData?.cirurgiaPelvica || false,
-    has_urinary_infection: evolutionData?.infeccaoUrinaria || false,
-    has_congenital_malformation: evolutionData?.maFormacaoCongenita || false,
-    has_family_twinship: evolutionData?.familiarGemeos || false,
-    amount_gestation: evolutionData?.quantidadeGestacao || 0,
-    amount_abortion: evolutionData?.quantidadeAbortos || 0,
-    amount_deliveries: evolutionData?.quantidadePartos || 0,
-    amount_cesarean: evolutionData?.quantidadePartosCesarios || 0,
-    target: 0,
-    age: calcAge(gestantInfo?.dataNascimento || '2024-01-01'),
-    fist_prenatal: 0,
-    time_between_pregnancies: calcMonths(
-      evolutionData?.dataUltimaGestacao || '2024-01-01'
-    )
+    previous_weight: weight,
+    gestational_risk: risc,
+    schooling: evolutionData?.escolaridade?.toString(),
+    has_hypertension: evolutionData?.hipertensao ? "1":"0",
+    has_diabetes: evolutionData?.diabetes ? "1":"0",
+    has_pelvic_surgery: evolutionData?.cirurgiaPelvica ? "1":"0",
+    has_urinary_infection: evolutionData?.infeccaoUrinaria ? "1":"0",
+    has_congenital_malformation: evolutionData?.maFormacaoCongenita ? "1":"0",
+    has_family_twinship: evolutionData?.familiarGemeos ? "1":"0",
+    amount_gestation: evolutionData?.quantidadeGestacao?.toString() || "0",
+    amount_abortion: evolutionData?.quantidadeAbortos?.toString() || "0",
+    amount_deliveries: evolutionData?.quantidadePartos?.toString() || "0",
+    amount_cesarean: evolutionData?.quantidadePartosCesarios?.toString() || "0",
+    mothers_birth_date: formatDateOnly(gestantInfo?.dataNascimento || '2024-01-01') || '2024-01-01',
+    date_first_prenatal: formatDate(),
+    date_last_delivery: formatDateOnly(evolutionData?.dataUltimaGestacao || '2024-01-01') || '2024-01-01',
+    date_start_pregnancy: beginning || '2024-01-01',
+ 
   };
 
   const data: PregnancyRegisterInterface = {
@@ -210,16 +222,20 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
   };
 
   const handleCheckIA = async () => {
+    console.log("djkahs")
+    console.log(dataIA)
     const response = await postIA(dataIA);
     if (response?.status === 200) {
       data.riscoIA = response.data.risk;
       successNotification('Deu certo IA');
+      console.log("deu certo")
     }
   };
 
   const handlePregnancyRegister = async () => {
     try {
       PregnancyRegisterSchema.parse(data);
+      await handleCheckIA();
       await postGestacao(data);
       navigate(`/pregnancies/${gestanteId}`);
     } catch (error) {

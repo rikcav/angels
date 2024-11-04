@@ -27,9 +27,9 @@ export const pregnantSchemaPartOne = z.object({
     .string({
       required_error: 'CPF é obrigatório',
       invalid_type_error: 'CPF precisa ser uma string'
-    })
-    .length(11, { message: 'O CPF deve ter exatamente 11 caracteres' })
-    .regex(/^\d+$/, { message: 'O CPF deve conter apenas dígitos numéricos' }),
+    }),
+    // // .length(11, { message: 'O CPF deve ter exatamente 11 caracteres' })
+    // .regex(/^\d+$/, { message: 'O CPF deve conter apenas dígitos numéricos' }),
   chefeFamilia: z.boolean({
     required_error: 'Chefe de família é obrigatório'
   }),

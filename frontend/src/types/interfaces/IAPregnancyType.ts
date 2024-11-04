@@ -1,23 +1,23 @@
 export interface IAInterface {
-  previous_weight?: number;
-  gestational_risk?: number;
-  schooling?: number;
-  has_hypertension: boolean;
-  has_diabetes: boolean;
-  has_pelvic_sugery: boolean;
-  has_urinary_infection: boolean;
-  has_congenital_malformation: boolean;
-  has_family_twinship: boolean;
-  amount_gestation: number;
-  amount_abortion: number;
-  amount_deliveries: number;
-  amount_cesarean: number;
-  target: number;
-  age: number;
-  fist_prenatal: number;
-  time_between_pregnancies: number;
+  previous_weight?: String;
+  gestational_risk?: String;
+  schooling?: String;
+  has_hypertension: String;
+  has_diabetes: String;
+  has_pelvic_surgery: String;
+  has_urinary_infection: String;
+  has_congenital_malformation: String;
+  has_family_twinship: String;
+  amount_gestation: String;
+  amount_abortion: String;
+  amount_deliveries: String;
+  amount_cesarean: String;
+  mothers_birth_date: String;
+  date_start_pregnancy: String;
+  date_first_prenatal: String;
+  date_last_delivery: String;
 }
 
 export interface responseIA {
-  risk?: boolean;
+  risk?: String;
 }

@@ -54,6 +54,7 @@ export const DeletePregnant = async (id: number) => {
 export const GetPregnantEvolutionData = async (id: number) => {
   try {
     const response = await api.get(`/dados-evolutivos/gestante/${id}`);
+    console.log(response)
     return response;
   } catch (error) {
     errorNotification('Erro ao buscar gestante, tente novamente.');
