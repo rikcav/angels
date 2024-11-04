@@ -72,7 +72,7 @@ class GestacaoServiceTest {
         GestacaoRO result = gestacaoService.registrarGestacao(gestacaoDTO);
 
         assertNotNull(result);
-        assertEquals(gestacao.getGestante().getId(), result.gestante_id());
+        assertEquals(gestacao.getGestante().getId(), result.gestanteId());
         verify(gestanteRepository, times(1)).findById(anyLong());
         verify(gestacaoRepository, times(1)).save(any(Gestacao.class));
     }
@@ -92,7 +92,7 @@ class GestacaoServiceTest {
         GestacaoRO result = gestacaoService.gestacaoPorId(1L);
 
         assertNotNull(result);
-        assertEquals(gestacao.getGestante().getId(), result.gestante_id());
+        assertEquals(gestacao.getGestante().getId(), result.gestanteId());
         verify(gestacaoRepository, times(1)).findById(anyLong());
     }
 
@@ -136,7 +136,7 @@ class GestacaoServiceTest {
         GestacaoRO result = gestacaoService.atualizarGestacao(1L, gestacaoDTO);
 
         assertNotNull(result);
-        assertEquals(gestacao.getGestante().getId(), result.gestante_id());
+        assertEquals(gestacao.getGestante().getId(), result.gestanteId());
         verify(gestacaoRepository, times(1)).findById(anyLong());
         verify(gestacaoRepository, times(1)).save(any(Gestacao.class));
         verify(gestanteRepository, times(1)).findById(gestacaoDTO.gestante_id());

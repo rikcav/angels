@@ -47,7 +47,7 @@ class GestacaoControllerTest {
         );
 
         gestacaoRO = new GestacaoRO(
-                1L, true, UsoAlcool.NENHUM_CONSUMO, new Date(), new Date(),
+                1L, 1L, true, UsoAlcool.NENHUM_CONSUMO, new Date(), new Date(),
                 FatorRH.POSITIVO, false, 10, UsoDrogas.NENHUM_CONSUMO, true,
                 GrupoSanguineo.A, new BigDecimal("60.5"), 2, true,
                 true, SituacaoGestacional.EM_ANDAMENTO
