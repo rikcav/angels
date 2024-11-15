@@ -21,6 +21,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.6.0'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '3.3.4'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.3.5'
 	implementation 'org.flywaydb:flyway-core'
 	//runtimeOnly 'com.h2database:h2'
 	testImplementation 'com.h2database:h2'
