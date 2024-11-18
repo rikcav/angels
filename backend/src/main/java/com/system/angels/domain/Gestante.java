@@ -26,6 +26,9 @@ public class Gestante {
     @Column(nullable = false, unique = true)
     private String cpf;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
     @Column(nullable = false)
     private Raca raca;
 
