@@ -7,6 +7,7 @@ import { Dashboard } from '../pages/DashBoard/Index';
 import PregnancyRegister from '../pages/PregnancyRegister';
 import Pregnancies from '../pages/Pregnancies';
 import PregnancyInfo from '../pages/PregnancyInfo';
+import { ProfessionalRegistration } from '../pages/ProfessionalRegister';
 
 export const AppRoutes = () => {
   return (
@@ -25,6 +26,10 @@ export const AppRoutes = () => {
         <Route
           path="/pregnancyInfo/:pregnancyId/:pregnantId"
           element={<PregnancyInfo />}
+        />
+        <Route
+          path="/professionalRegister"
+          element={<ProfessionalRegistration/>}
         />
       </Routes>
     </BrowserRouter>
