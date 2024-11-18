@@ -115,6 +115,24 @@ public class GestanteService implements iGestanteService {
         var gestante = gestanteRepository.findById(id).orElseThrow(
                 () -> new GestanteNotFoundException("Gestante com o id " + id + " não foi encontrada"));
         gestanteRepository.delete(gestante);
+
+        var message = "Olá, " + gestante.getNome() + "!\n" +
+                "\n" +
+                "Estamos felizes em informar que o seu cadastro foi deletado com sucesso. Aqui estão os dados deletados:\n" +
+                "\n" +
+                "- Nome: " + gestante.getNome() + "\n" +
+                "- Data de Nascimento: " + gestante.getDataNascimento() + "\n" +
+                "- CPF: " + gestante.getCpf() + "\n" +
+                "- Email: " + gestante.getEmail() + "\n" +
+                "- Sexo: " + gestante.getSexo() + "\n" +
+                "- Raça: " + gestante.getRaca() + "\n" +
+                "\n" +
+                "Caso tenha dúvidas ou necessite de suporte, estamos à disposição.\n" +
+                "\n" +
+                "Atenciosamente,\n" +
+                "Equipe Angels.";
+
+        emailService.sendEmail(gestante.getEmail(), "Dados da gestante deletados", message);
     }
 
     private Gestante dtoToEntity(GestanteDTO gestanteDTO) {

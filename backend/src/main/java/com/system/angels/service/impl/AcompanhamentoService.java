@@ -7,6 +7,7 @@ import com.system.angels.exceptions.GestacaoNotFoundException;
 import com.system.angels.repository.AcompanhamentoRepository;
 import com.system.angels.repository.GestacaoRepository;
 import com.system.angels.service.iAcompanhamentoService;
+import com.system.angels.service.iEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ import java.util.List;
 public class AcompanhamentoService implements iAcompanhamentoService {
     private final AcompanhamentoRepository acompanhamentoRepository;
     private final GestacaoRepository gestacaoRepository;
+    private final iEmailService emailService;
 
     @Autowired
-    public AcompanhamentoService(AcompanhamentoRepository acompanhamentoRepository, GestacaoRepository gestacaoRepository) {
+    public AcompanhamentoService(AcompanhamentoRepository acompanhamentoRepository, GestacaoRepository gestacaoRepository, iEmailService emailService) {
         this.acompanhamentoRepository = acompanhamentoRepository;
         this.gestacaoRepository = gestacaoRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -36,7 +39,34 @@ public class AcompanhamentoService implements iAcompanhamentoService {
 
     @Override
     public Acompanhamento registrarAcompanhamento(Acompanhamento acompanhamento) {
-        return acompanhamentoRepository.save(acompanhamento);
+        var savedAcompanhamento = acompanhamentoRepository.save(acompanhamento);
+
+        var gestante = acompanhamento.getGestacao().getGestante();
+
+        var message = "Olá, " + gestante.getNome() + "!\n" +
+                "\n" +
+                "Informamos que um novo acompanhamento gestacional foi registrado. Confira os detalhes:\n" +
+                "\n" +
+                "- Data do Acompanhamento: " + acompanhamento.getDataAcompanhamento() + "\n" +
+                "- Realizado por: " + acompanhamento.getRealizadoPor() + "\n" +
+                "- Tipo de Acompanhamento: " + acompanhamento.getTipo() + "\n" +
+                "- Peso Atual: " + acompanhamento.getPesoAtual() + " kg\n" +
+                "- Idade Gestacional: " + acompanhamento.getIdadeGestacional() + " semanas\n" +
+                "- Pressão Arterial: " + acompanhamento.getPressaoArterial() + "\n" +
+                "- Batimentos Cardíacos do Feto: " +
+                (acompanhamento.getBatimentosCardiacosFeto() != null ? acompanhamento.getBatimentosCardiacosFeto() + " bpm" : "Não medido") + "\n" +
+                "- Altura Uterina: " +
+                (acompanhamento.getAlturaUterina() != null ? acompanhamento.getAlturaUterina() + " cm" : "Não medido") + "\n" +
+                "- Risco IA Identificado: " + (acompanhamento.getRiscoIA() ? "Sim" : "Não") + "\n" +
+                "\n" +
+                "Continue com o acompanhamento regular para um cuidado completo.\n" +
+                "\n" +
+                "Atenciosamente,\n" +
+                "Equipe de Controle de Gestação.";
+
+        emailService.sendEmail(gestante.getEmail(), "Registro de acompanhamento", message);
+
+        return savedAcompanhamento;
     }
 
     @Override
@@ -44,6 +74,31 @@ public class AcompanhamentoService implements iAcompanhamentoService {
         var acompanhamento = acompanhamentoRepository.findById(id).orElseThrow(
                 () -> new AcompanhamentoNotFoundException("Acompanhamento com id " + id + " não encontrado"));
         acompanhamentoRepository.delete(acompanhamento);
+
+        var gestante = acompanhamento.getGestacao().getGestante();
+
+        var message = "Olá, " + gestante.getNome() + "!\n" +
+                "\n" +
+                "Informamos que um acompanhamento gestacional foi deletado com sucesso. Confira os detalhes:\n" +
+                "\n" +
+                "- Data do Acompanhamento: " + acompanhamento.getDataAcompanhamento() + "\n" +
+                "- Realizado por: " + acompanhamento.getRealizadoPor() + "\n" +
+                "- Tipo de Acompanhamento: " + acompanhamento.getTipo() + "\n" +
+                "- Peso Atual: " + acompanhamento.getPesoAtual() + " kg\n" +
+                "- Idade Gestacional: " + acompanhamento.getIdadeGestacional() + " semanas\n" +
+                "- Pressão Arterial: " + acompanhamento.getPressaoArterial() + "\n" +
+                "- Batimentos Cardíacos do Feto: " +
+                (acompanhamento.getBatimentosCardiacosFeto() != null ? acompanhamento.getBatimentosCardiacosFeto() + " bpm" : "Não medido") + "\n" +
+                "- Altura Uterina: " +
+                (acompanhamento.getAlturaUterina() != null ? acompanhamento.getAlturaUterina() + " cm" : "Não medido") + "\n" +
+                "- Risco IA Identificado: " + (acompanhamento.getRiscoIA() ? "Sim" : "Não") + "\n" +
+                "\n" +
+                "Continue com o acompanhamento regular para um cuidado completo.\n" +
+                "\n" +
+                "Atenciosamente,\n" +
+                "Equipe Angels.";
+
+        emailService.sendEmail(gestante.getEmail(), "Dados de acompanhamento deletados", message);
     }
 
     @Override
@@ -58,7 +113,35 @@ public class AcompanhamentoService implements iAcompanhamentoService {
         acompanhamento.setAlturaUterina(acompanhamentoAtualizado.getAlturaUterina());
         acompanhamento.setTipo(acompanhamentoAtualizado.getTipo());
 
-        return acompanhamentoRepository.save(acompanhamento);
+        var savedAcompanhamento = acompanhamentoRepository.save(acompanhamento);
+
+
+        var gestante = acompanhamento.getGestacao().getGestante();
+
+        var message = "Olá, " + gestante.getNome() + "!\n" +
+                "\n" +
+                "Informamos que um acompanhamento gestacional foi atualizado com sucesso. Confira os detalhes:\n" +
+                "\n" +
+                "- Data do Acompanhamento: " + acompanhamento.getDataAcompanhamento() + "\n" +
+                "- Realizado por: " + acompanhamento.getRealizadoPor() + "\n" +
+                "- Tipo de Acompanhamento: " + acompanhamento.getTipo() + "\n" +
+                "- Peso Atual: " + acompanhamento.getPesoAtual() + " kg\n" +
+                "- Idade Gestacional: " + acompanhamento.getIdadeGestacional() + " semanas\n" +
+                "- Pressão Arterial: " + acompanhamento.getPressaoArterial() + "\n" +
+                "- Batimentos Cardíacos do Feto: " +
+                (acompanhamento.getBatimentosCardiacosFeto() != null ? acompanhamento.getBatimentosCardiacosFeto() + " bpm" : "Não medido") + "\n" +
+                "- Altura Uterina: " +
+                (acompanhamento.getAlturaUterina() != null ? acompanhamento.getAlturaUterina() + " cm" : "Não medido") + "\n" +
+                "- Risco IA Identificado: " + (acompanhamento.getRiscoIA() ? "Sim" : "Não") + "\n" +
+                "\n" +
+                "Continue com o acompanhamento regular para um cuidado completo.\n" +
+                "\n" +
+                "Atenciosamente,\n" +
+                "Equipe Angels.";
+
+        emailService.sendEmail(gestante.getEmail(), "Dados de acompanhamento atualizados", message);
+
+        return savedAcompanhamento;
     }
 
     @Override
