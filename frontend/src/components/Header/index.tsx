@@ -1,22 +1,42 @@
 import * as S from './styles';
 import logo from '../../assets/angelsLogo.svg';
 import React, { useEffect, useState } from 'react'; 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '../Button';
+import { LoginModal } from '../LoginModal';
 
 interface HeaderProps {}
 
 export const Header: React.FC<HeaderProps> = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState('HOME');
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setOpen(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setOpen(false);
+  };
 
   const handleClick = (link: string) => {
     setActiveLink(link);
   };
 
-  const dashboardScreen = () => {
-    navigate('/dashboard');
-  };
+  // const dashboardScreen = () => {
+  //   navigate('/dashboard');
+  // };
 
   useEffect(() => {
     setActiveLink('HOME');
@@ -105,10 +125,16 @@ export const Header: React.FC<HeaderProps> = () => {
                   LINKS
                 </Link>
               </S.Li>
-            </S.Ul>
-            <Button label="ACESSE O SISTEMA" buttonFunction={dashboardScreen} size='large'/>
+              </S.Ul>
+            <Button label="ACESSE O SISTEMA" buttonFunction={showModal} size="large" />
           </S.Nav>
         </S.Navigation>
+        <LoginModal
+          open={open}
+          handleCancel={handleCancel}
+          handleOk={handleOk}
+          confirmLoading={confirmLoading}
+        />
       </div>
     </S.Container>
   );
