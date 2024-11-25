@@ -1,9 +1,11 @@
 package com.system.angels.service.impl;
 
 import com.system.angels.domain.Gestacao;
+import com.system.angels.domain.enums.SituacaoGestacional;
 import com.system.angels.dto.create.GestacaoDTO;
 import com.system.angels.dto.response.GestacaoComGestanteDTO;
 import com.system.angels.dto.response.GestacaoRO;
+import com.system.angels.dto.update.AtualizarSitGestacionalDTO;
 import com.system.angels.exceptions.GestacaoNotFoundException;
 import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.exceptions.InvalidRequestException;
@@ -144,6 +146,16 @@ public class GestacaoService implements iGestacaoService {
                 "Equipe de Angels.";
 
         emailService.sendEmail(gestante.getEmail(), "Dados de gestação deletados", message);
+    }
+
+    @Override
+    public void atualizarSituacaoGestacional(Long id, AtualizarSitGestacionalDTO sitGestacionalDTO) {
+        var gestacao = gestacaoRepository.findById(id).orElseThrow(
+            () -> new GestacaoNotFoundException("Gestação com id " + id + " não encontrada"));
+
+        gestacao.setSituacaoGestacional(sitGestacionalDTO.getSituacaoGestacional());
+
+        gestacaoRepository.save(gestacao);
     }
 
     @Override

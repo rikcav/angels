@@ -66,6 +66,9 @@ const SideBar: React.FC = () => {
     navigate('/');
   };
 
+  const professionalRegister = () => {
+    navigate('/professionalRegister');
+  };
   return (
     <SidebarContainer>
       <SidebarItem>
@@ -77,7 +80,7 @@ const SideBar: React.FC = () => {
         <TextItem>Nova Gestação</TextItem>
       </SidebarItem>
 
-      <SidebarItem>
+      <SidebarItem onClick={professionalRegister}>
         <IdentificationBadge size={40} color="#B1488A" />
         <TextItem>Cadastro Profissional</TextItem>
       </SidebarItem>

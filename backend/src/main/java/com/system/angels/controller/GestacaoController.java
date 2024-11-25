@@ -3,6 +3,7 @@ package com.system.angels.controller;
 import com.system.angels.dto.create.GestacaoDTO;
 import com.system.angels.dto.response.GestacaoComGestanteDTO;
 import com.system.angels.dto.response.GestacaoRO;
+import com.system.angels.dto.update.AtualizarSitGestacionalDTO;
 import com.system.angels.service.impl.GestacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,13 @@ public class GestacaoController {
     public ResponseEntity<GestacaoRO> atualizarGestacao(@PathVariable Long id, @RequestBody GestacaoDTO gestacaoDTO) {
         var gestacaoRO = service.atualizarGestacao(id, gestacaoDTO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(gestacaoRO);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> atualizarSitGestacional(@PathVariable Long id, @RequestBody
+        AtualizarSitGestacionalDTO sitGestacionalDTO) {
+        service.atualizarSituacaoGestacional(id, sitGestacionalDTO);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{id}")
