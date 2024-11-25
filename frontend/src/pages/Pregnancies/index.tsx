@@ -11,8 +11,8 @@ import { PregnantInfo } from '../../features/Pregnancies/PregnantInfo';
 import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { Empty } from 'antd';
-import { usePregnanciesHandlers } from '../../features/Pregnancies/hooks/usePregnanciesHandlers';
 import { Pagination } from '../../components/Pagination';
+import { usePregnanciesHandlers } from '../../features/Pregnancies/hooks/usePregnanciesHandlers';
 
 export default function Pregnancies() {
   const params = useParams();
@@ -31,7 +31,8 @@ export default function Pregnancies() {
     handleFollowUp,
     handlePregnancyScreen,
     handleBackArrow,
-    toggleExpandInfo
+    toggleExpandInfo,
+    handlePatchGestacao
   } = usePregnanciesHandlers(pregnantId);
 
   const renderCards = () => {
@@ -49,6 +50,7 @@ export default function Pregnancies() {
           onClickThreeDots={() =>
             handlePregnancyScreen(item?.id || 0, parseInt(params.id || ''))
           }
+          handlePatchGestacao={handlePatchGestacao}
         />
       ));
   };

@@ -37,3 +37,14 @@ export const postGestacao = async (gestacao: PregnancyRegisterInterface) => {
     errorNotification('Erro ao cadastrar gestação, tente novamente');
   }
 };
+
+export const patchGestacao = async (id:number, situacaoGestacional: string) => {
+  try {
+    console.log({situacaoGestacional})
+    const response = await api.patch(`/gestacoes/${id}`, { situacaoGestacional });
+    return response;
+  } catch (error) {
+    errorNotification('Erro ao atualizar situação gestacional, tente novamente');
+    console.log(error)
+  }
+};
