@@ -83,11 +83,11 @@ export const PregnancyCard: React.FC<InfoProps> = ({
             <Plus weight="bold" size={28} color="#B1488A" />
           </S.PregnancyCardButton>
         )}
-        <S.PregnancyCardButton onClick={onClickThreeDots}>
-          <DotsThree weight="bold" size={28} color="#B1488A" />
-        </S.PregnancyCardButton>
         <S.PregnancyCardButton onClick={() => setIsModalOpen(true)}>
           <PencilSimple weight="bold" size={28} color="#B1488A" />
+        </S.PregnancyCardButton>
+        <S.PregnancyCardButton onClick={onClickThreeDots}>
+          <DotsThree weight="bold" size={28} color="#B1488A" />
         </S.PregnancyCardButton>
       </S.PregnancyButtonsContainer>
       <EditStatusModal
