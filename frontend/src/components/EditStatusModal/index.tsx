@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Select, Button } from 'antd';
-import * as S from "./styles";
+import * as S from './styles';
 
 const { Option } = Select;
 
@@ -15,13 +15,13 @@ const EditStatusModal: React.FC<EditStatusModalProps> = ({
   open,
   currentStatus,
   onClose,
-  onSave,
+  onSave
 }) => {
   const [newStatus, setNewStatus] = React.useState(currentStatus);
 
   const handleSave = () => {
-    onSave(newStatus); 
-    onClose(); 
+    onSave(newStatus);
+    onClose();
   };
 
   return (
@@ -33,13 +33,9 @@ const EditStatusModal: React.FC<EditStatusModalProps> = ({
         <Button key="cancel" onClick={onClose}>
           Cancelar
         </Button>,
-        <S.subButton
-          key="save"
-          type="primary"
-          onClick={handleSave}
-        >
+        <S.subButton key="save" type="primary" onClick={handleSave}>
           Salvar
-        </S.subButton>,
+        </S.subButton>
       ]}
     >
       <S.Container>
@@ -50,7 +46,7 @@ const EditStatusModal: React.FC<EditStatusModalProps> = ({
         >
           <Option value="EM_ANDAMENTO">Em andamento</Option>
           <Option value="FINALIZADA_COM_SUCESSO">Finalizada com sucesso</Option>
-          <Option value="FINALIZADA_DESFECHO_NEGATIVO">
+          <Option value="FINALIZADA_COM_DESFECHO_NEGATIVO">
             Finalizada com desfecho negativo
           </Option>
         </Select>
