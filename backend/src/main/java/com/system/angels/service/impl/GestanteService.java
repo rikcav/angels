@@ -7,9 +7,8 @@ import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.exceptions.InvalidRequestException;
 import com.system.angels.repository.DadosEvolutivosRepository;
 import com.system.angels.repository.GestanteRepository;
+import com.system.angels.service.iEmailService;
 import com.system.angels.service.iGestanteService;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,14 @@ import java.util.Random;
 public class GestanteService implements iGestanteService {
     public final GestanteRepository gestanteRepository;
     private final DadosEvolutivosRepository dadosEvolutivosRepository;
+    private final iEmailService emailService;
 
     @Autowired
-    public GestanteService(GestanteRepository gestanteRepository, DadosEvolutivosRepository dadosEvolutivosRepository) {
+    public GestanteService(GestanteRepository gestanteRepository, DadosEvolutivosRepository dadosEvolutivosRepository, iEmailService emailService) {
         this.gestanteRepository = gestanteRepository;
         this.dadosEvolutivosRepository = dadosEvolutivosRepository;
+        this.emailService = emailService;
+
     }
 
     public List<GestanteRO> gestantes() {
@@ -49,6 +51,25 @@ public class GestanteService implements iGestanteService {
         try {
             var gestante = dtoToEntity(gestanteDTO);
             var savedGestante = gestanteRepository.save(gestante);
+
+            var message = "Olá, " + gestante.getNome() + "!\n" +
+                    "\n" +
+                    "Estamos felizes em informar que o seu cadastro foi realizado com sucesso. Aqui estão os detalhes registrados:\n" +
+                    "\n" +
+                    "- Nome: " + gestante.getNome() + "\n" +
+                    "- Data de Nascimento: " + gestante.getDataNascimento() + "\n" +
+                    "- CPF: " + gestante.getCpf() + "\n" +
+                    "- Email: " + gestante.getEmail() + "\n" +
+                    "- Sexo: " + gestante.getSexo() + "\n" +
+                    "- Raça: " + gestante.getRaca() + "\n" +
+                    "\n" +
+                    "Caso tenha dúvidas ou necessite de suporte, estamos à disposição.\n" +
+                    "\n" +
+                    "Atenciosamente,\n" +
+                    "Equipe Angels.";
+
+            emailService.sendEmail(gestanteDTO.email(), "Registro de gestante", message);
+
             return entityToRO(savedGestante);
         } catch (InvalidRequestException e) {
             throw new InvalidRequestException(e.getMessage(), e);
@@ -65,6 +86,24 @@ public class GestanteService implements iGestanteService {
 
             var savedGestante = gestanteRepository.save(updatedGestante);
 
+            var message = "Olá, " + gestante.getNome() + "!\n" +
+                    "\n" +
+                    "Estamos felizes em informar que a sua atualização de dados foi realizado com sucesso. Aqui estão os detalhes atualizados:\n" +
+                    "\n" +
+                    "- Nome: " + gestante.getNome() + "\n" +
+                    "- Data de Nascimento: " + gestante.getDataNascimento() + "\n" +
+                    "- CPF: " + gestante.getCpf() + "\n" +
+                    "- Email: " + gestante.getEmail() + "\n" +
+                    "- Sexo: " + gestante.getSexo() + "\n" +
+                    "- Raça: " + gestante.getRaca() + "\n" +
+                    "\n" +
+                    "Caso tenha dúvidas ou necessite de suporte, estamos à disposição.\n" +
+                    "\n" +
+                    "Atenciosamente,\n" +
+                    "Equipe Angels.";
+
+            emailService.sendEmail(gestanteDTO.email(), "Atualização de dados de gestante", message);
+
             return entityToRO(savedGestante);
         } catch (InvalidRequestException e) {
             throw new InvalidRequestException(e.getMessage(), e);
@@ -76,6 +115,24 @@ public class GestanteService implements iGestanteService {
         var gestante = gestanteRepository.findById(id).orElseThrow(
                 () -> new GestanteNotFoundException("Gestante com o id " + id + " não foi encontrada"));
         gestanteRepository.delete(gestante);
+
+        var message = "Olá, " + gestante.getNome() + "!\n" +
+                "\n" +
+                "Estamos felizes em informar que o seu cadastro foi deletado com sucesso. Aqui estão os dados deletados:\n" +
+                "\n" +
+                "- Nome: " + gestante.getNome() + "\n" +
+                "- Data de Nascimento: " + gestante.getDataNascimento() + "\n" +
+                "- CPF: " + gestante.getCpf() + "\n" +
+                "- Email: " + gestante.getEmail() + "\n" +
+                "- Sexo: " + gestante.getSexo() + "\n" +
+                "- Raça: " + gestante.getRaca() + "\n" +
+                "\n" +
+                "Caso tenha dúvidas ou necessite de suporte, estamos à disposição.\n" +
+                "\n" +
+                "Atenciosamente,\n" +
+                "Equipe Angels.";
+
+        emailService.sendEmail(gestante.getEmail(), "Dados da gestante deletados", message);
     }
 
     private Gestante dtoToEntity(GestanteDTO gestanteDTO) {
@@ -84,6 +141,7 @@ public class GestanteService implements iGestanteService {
         gestante.setId(new Random().nextLong());
         gestante.setNome(gestanteDTO.nome());
         gestante.setDataNascimento(gestanteDTO.dataNascimento());
+        gestante.setEmail(gestanteDTO.email());
         gestante.setCpf(gestanteDTO.cpf());
         gestante.setRaca(gestanteDTO.raca());
         gestante.setSexo(gestanteDTO.sexo());
@@ -100,6 +158,7 @@ public class GestanteService implements iGestanteService {
                 gestante.getNome(),
                 gestante.getDataNascimento(),
                 gestante.getCpf(),
+                gestante.getEmail(),
                 gestante.getSexo(),
                 dadosEvolutivos != null ? dadosEvolutivos.getMunicipio() : null,
                 dadosEvolutivos != null && dadosEvolutivos.isEmRisco(),
@@ -112,35 +171,5 @@ public class GestanteService implements iGestanteService {
                 dadosEvolutivos != null && dadosEvolutivos.isHipertensao(),
                 dadosEvolutivos != null && dadosEvolutivos.isDiabetes(),
                 dadosEvolutivos != null && dadosEvolutivos.isMaFormacaoCongenita());
-    }
-
-    private void validateGestante(GestanteDTO gestanteDTO) {
-        if (gestanteDTO.nome() == null || gestanteDTO.nome().isEmpty()) {
-            throw new InvalidRequestException("Nome is required and cannot be empty.");
-        }
-        if (gestanteDTO.nome().length() > 100) {
-            throw new InvalidRequestException("Nome should not exceed 100 characters.");
-        }
-
-        if (gestanteDTO.cpf() == null || !gestanteDTO.cpf().matches("\\d{11}")) {
-            throw new InvalidRequestException("CPF is required and must contain exactly 11 digits.");
-        }
-
-        if (gestanteDTO.dataNascimento() == null) {
-            throw new InvalidRequestException("Data de Nascimento is required.");
-        }
-        if (gestanteDTO.dataNascimento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isAfter(
-            LocalDate.now())) {
-            throw new InvalidRequestException("Data de Nascimento cannot be in the future.");
-        }
-
-//        List<String> validRaces = List.of("0 - BRANCA", "1 - PRETA", "2 - PARDA", "3 - INDÍGENA", "4 - AMARELA");
-//        if (gestanteDTO.raca() < 0 || gestanteDTO.raca() > 4) {
-//            throw new InvalidRequestException("Raca is invalid. Must be one of the five: " + validRaces);
-//        }
-
-//        if (gestanteDTO.sexo() != null) {
-//            throw new InvalidRequestException("Sexo is required and cannot be null.");
-//        }
     }
 }

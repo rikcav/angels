@@ -7,6 +7,7 @@ import java.util.Date;
 public record GestanteDTO(
         String nome,
         Date dataNascimento,
+        String email,
         String cpf,
         Raca raca,
         Sexo sexo) {

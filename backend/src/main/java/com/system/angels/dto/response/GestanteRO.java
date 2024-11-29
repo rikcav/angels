@@ -9,6 +9,7 @@ public record GestanteRO(
         String nome,
         Date dataNascimento,
         String cpf,
+        String email,
         Sexo sexo,
         String municipio,
         boolean emRisco,
