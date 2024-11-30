@@ -12,7 +12,7 @@ import { GetPregnantByCpf } from '../../services/PregnantServices';
 import { InputMask } from '../InputMask';
 import { ErrorInterface } from '../../types/interfaces/ErrorType';
 import { isValidCpf } from '../../utils/cpfValidator';
-import { successNotification, warningNotification } from '../Notification';
+import { warningNotification } from '../Notification';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();

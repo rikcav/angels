@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useEffect, useState } from 'react';
 import { PregnancyInterface } from '../../types/interfaces/PregnanciesType';
 import { GetPregnancies } from '../../services/PregnancyServices';
+import Cookies from 'js-cookie';
 
 interface DataContextType {
   pregnanciesList: Array<PregnancyInterface>;
@@ -20,6 +21,7 @@ export function DataProvider({ children }: DataProviderProps) {
     Array<PregnancyInterface>
   >([]);
   const [reload, setReload] = useState<number>(0);
+  const authToken = Cookies.get('token');
 
   useEffect(() => {
     const getAllPregnancies = async () => {
@@ -29,7 +31,9 @@ export function DataProvider({ children }: DataProviderProps) {
       }
     };
 
-    getAllPregnancies();
+    if (authToken) {
+      getAllPregnancies();
+    }
   }, [reload]);
 
   function reloadPag() {

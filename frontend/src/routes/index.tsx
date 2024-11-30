@@ -8,28 +8,70 @@ import PregnancyRegister from '../pages/PregnancyRegister';
 import Pregnancies from '../pages/Pregnancies';
 import PregnancyInfo from '../pages/PregnancyInfo';
 import { ProfessionalRegistration } from '../pages/ProfessionalRegister';
+import { PrivateRoutes } from './PrivateRoutes';
+import { PublicRoutes } from './PublicRoutes';
 
 export const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/pregnantRegister/:id?" element={<PregnantRegister />} />
+        <Route
+          path="/pregnantRegister/:id?"
+          element={
+            <PrivateRoutes>
+              <PregnantRegister />
+            </PrivateRoutes>
+          }
+        />
         <Route
           path="/pregnancyFollowUp/:gestacaoId"
-          element={<PregnancyFollowUp />}
+          element={
+            <PrivateRoutes>
+              <PregnancyFollowUp />
+            </PrivateRoutes>
+          }
         />
-        <Route path="/pregnancyRegister/:id" element={<PregnancyRegister />} />
-        <Route path="/pregnantInfo" element={<PregnantInfo />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/pregnancyRegister/:id"
+          element={
+            <PrivateRoutes>
+              <PregnancyRegister />
+            </PrivateRoutes>
+          }
+        />
+        <Route
+          path="/pregnantInfo"
+          element={
+            <PrivateRoutes>
+              <PregnantInfo />
+            </PrivateRoutes>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoutes>
+              <Dashboard />
+            </PrivateRoutes>
+          }
+        />
         <Route path="/pregnancies/:id" element={<Pregnancies />} />
         <Route
           path="/pregnancyInfo/:pregnancyId/:pregnantId"
-          element={<PregnancyInfo />}
+          element={
+            <PrivateRoutes>
+              <PregnancyInfo />
+            </PrivateRoutes>
+          }
         />
         <Route
           path="/professionalRegister"
-          element={<ProfessionalRegistration/>}
+          element={
+            <PublicRoutes>
+              <ProfessionalRegistration />
+            </PublicRoutes>
+          }
         />
       </Routes>
     </BrowserRouter>
