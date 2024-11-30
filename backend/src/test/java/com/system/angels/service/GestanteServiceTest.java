@@ -9,6 +9,7 @@ import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.exceptions.InvalidRequestException;
 import com.system.angels.repository.DadosEvolutivosRepository;
 import com.system.angels.repository.GestanteRepository;
+import com.system.angels.service.impl.EmailService;
 import com.system.angels.service.impl.GestanteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ public class GestanteServiceTest {
     @Mock
     private DadosEvolutivosRepository dadosEvolutivosRepository;
 
+    @Mock
+    private EmailService emailService;
+
     @InjectMocks
     private GestanteService gestanteService;
 
@@ -46,6 +50,7 @@ public class GestanteServiceTest {
         gestanteDTO = new GestanteDTO(
                 "Maria",
                 new Date(),
+                "maria.silva@gmail.com",
                 "12345678901",
                 Raca.NEGRO,
                 Sexo.FEMININO

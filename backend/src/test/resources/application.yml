@@ -31,3 +31,4 @@ spring:
 spring doc:
   swagger-ui:
     path: /swagger-ui.html
+

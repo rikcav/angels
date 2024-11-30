@@ -22,6 +22,7 @@ public class GestanteRepositoryTest {
     private Gestante createGestante(String cpf, String nome) {
         Gestante gestante = new Gestante();
         gestante.setCpf(cpf);
+        gestante.setEmail("maria.silva@gmail.com");
         gestante.setNome(nome);
         gestante.setDataNascimento(java.sql.Date.valueOf(LocalDate.of(1990, 1, 1)));
         gestante.setRaca(Raca.NEGRO);
@@ -85,6 +86,7 @@ public class GestanteRepositoryTest {
     public void testFindAllGestantes() {
         Gestante gestante1 = createGestante("11111111111", "Maria");
         Gestante gestante2 = createGestante("22222222222", "Ana");
+        gestante2.setEmail("maisa.silva@gmail.com");
         gestanteRepository.save(gestante1);
         gestanteRepository.save(gestante2);
 

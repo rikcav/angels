@@ -5,16 +5,22 @@ import com.system.angels.domain.enums.Raca;
 import com.system.angels.domain.enums.Sexo;
 import com.system.angels.dto.create.GestanteDTO;
 import com.system.angels.dto.response.GestanteRO;
+import com.system.angels.security.JwtAuthenticationFilter;
+import com.system.angels.security.JwtUtil;
 import com.system.angels.service.impl.GestanteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 
@@ -24,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(GestanteController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class GestanteControllerTest {
 
     @Autowired
@@ -32,25 +39,40 @@ public class GestanteControllerTest {
     @MockBean
     private GestanteService gestanteService;
 
+    @MockBean
+    private SecurityFilterChain securityFilterChain; // If Spring Security is enabled
+
+    @MockBean
+    private JwtUtil jwtUtil;
+
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     private GestanteDTO gestanteDTO;
     private GestanteRO gestanteRO;
+    private SimpleDateFormat dateFormat;
 
     @BeforeEach
     public void setup() {
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
         gestanteDTO = new GestanteDTO(
                 "Maria Silva",
                 new Date(),
+                "maria.silva@gmail.com",
                 "12345678900",
                 Raca.NEGRO,
                 Sexo.FEMININO);
+
         gestanteRO = new GestanteRO(
                 1L,
                 "Maria Silva",
                 new Date(),
                 "12345678900",
+                "maria.silva@gmail.com",
                 Sexo.FEMININO,
                 "City",
                 false,
@@ -117,9 +139,7 @@ public class GestanteControllerTest {
         mockMvc.perform(put("/gestantes/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(gestanteDTO)))
-                .andExpect(status().isNoContent())
-                .andExpect(jsonPath("$.id").value(gestanteRO.id()))
-                .andExpect(jsonPath("$.nome").value(gestanteRO.nome()));
+                .andExpect(status().isNoContent()); // Align with controller's NO_CONTENT response
     }
 
     @Test

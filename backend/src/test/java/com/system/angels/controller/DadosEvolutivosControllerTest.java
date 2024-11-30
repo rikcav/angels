@@ -6,14 +6,17 @@ import com.system.angels.domain.enums.EstadoCivil;
 import com.system.angels.domain.enums.TipoMoradia;
 import com.system.angels.dto.create.DadosEvolutivosDTO;
 import com.system.angels.dto.response.DadosEvolutivosRO;
+import com.system.angels.security.JwtAuthenticationFilter;
 import com.system.angels.service.iDadosEvolutivosService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -28,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(DadosEvolutivosController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class DadosEvolutivosControllerTest {
 
     @Autowired
@@ -35,6 +39,11 @@ public class DadosEvolutivosControllerTest {
 
     @MockBean
     private iDadosEvolutivosService dadosEvolutivosService;
+
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    private SecurityFilterChain securityFilterChain;
 
     @Autowired
     private ObjectMapper objectMapper;

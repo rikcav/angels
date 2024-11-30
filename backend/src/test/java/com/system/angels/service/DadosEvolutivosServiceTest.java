@@ -12,6 +12,7 @@ import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.repository.DadosEvolutivosRepository;
 import com.system.angels.repository.GestanteRepository;
 import com.system.angels.service.impl.DadosEvolutivosService;
+import com.system.angels.service.impl.EmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,6 +36,9 @@ public class DadosEvolutivosServiceTest {
 
     @Mock
     private GestanteRepository gestanteRepository;
+
+    @Mock
+    private EmailService emailService;
 
     @InjectMocks
     private DadosEvolutivosService dadosEvolutivosService;

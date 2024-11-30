@@ -2,18 +2,24 @@ package com.system.angels.service;
 
 import com.system.angels.domain.Acompanhamento;
 import com.system.angels.domain.Gestacao;
+import com.system.angels.domain.Gestante;
+import com.system.angels.domain.enums.RealizadoPor;
+import com.system.angels.domain.enums.TipoAcompanhamento;
 import com.system.angels.dto.create.CadastrarAcompanhamentoDTO;
 import com.system.angels.exceptions.AcompanhamentoNotFoundException;
 import com.system.angels.exceptions.GestacaoNotFoundException;
 import com.system.angels.repository.AcompanhamentoRepository;
 import com.system.angels.repository.GestacaoRepository;
 import com.system.angels.service.impl.AcompanhamentoService;
+import com.system.angels.service.impl.EmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,24 +36,40 @@ class AcompanhamentoServiceTest {
     @Mock
     private GestacaoRepository gestacaoRepository;
 
+    @Mock
+    private EmailService emailService;
+
     @InjectMocks
     private AcompanhamentoService acompanhamentoService;
 
     private Acompanhamento acompanhamento;
     private Gestacao gestacao;
+    private Gestante gestante;
     private CadastrarAcompanhamentoDTO acompanhamentoDTO;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Setup mock data
+        gestante = new Gestante();
+
         gestacao = new Gestacao();
         gestacao.setId(1L);
+        gestacao.setGestante(gestante);
 
         acompanhamento = new Acompanhamento();
         acompanhamento.setId(1L);
         acompanhamento.setGestacao(gestacao);
+        acompanhamento.setDataAcompanhamento(new Date());
+        acompanhamento.setRealizadoPor(RealizadoPor.MEDICO);
+        acompanhamento.setPesoAtual(BigDecimal.valueOf(70));
+        acompanhamento.setIdadeGestacional(34);
+        acompanhamento.setPressaoArterial("120/80");
+        acompanhamento.setBatimentosCardiacosFeto(80);
+        acompanhamento.setAlturaUterina(15);
+        acompanhamento.setTipo(TipoAcompanhamento.OCORRENCIA);
+        acompanhamento.setRiscoIA(true);
+
 
         acompanhamentoDTO = new CadastrarAcompanhamentoDTO(
                 1L,
@@ -57,7 +79,8 @@ class AcompanhamentoServiceTest {
                 0,
                 null,
                 null,
-                null, null,
+                null,
+                null,
                 true
         );
     }

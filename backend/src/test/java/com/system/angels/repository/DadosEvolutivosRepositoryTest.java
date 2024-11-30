@@ -32,6 +32,7 @@ public class DadosEvolutivosRepositoryTest {
         gestante.setCpf("12345678901");
         gestante.setNome("Maria");
         gestante.setDataNascimento(new Date());
+        gestante.setEmail("maria.silva@gmail.com");
         gestante.setRaca(Raca.NEGRO);
         gestante.setSexo(Sexo.FEMININO);
         gestanteRepository.save(gestante);
