@@ -1,6 +1,8 @@
-import { DotsThree, Plus } from '@phosphor-icons/react';
+import { DotsThree, Plus, PencilSimple } from '@phosphor-icons/react';
 import WhiteLogo from '../../assets/angelsWhiteLogo.svg';
 import * as S from './styles';
+import EditStatusModal from '../EditStatusModal';
+import { useState } from 'react';
 
 interface InfoProps {
   id: number;
@@ -11,6 +13,7 @@ interface InfoProps {
   onClickFunc?: React.MouseEventHandler<HTMLDivElement>;
   onClickAdd?: React.MouseEventHandler<HTMLButtonElement>;
   onClickThreeDots?: React.MouseEventHandler<HTMLButtonElement>;
+  handlePatchGestacao: (gestacaoId: number, situacaoGestacional: string) => Promise<void>;
 }
 
 export const PregnancyCard: React.FC<InfoProps> = ({
@@ -21,14 +24,31 @@ export const PregnancyCard: React.FC<InfoProps> = ({
   gestationalRisk,
   onClickFunc,
   onClickAdd,
-  onClickThreeDots
+  onClickThreeDots,
+  handlePatchGestacao,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [status, setStatus] = useState(pregnancyStatus);
+
+  const handleSaveStatus = async (newStatus: string) => {
+    if (newStatus !== status) {
+      try {
+        await handlePatchGestacao(id, newStatus);
+        setStatus(newStatus);
+        setIsModalOpen(false);
+      } catch (error) {
+        console.error('Erro ao atualizar o status da gestação:', error);
+      }
+    }
+  };
+
   const pregnancyStatusDescription =
-    pregnancyStatus == 'EM_ANDAMENTO'
+    pregnancyStatus === 'EM_ANDAMENTO'
       ? 'Em andamento'
-      : pregnancyStatus == 'FINALIZADA_COM_SUCESSO'
+      : pregnancyStatus === 'FINALIZADA_COM_SUCESSO'
       ? 'Finalizada com sucesso'
       : 'Finalizada com desfecho negativo';
+
   return (
     <S.PregnancyCardContainer>
       <S.PregnancyInfoContainer onClick={onClickFunc}>
@@ -58,17 +78,24 @@ export const PregnancyCard: React.FC<InfoProps> = ({
         </S.PregnancyInfoTextContainer>
       </S.PregnancyInfoContainer>
       <S.PregnancyButtonsContainer>
-        {pregnancyStatus == 'EM_ANDAMENTO' ? (
+        {pregnancyStatus === 'EM_ANDAMENTO' && (
           <S.PregnancyCardButton onClick={onClickAdd}>
             <Plus weight="bold" size={28} color="#B1488A" />
           </S.PregnancyCardButton>
-        ) : (
-          <></>
         )}
+        <S.PregnancyCardButton onClick={() => setIsModalOpen(true)}>
+          <PencilSimple weight="bold" size={28} color="#B1488A" />
+        </S.PregnancyCardButton>
         <S.PregnancyCardButton onClick={onClickThreeDots}>
           <DotsThree weight="bold" size={28} color="#B1488A" />
         </S.PregnancyCardButton>
       </S.PregnancyButtonsContainer>
+      <EditStatusModal
+        open={isModalOpen}
+        currentStatus={status}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSaveStatus}
+      />
     </S.PregnancyCardContainer>
   );
 };
