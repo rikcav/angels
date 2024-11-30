@@ -1,8 +1,13 @@
-import * as S from "./styles";
-import React from 'react';
+import * as S from './styles';
+import React, { useState } from 'react';
 import { Modal } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Checkbox, Form, Flex } from 'antd';
+import { Form } from 'antd';
+import { userLogin } from '../../services/UserServices';
+import { UserLogin } from '../../types/interfaces/UserType';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import { successNotification } from '../Notification';
 
 interface LoginProps {
   open: boolean;
@@ -15,56 +20,86 @@ export const LoginModal: React.FC<LoginProps> = ({
   open,
   handleCancel,
   handleOk,
-  confirmLoading,
+  confirmLoading
 }) => {
-    const onFinish = (values: any) => {
-        console.log('Received values of form: ', values);
-    };
-    return (
-        <Modal
-        open={open}
-        onOk={handleOk}
-        confirmLoading={confirmLoading}
-        onCancel={handleCancel}
-        footer={null}
-        >     
-            <S.container>
-                <Form
-                name="login"
-                initialValues={{ remember: true }}
-                style={{ maxWidth: 360 }}
-                onFinish={onFinish}
-                
-                >
-                    <S.title>Login</S.title>
-                    <Form.Item
-                        name="email"
-                        rules={[{ required: true, message: 'Por favor insira seu e-mail!' }]}
-                    >
-                        <S.input prefix={<UserOutlined color="#B1488A"/>} placeholder="E-mail" />
-                    </Form.Item>
-                    <Form.Item
-                        name="senha"
-                        rules={[{ required: true, message: 'Por favor insira sua senha!' }]}
-                    >
-                        <S.input prefix={<LockOutlined  color="#B1488A"/>}  type="password" placeholder="Senha" />
-                    </Form.Item>
-                    <Form.Item>
-                        <Flex justify="space-between" align="center">
-                        <Form.Item name="remember" valuePropName="checked" noStyle>
-                            <Checkbox>Lembre-se de mim</Checkbox>
-                        </Form.Item>
-                        <S.link href="">Esqueci minha senha</S.link>
-                        </Flex>
-                    </Form.Item>
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-                    <Form.Item>
-                        <S.subButton block htmlType="submit">
-                        Entrar
-                        </S.subButton>
-                    </Form.Item>
-                </Form>
-            </S.container>
-        </Modal>
-    );
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const data: UserLogin = {
+    username: username,
+    password: password
+  };
+
+  const login = async () => {
+    const response = await userLogin(data);
+    if (response?.status === 200) {
+      const token = response.data;
+      Cookies.set('token', token, { expires: 7, secure: true });
+      successNotification('Login realizado com sucesso');
+      navigate('/dashboard');
+    }
+  };
+
+  const handleRegister = async () => {
+    navigate('/professionalRegister');
+  };
+
+  return (
+    <Modal
+      open={open}
+      onOk={handleOk}
+      confirmLoading={confirmLoading}
+      onCancel={handleCancel}
+      footer={null}
+    >
+      <S.container>
+        <Form
+          name="login"
+          initialValues={{ remember: true }}
+          style={{ maxWidth: 360 }}
+        >
+          <S.title>Login</S.title>
+          <Form.Item
+            name="usuario"
+            rules={[
+              { required: true, message: 'Por favor insira seu usuário!' }
+            ]}
+          >
+            <S.input
+              prefix={<UserOutlined color="#B1488A" />}
+              placeholder="Usuário"
+              onChange={handleUsernameChange}
+            />
+          </Form.Item>
+          <Form.Item
+            name="senha"
+            rules={[{ required: true, message: 'Por favor insira sua senha!' }]}
+          >
+            <S.input
+              prefix={<LockOutlined color="#B1488A" />}
+              type="password"
+              placeholder="Senha"
+              onChange={handlePasswordChange}
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <S.subButton block htmlType="submit" onClick={login}>
+              Entrar
+            </S.subButton>
+          </Form.Item>
+          <S.link onClick={handleRegister}>Cadastre-se</S.link>
+        </Form>
+      </S.container>
+    </Modal>
+  );
 };

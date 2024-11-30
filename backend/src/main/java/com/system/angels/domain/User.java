@@ -19,6 +19,8 @@ public class User implements UserDetails {
     private String username;
     @Column(unique = true, nullable = false)
     private String password;
+    @Column(nullable = false)
+    private String name;
     @Column
     private String role = "USER";
 

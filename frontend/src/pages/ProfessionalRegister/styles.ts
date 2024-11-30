@@ -9,6 +9,13 @@ export const Container = styled.div`
   padding: 2rem;
 `;
 
+export const ErrorMessage = styled.span`
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+`;
+
 export const Card = styled.div`
   width: 80%;
   height: 80%;
@@ -29,26 +36,25 @@ export const Card = styled.div`
 
 export const Title = styled.h2`
   text-align: center;
-  color: #9D0B67;
+  color: #9d0b67;
   font-weight: 600;
-  font-size:30px;
+  font-size: 30px;
   margin: 20px;
 `;
 
 export const AngelsImage = styled.div`
-    display: flex;
-    justify-content:center;
-    img {
-        margin-top: 1rem;
-        width: 10%;
-    }
+  display: flex;
+  justify-content: center;
+  img {
+    margin-top: 1rem;
+    width: 10%;
+  }
 `;
 
 export const buttonDiv = styled.div`
-    display: flex;
-    justify-content:center;
+  display: flex;
+  justify-content: center;
 `;
-
 
 export const StyledButton = styled(Button)`
   background-color: var(--red-500);

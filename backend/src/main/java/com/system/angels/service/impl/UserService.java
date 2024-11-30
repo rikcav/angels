@@ -46,6 +46,11 @@ public class UserService {
     }
 
     public UserRO createUser(UserRegisterDTO userRegisterDTO) {
+        var existingUser = repository.findByUsername(userRegisterDTO.username());
+        if (existingUser.isPresent()) {
+            throw new UserNotFoundException("Usuário já cadastrado");
+        }
+
         var user = dtoToEntity(userRegisterDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         var savedUser = repository.save(user);
@@ -75,6 +80,7 @@ public class UserService {
 
         user.setUsername(userRegisterDTO.username());
         user.setPassword(userRegisterDTO.password());
+        user.setName(userRegisterDTO.name());
 
         return user;
     }
