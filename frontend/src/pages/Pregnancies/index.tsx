@@ -43,7 +43,7 @@ export default function Pregnancies() {
         <PregnancyCard
           key={index}
           id={item.id || 0}
-          gestationalRisk={item.riscoIA || false}
+          gestationalRisk={item.riscoIA || 'NAO_INFORMADO'}
           pregnancyStatus={item.situacaoGestacional}
           weeks={currentDate.diff(item.dataInicioGestacao, 'weeks').toString()}
           onClickAdd={() => handleFollowUp(item?.id || 0)}

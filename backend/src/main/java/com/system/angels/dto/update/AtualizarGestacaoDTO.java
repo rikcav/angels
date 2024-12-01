@@ -2,6 +2,7 @@ package com.system.angels.dto.update;
 
 import com.system.angels.domain.enums.FatorRH;
 import com.system.angels.domain.enums.GrupoSanguineo;
+import com.system.angels.domain.enums.RiscoIA;
 import com.system.angels.domain.enums.SituacaoGestacional;
 import com.system.angels.domain.enums.UsoAlcool;
 import com.system.angels.domain.enums.UsoDrogas;
@@ -35,7 +36,7 @@ public class AtualizarGestacaoDTO {
     private int riscoGestacional;
     private boolean vacinaHepatiteB;
     private SituacaoGestacional situacaoGestacional;
-    private boolean riscoIA;
+    private RiscoIA riscoIA;
     private String username;
 
     public AtualizarGestacaoDTO(Gestacao gestacao) {
@@ -55,7 +56,7 @@ public class AtualizarGestacaoDTO {
         this.riscoGestacional = gestacao.getRiscoGestacional();
         this.vacinaHepatiteB = gestacao.isVacinaHepatiteB();
         this.situacaoGestacional = gestacao.getSituacaoGestacional();
-        this.riscoIA = gestacao.isRiscoIA();
+        this.riscoIA = gestacao.getRiscoIA();
     }
     
 }

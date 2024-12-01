@@ -8,6 +8,7 @@ import { ErrorInterface } from '../../../types/interfaces/ErrorType';
 import { PregnancyFollowUpSchema } from '../../../types/schemas/FollowUpRegisterSchema';
 import { FollowUpInterface } from '../../../types/interfaces/PregnancyFollowUpType';
 import Cookies from 'js-cookie';
+import { successNotification } from '../../../components/Notification';
 
 export function usePregnancyFollowUpHandlers(gestacaoId: number) {
   const navigate = useNavigate();
@@ -134,6 +135,7 @@ export function usePregnancyFollowUpHandlers(gestacaoId: number) {
         authToken || ''
       );
       if (response?.status == 201) {
+        successNotification('Acompanhamento cadastrado!');
         navigate(`/pregnancies/${gestanteId}`);
       }
     } catch (error) {

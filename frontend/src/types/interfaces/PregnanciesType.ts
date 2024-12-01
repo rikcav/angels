@@ -2,7 +2,7 @@ export interface PregnancyInterface {
   id?: number;
   gestanteId?: number;
   nomeGestante?: string;
-  riscoIA?: boolean;
+  riscoIA?: string;
   consumoAlcool: boolean;
   frequenciaUsoAlcool: number;
   dataUltimaMenstruacao: string;
@@ -36,5 +36,5 @@ export interface PregnancyRegisterInterface {
   usoDrogas: string | undefined;
   vacinaHepatiteB: boolean | undefined;
   consumoAlcool: boolean | undefined;
-  riscoIA: boolean | undefined;
+  riscoIA: String | undefined;
 }

@@ -3,6 +3,7 @@ package com.system.angels.dto.response;
 import com.system.angels.domain.Gestacao;
 import com.system.angels.domain.enums.FatorRH;
 import com.system.angels.domain.enums.GrupoSanguineo;
+import com.system.angels.domain.enums.RiscoIA;
 import com.system.angels.domain.enums.SituacaoGestacional;
 import com.system.angels.domain.enums.UsoAlcool;
 import com.system.angels.domain.enums.UsoDrogas;
@@ -36,7 +37,7 @@ public class GestacaoComGestanteDTO {
   private int riscoGestacional;
   private boolean vacinaHepatiteB;
   private SituacaoGestacional situacaoGestacional;
-  private boolean riscoIA;
+  private RiscoIA riscoIA;
 
   public GestacaoComGestanteDTO(Gestacao gestacao) {
     this.id = gestacao.getId();
@@ -56,6 +57,6 @@ public class GestacaoComGestanteDTO {
     this.riscoGestacional = gestacao.getRiscoGestacional();
     this.vacinaHepatiteB = gestacao.isVacinaHepatiteB();
     this.situacaoGestacional = gestacao.getSituacaoGestacional();
-    this.riscoIA = gestacao.isRiscoIA();
+    this.riscoIA = gestacao.getRiscoIA();
   }
 }
