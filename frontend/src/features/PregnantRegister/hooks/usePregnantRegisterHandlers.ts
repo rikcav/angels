@@ -19,10 +19,14 @@ import {
   pregnantSchemaPartTwoFirstPregnant
 } from '../../../types/schemas/PregnantRegisterSchema';
 import { isValidCpf } from '../../../utils/cpfValidator';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 export function usePregnantRegisterHandlers() {
   const navigate = useNavigate();
   const params = useParams();
+  const authToken = Cookies.get('token');
+  const decodedToken = jwtDecode(authToken || '');
 
   const [progress, setProgress] = useState<boolean>(false);
   const [progressBar, setProgressBar] = useState<number>(0);
@@ -38,6 +42,7 @@ export function usePregnantRegisterHandlers() {
   const [familyIncome, setFamilyIncome] = useState<string>('');
   const [city, setCity] = useState<string>('');
   const [housing, setHousing] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
   const [electricity, setElectricity] = useState<boolean>();
   const [sewageNetwork, setSewageNetwork] = useState<boolean>();
   const [treatedWater, setTreatedWater] = useState<boolean>();
@@ -80,6 +85,11 @@ export function usePregnantRegisterHandlers() {
     useState<boolean>(false);
 
   const [errorName, setErrorName] = useState<ErrorInterface>({
+    errorType: '',
+    errorShow: false
+  });
+
+  const [errorEmail, setErrorEmail] = useState<ErrorInterface>({
     errorType: '',
     errorShow: false
   });
@@ -198,7 +208,10 @@ export function usePregnantRegisterHandlers() {
   useEffect(() => {
     const getPregnantEvolutionData = async () => {
       if (params.id) {
-        const response = await GetPregnantEvolutionData(parseInt(params.id));
+        const response = await GetPregnantEvolutionData(
+          parseInt(params.id),
+          authToken || ''
+        );
         if (response?.status === 200) {
           const data = response.data[response.data.length - 1];
 
@@ -265,6 +278,17 @@ export function usePregnantRegisterHandlers() {
       setErrorName({ errorType: 'error', errorShow: true });
     }
     setName(value);
+  };
+
+  const handleChangeEmail = (e: { target: { value: string } }) => {
+    const { value } = e.target;
+    try {
+      pregnantSchemaPartOne.shape.email.parse(value);
+      setErrorEmail({ errorType: '', errorShow: false });
+    } catch (error) {
+      setErrorEmail({ errorType: 'error', errorShow: true });
+    }
+    setEmail(value);
   };
 
   const handleChangeBirthDate = (
@@ -602,6 +626,7 @@ export function usePregnantRegisterHandlers() {
     raca: race,
     sexo: gender,
     cpf: cpf,
+    email: email,
     chefeFamilia: headOfHousehold,
     emRisco: risc,
     estadoCivil: maritalStatus,
@@ -649,7 +674,9 @@ export function usePregnantRegisterHandlers() {
       dataNascimento: birthDate?.toString(),
       raca: race,
       sexo: gender,
-      cpf: cpf
+      cpf: cpf,
+      email: email,
+      username: decodedToken ? decodedToken.sub : ''
     },
     dadosEvolutivos: {
       gestanteId: 0,
@@ -692,7 +719,10 @@ export function usePregnantRegisterHandlers() {
 
   const postPregnant = async () => {
     if (pregnantData.gestante) {
-      const response = await PostPregnant(pregnantData.gestante);
+      const response = await PostPregnant(
+        pregnantData.gestante,
+        authToken || ''
+      );
       if (response?.status == 201) {
         const gestanteId = response.data.id;
         if (pregnantData.dadosEvolutivos != undefined) {
@@ -710,7 +740,8 @@ export function usePregnantRegisterHandlers() {
     if (params.id && pregnantData.dadosEvolutivos) {
       pregnantData.dadosEvolutivos.gestanteId = parseInt(params.id);
       const response = await PostPregnantEvolutionData(
-        pregnantData.dadosEvolutivos
+        pregnantData.dadosEvolutivos,
+        authToken || ''
       );
       if (response?.status == 200) {
         successNotification('Dados atualizados com sucesso!');
@@ -718,7 +749,8 @@ export function usePregnantRegisterHandlers() {
       }
     } else if (pregnantData.dadosEvolutivos) {
       const response = await PostPregnantEvolutionData(
-        pregnantData.dadosEvolutivos
+        pregnantData.dadosEvolutivos,
+        authToken || ''
       );
 
       if (response?.status == 201) {
@@ -758,7 +790,7 @@ export function usePregnantRegisterHandlers() {
         postPregnant();
       }
       setProgressBar(100);
-      navigate('/dashboard');
+      // navigate('/dashboard');
     } catch (error) {
       if (error instanceof ZodError) {
         warningNotification(error.errors[0].message);
@@ -774,6 +806,7 @@ export function usePregnantRegisterHandlers() {
     progress,
     progressBar,
     name,
+    email,
     birthDate,
     race,
     gender,
@@ -833,6 +866,7 @@ export function usePregnantRegisterHandlers() {
     errorDeliveries,
     errorVaginalDeliveries,
     errorCesareanDeliveries,
+    errorEmail,
     blockName,
     blockBirth,
     blockRace,
@@ -881,6 +915,7 @@ export function usePregnantRegisterHandlers() {
     handleChangeTwinFamilyHistory,
     handleSetProgress,
     Register,
-    handleBackArrow
+    handleBackArrow,
+    handleChangeEmail
   };
 }

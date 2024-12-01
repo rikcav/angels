@@ -10,5 +10,7 @@ public record GestanteDTO(
         String email,
         String cpf,
         Raca raca,
-        Sexo sexo) {
+        Sexo sexo,
+        String username
+) {
 }

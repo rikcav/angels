@@ -7,6 +7,7 @@ import { message, RadioChangeEvent } from 'antd';
 import { ErrorInterface } from '../../../types/interfaces/ErrorType';
 import { PregnancyFollowUpSchema } from '../../../types/schemas/FollowUpRegisterSchema';
 import { FollowUpInterface } from '../../../types/interfaces/PregnancyFollowUpType';
+import Cookies from 'js-cookie';
 
 export function usePregnancyFollowUpHandlers(gestacaoId: number) {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export function usePregnancyFollowUpHandlers(gestacaoId: number) {
   const [radio, setRadio] = useState<string>('');
   const [type, setType] = useState<string>('');
   const [date, setDate] = useState<string | string[]>();
+  const authToken = Cookies.get('token');
 
   const [weightError, setWeightError] = useState<ErrorInterface>({
     errorShow: false,
@@ -37,8 +39,8 @@ export function usePregnancyFollowUpHandlers(gestacaoId: number) {
 
   useEffect(() => {
     const fetchPregnancy = async () => {
-      const data = await GetPregnancyById(gestacaoId);
-      setGestanteId(data?.data.gestante_id);
+      const data = await GetPregnancyById(gestacaoId, authToken || '');
+      setGestanteId(data?.data.gestanteId);
     };
     fetchPregnancy();
   }, [gestacaoId]);
@@ -126,8 +128,14 @@ export function usePregnancyFollowUpHandlers(gestacaoId: number) {
 
     try {
       PregnancyFollowUpSchema.parse(data);
-      await postAcompanhamento(gestacaoId, data);
-      navigate(`/pregnancies/${gestanteId}`);
+      const response = await postAcompanhamento(
+        gestacaoId,
+        data,
+        authToken || ''
+      );
+      if (response?.status == 201) {
+        navigate(`/pregnancies/${gestanteId}`);
+      }
     } catch (error) {
       if (error instanceof ZodError) {
         message.error(error.issues[0].message);

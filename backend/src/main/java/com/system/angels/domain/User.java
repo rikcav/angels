@@ -1,6 +1,7 @@
 package com.system.angels.domain;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +18,18 @@ public class User implements UserDetails {
     private Long id;
     @Column(unique = true, nullable = false)
     private String username;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    private String name;
     @Column
     private String role = "USER";
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Gestacao> gestacoes;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Gestante> gestantes;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

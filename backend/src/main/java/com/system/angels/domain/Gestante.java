@@ -17,6 +17,11 @@ public class Gestante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
+    @JsonIgnore
+    private User user;
+
     @Column(nullable = false)
     private String nome;
 

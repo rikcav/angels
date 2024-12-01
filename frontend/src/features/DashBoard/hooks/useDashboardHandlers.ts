@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useData } from '../../../config/Data/UseData';
 
 export function useDashboardHandlers() {
-  const { pregnanciesList } = useData();
+  const { pregnanciesList, reloadPag } = useData();
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [searchName, setSearchName] = useState<string>('');
+
+  useEffect(() => {
+    reloadPag();
+  }, []);
 
   const handleChangeName = (e: { target: { value: string } }) => {
     setSearchName(e.target.value);

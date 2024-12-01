@@ -9,8 +9,10 @@ import com.system.angels.dto.update.AtualizarSitGestacionalDTO;
 import com.system.angels.exceptions.GestacaoNotFoundException;
 import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.exceptions.InvalidRequestException;
+import com.system.angels.exceptions.UserNotFoundException;
 import com.system.angels.repository.GestacaoRepository;
 import com.system.angels.repository.GestanteRepository;
+import com.system.angels.repository.UserRepository;
 import com.system.angels.service.iEmailService;
 import com.system.angels.service.iGestacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,14 @@ import java.util.Random;
 public class GestacaoService implements iGestacaoService {
     public final GestacaoRepository gestacaoRepository;
     public final GestanteRepository gestanteRepository;
+    public final UserRepository userRepository;
     private final iEmailService emailService;
 
     @Autowired
-    public GestacaoService(GestacaoRepository gestacaoRepository, GestanteRepository gestanteRepository, iEmailService emailService) {
+    public GestacaoService(GestacaoRepository gestacaoRepository, GestanteRepository gestanteRepository, iEmailService emailService, UserRepository userRepository) {
         this.gestacaoRepository = gestacaoRepository;
         this.gestanteRepository = gestanteRepository;
+        this.userRepository = userRepository;
         this.emailService = emailService;
     }
 
@@ -76,10 +80,11 @@ public class GestacaoService implements iGestacaoService {
 
     @Override
     public List<GestacaoComGestanteDTO> gestacoes() {
-//        var gestacoesDTO = gestacoes.stream()
-//            .map(GestacaoComGestanteDTO::new)
-//            .toList();
         return gestacaoRepository.findAll().stream().map(GestacaoComGestanteDTO::new).toList();
+    }
+
+    public List<GestacaoComGestanteDTO> gestacoesPorUsuario(String username) {
+        return gestacaoRepository.findByUser_Username(username).stream().map(GestacaoComGestanteDTO::new).toList();
     }
 
     @Override
@@ -168,6 +173,8 @@ public class GestacaoService implements iGestacaoService {
     private Gestacao dtoToEntity(GestacaoDTO gestacaoDTO) {
         var gestante = gestanteRepository.findById(gestacaoDTO.gestante_id()).orElseThrow(
                 () -> new GestanteNotFoundException("Gestante com o id " + gestacaoDTO.gestante_id() + " não foi encontrada"));
+        var user = userRepository.findByUsername(gestacaoDTO.username()).orElseThrow(
+            () -> new UserNotFoundException("Usuário não encontrado"));
 
         var gestacao = new Gestacao();
 
@@ -188,6 +195,7 @@ public class GestacaoService implements iGestacaoService {
         gestacao.setVacinaHepatiteB(gestacaoDTO.vacinaHepatiteB());
         gestacao.setSituacaoGestacional(gestacaoDTO.situacaoGestacional());
         gestacao.setRiscoIA(gestacaoDTO.riscoIA());
+        gestacao.setUser(user);
 
         return gestacao;
     }

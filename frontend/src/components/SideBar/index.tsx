@@ -1,9 +1,10 @@
+import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { CpfModal } from './styles';
 import { UserCircle } from '@phosphor-icons/react';
 
 import { SidebarContainer, SidebarItem, TextItem } from './styles';
-import { SignOut, IdentificationBadge } from '@phosphor-icons/react';
+import { SignOut } from '@phosphor-icons/react';
 
 import Logo from '../../assets/angelsLogo.svg';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +16,7 @@ import { warningNotification } from '../Notification';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
+  const authToken = Cookies.get('token');
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -36,7 +38,7 @@ const SideBar: React.FC = () => {
   };
 
   const getPregnantByCpf = async (cpf: string) => {
-    const response = await GetPregnantByCpf(cpf);
+    const response = await GetPregnantByCpf(cpf, authToken || '');
     const id = response?.data.id;
     if (response?.status == 200) {
       navigate(`/pregnancyRegister/${id}`);
@@ -62,13 +64,16 @@ const SideBar: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const homeScreen = () => {
+  const signOut = () => {
+    Cookies.remove('token');
+    warningNotification('Usuário deslogado!');
     navigate('/');
   };
 
-  const professionalRegister = () => {
-    navigate('/professionalRegister');
-  };
+  // const professionalRegister = () => {
+  //   navigate('/professionalRegister');
+  // };
+
   return (
     <SidebarContainer>
       <SidebarItem>
@@ -80,12 +85,12 @@ const SideBar: React.FC = () => {
         <TextItem>Nova Gestação</TextItem>
       </SidebarItem>
 
-      <SidebarItem onClick={professionalRegister}>
+      {/* <SidebarItem onClick={professionalRegister}>
         <IdentificationBadge size={40} color="#B1488A" />
         <TextItem>Cadastro Profissional</TextItem>
-      </SidebarItem>
+      </SidebarItem> */}
 
-      <SidebarItem onClick={homeScreen}>
+      <SidebarItem onClick={signOut}>
         <SignOut size={40} color="#B1488A" />
         <TextItem>Sair</TextItem>
       </SidebarItem>

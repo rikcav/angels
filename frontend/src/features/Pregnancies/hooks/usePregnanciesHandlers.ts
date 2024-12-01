@@ -4,9 +4,11 @@ import { GetPregnantInfo } from '../../../services/PregnantServices';
 import { GetPregnanciesByPregnantId } from '../../../services/PregnancyServices';
 import { PregnancyInterface } from '../../../types/interfaces/PregnanciesType';
 import { patchGestacao } from '../../../services/PregnancyServices';
+import Cookies from 'js-cookie';
 
 export function usePregnanciesHandlers(pregnantId: number) {
   const navigate = useNavigate();
+  const authToken = Cookies.get('token');
 
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
@@ -19,14 +21,17 @@ export function usePregnanciesHandlers(pregnantId: number) {
 
   useEffect(() => {
     const pregnanciesRequest = async () => {
-      const requestResponse = await GetPregnanciesByPregnantId(pregnantId);
+      const requestResponse = await GetPregnanciesByPregnantId(
+        pregnantId,
+        authToken || ''
+      );
       if (requestResponse?.status === 200) {
         setPregnanciesData(requestResponse.data);
       }
     };
 
     const getPregnantInfo = async () => {
-      const response = await GetPregnantInfo(pregnantId);
+      const response = await GetPregnantInfo(pregnantId, authToken || '');
       if (response?.status === 200) {
         setName(response.data.nome);
         setCpf(response.data.cpf);
@@ -73,17 +78,24 @@ export function usePregnanciesHandlers(pregnantId: number) {
     setToggleInfo((prev) => !prev);
   };
 
-  const handlePatchGestacao = async (gestacaoId: number, situacaoGestacional: string) => {
-      const response = await patchGestacao(gestacaoId, situacaoGestacional);
-      if (response?.status === 200) {
-        setPregnanciesData((prev) =>
-          prev.map((gestacao) =>
-            gestacao.id === gestacaoId
-              ? { ...gestacao, situacaoGestacional }
-              : gestacao
-          )
-        );
-      }
+  const handlePatchGestacao = async (
+    gestacaoId: number,
+    situacaoGestacional: string
+  ) => {
+    const response = await patchGestacao(
+      gestacaoId,
+      situacaoGestacional,
+      authToken || ''
+    );
+    if (response?.status === 200) {
+      setPregnanciesData((prev) =>
+        prev.map((gestacao) =>
+          gestacao.id === gestacaoId
+            ? { ...gestacao, situacaoGestacional }
+            : gestacao
+        )
+      );
+    }
   };
   return {
     currentPage,
@@ -99,6 +111,6 @@ export function usePregnanciesHandlers(pregnantId: number) {
     handlePregnancyScreen,
     handleBackArrow,
     toggleExpandInfo,
-    handlePatchGestacao,
+    handlePatchGestacao
   };
 }

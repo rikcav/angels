@@ -11,6 +11,8 @@ export interface PregnantInfoInterface {
   cpf?: string;
   raca?: string;
   sexo?: string;
+  email?: string;
+  username?: string;
 }
 
 export interface EvolutionDataInterface {

@@ -22,6 +22,7 @@ import {
 import { successNotification } from '../../components/Notification';
 import { PregnantDetails } from '../../components/PregnantDetails';
 import { ErrorInterface } from '../../types/interfaces/ErrorType';
+import Cookies from 'js-cookie';
 import { pregnantSchemaPartOne } from '../../types/schemas/PregnantRegisterSchema';
 interface PregantReposnseInterface {
   id?: number;
@@ -53,6 +54,7 @@ export default function PregnantInfo() {
   const [gender, setGender] = useState<string>('');
   const [cpf, setCpf] = useState<string>('');
   const [reload, setReload] = useState<number>(0);
+  const authToken = Cookies.get('token');
 
   const [errorName, setErrorName] = useState<ErrorInterface>({
     errorType: '',
@@ -146,7 +148,7 @@ export default function PregnantInfo() {
 
   useEffect(() => {
     const getPregnantInfo = async () => {
-      const response = await GetPregnantInfo(1);
+      const response = await GetPregnantInfo(1, authToken || '');
       if (response?.status == 200) {
         setPregnantInfo(response.data);
         setName(response.data.nome);
@@ -172,7 +174,7 @@ export default function PregnantInfo() {
   };
 
   const putPregnant = async () => {
-    const response = await PutPregnant(1, updateData);
+    const response = await PutPregnant(1, updateData, authToken || '');
     if (response?.status == 200) {
       successNotification('Gestante atualizada com sucesso!');
       reloadPag();
@@ -181,7 +183,7 @@ export default function PregnantInfo() {
   };
 
   const deletePregnant = async () => {
-    const response = await DeletePregnant(1);
+    const response = await DeletePregnant(1, authToken || '');
     if (response?.status == 200) {
       successNotification('Gestante deletada com sucesso!');
       dashBoardScreen();

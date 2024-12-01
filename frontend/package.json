@@ -13,6 +13,8 @@
     "@phosphor-icons/react": "^2.0.15",
     "antd": "^5.14.1",
     "axios": "^1.6.7",
+    "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -23,6 +25,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "@types/jwt-decode": "^3.1.0",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@types/react-input-mask": "^3.0.5",

@@ -1,12 +1,15 @@
 package com.system.angels.service.impl;
 
 import com.system.angels.domain.Gestante;
+import com.system.angels.domain.User;
 import com.system.angels.dto.create.GestanteDTO;
 import com.system.angels.dto.response.GestanteRO;
 import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.exceptions.InvalidRequestException;
+import com.system.angels.exceptions.UserNotFoundException;
 import com.system.angels.repository.DadosEvolutivosRepository;
 import com.system.angels.repository.GestanteRepository;
+import com.system.angels.repository.UserRepository;
 import com.system.angels.service.iEmailService;
 import com.system.angels.service.iGestanteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +22,15 @@ import java.util.Random;
 public class GestanteService implements iGestanteService {
     public final GestanteRepository gestanteRepository;
     private final DadosEvolutivosRepository dadosEvolutivosRepository;
+    private final UserRepository userRepository;
     private final iEmailService emailService;
 
     @Autowired
-    public GestanteService(GestanteRepository gestanteRepository, DadosEvolutivosRepository dadosEvolutivosRepository, iEmailService emailService) {
+    public GestanteService(GestanteRepository gestanteRepository, DadosEvolutivosRepository dadosEvolutivosRepository, iEmailService emailService, UserRepository userRepository) {
         this.gestanteRepository = gestanteRepository;
         this.dadosEvolutivosRepository = dadosEvolutivosRepository;
         this.emailService = emailService;
-
+        this.userRepository = userRepository;
     }
 
     public List<GestanteRO> gestantes() {
@@ -47,9 +51,11 @@ public class GestanteService implements iGestanteService {
     }
 
     public GestanteRO registrarGestante(GestanteDTO gestanteDTO) {
-        System.out.println(gestanteDTO);
+        var user = userRepository.findByUsername(gestanteDTO.username()).orElseThrow(
+            () -> new UserNotFoundException("Usuário não encontrado"));
+
         try {
-            var gestante = dtoToEntity(gestanteDTO);
+            var gestante = dtoToEntity(gestanteDTO, user);
             var savedGestante = gestanteRepository.save(gestante);
 
             var message = "Olá, " + gestante.getNome() + "!\n" +
@@ -80,8 +86,10 @@ public class GestanteService implements iGestanteService {
         try {
             var gestante = gestanteRepository.findById(id).orElseThrow(
                     () -> new GestanteNotFoundException("Gestante com o id " + id + " não foi encontrada"));
+            var user = userRepository.findByUsername(gestanteDTO.username()).orElseThrow(
+                () -> new UserNotFoundException("Usuário não encontrado"));
 
-            var updatedGestante = dtoToEntity(gestanteDTO);
+            var updatedGestante = dtoToEntity(gestanteDTO, user);
             updatedGestante.setId(gestante.getId());
 
             var savedGestante = gestanteRepository.save(updatedGestante);
@@ -135,7 +143,8 @@ public class GestanteService implements iGestanteService {
         emailService.sendEmail(gestante.getEmail(), "Dados da gestante deletados", message);
     }
 
-    private Gestante dtoToEntity(GestanteDTO gestanteDTO) {
+    private Gestante dtoToEntity(GestanteDTO gestanteDTO, User user) {
+
         var gestante = new Gestante();
 
         gestante.setId(new Random().nextLong());
@@ -145,6 +154,7 @@ public class GestanteService implements iGestanteService {
         gestante.setCpf(gestanteDTO.cpf());
         gestante.setRaca(gestanteDTO.raca());
         gestante.setSexo(gestanteDTO.sexo());
+        gestante.setUser(user);
 
         return gestante;
     }

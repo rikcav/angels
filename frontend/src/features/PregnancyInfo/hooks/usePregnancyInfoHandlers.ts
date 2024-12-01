@@ -5,6 +5,7 @@ import { GetPregnantInfo } from '../../../services/PregnantServices';
 import { GetPregnancyById } from '../../../services/PregnancyServices';
 import { PregnancyInterface } from '../../../types/interfaces/PregnanciesType';
 import { FollowUpInterface } from '../../../types/interfaces/PregnancyFollowUpType';
+import Cookies from 'js-cookie';
 
 export function usePregnancyInfoHandlers(
   pregnantId: number,
@@ -16,17 +17,21 @@ export function usePregnancyInfoHandlers(
   const [cpf, setCpf] = useState<string>('');
   const [toggleInfo, setToggleInfo] = useState(false);
   const navigate = useNavigate();
+  const authToken = Cookies.get('token');
 
   useEffect(() => {
     const getFollowUps = async () => {
-      const response = await GetFollowUpsByPregnancyId(pregnancyId);
+      const response = await GetFollowUpsByPregnancyId(
+        pregnancyId,
+        authToken || ''
+      );
       if (response?.status === 200) {
         setFollowUpInfo(response.data);
       }
     };
 
     const getPregnantInfo = async () => {
-      const response = await GetPregnantInfo(pregnantId);
+      const response = await GetPregnantInfo(pregnantId, authToken || '');
       if (response?.status === 200) {
         setName(response.data.nome);
         setCpf(response.data.cpf);
@@ -34,7 +39,7 @@ export function usePregnancyInfoHandlers(
     };
 
     const getPregnancyInfo = async () => {
-      const response = await GetPregnancyById(pregnancyId);
+      const response = await GetPregnancyById(pregnancyId, authToken || '');
       if (response?.status === 200) {
         setPregnancyInfo(response.data);
       }

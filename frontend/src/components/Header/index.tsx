@@ -1,17 +1,20 @@
 import * as S from './styles';
 import logo from '../../assets/angelsLogo.svg';
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../Button';
 import { LoginModal } from '../LoginModal';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {}
 
 export const Header: React.FC<HeaderProps> = () => {
-  // const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState('HOME');
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const authToken = Cookies.get('token');
 
   const showModal = () => {
     setOpen(true);
@@ -26,7 +29,6 @@ export const Header: React.FC<HeaderProps> = () => {
   };
 
   const handleCancel = () => {
-    console.log('Clicked cancel button');
     setOpen(false);
   };
 
@@ -34,9 +36,13 @@ export const Header: React.FC<HeaderProps> = () => {
     setActiveLink(link);
   };
 
-  // const dashboardScreen = () => {
-  //   navigate('/dashboard');
-  // };
+  const systemAccess = () => {
+    if (authToken) {
+      navigate('/dashboard');
+    } else {
+      showModal();
+    }
+  };
 
   useEffect(() => {
     setActiveLink('HOME');
@@ -48,38 +54,38 @@ export const Header: React.FC<HeaderProps> = () => {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
-  
-    return (
-      <S.Container id="home">
-        <div>
-          <S.Navigation>
-            <S.Nav>
-              <S.Logo src={logo} alt="Angels logo" />
-              <S.Ul>
-                <S.Li>
-                  <Link
-                    to="#home"
-                    onClick={() => {
-                      handleClick('HOME');
-                      scrollToElement('home');
-                    }}
-                    className={activeLink === 'HOME' ? 'active' : ''}
-                  >
-                    HOME
-                  </Link>
-                </S.Li>
-                <S.Li>
-                  <Link
-                    to="#about"
-                    onClick={() => {
-                      handleClick('SOBRE');
-                      scrollToElement('about');
-                    }}
-                    className={activeLink === 'SOBRE' ? 'active' : ''}
-                  >
-                    SOBRE
-                  </Link>
-                </S.Li>
+
+  return (
+    <S.Container id="home">
+      <div>
+        <S.Navigation>
+          <S.Nav>
+            <S.Logo src={logo} alt="Angels logo" />
+            <S.Ul>
+              <S.Li>
+                <Link
+                  to="#home"
+                  onClick={() => {
+                    handleClick('HOME');
+                    scrollToElement('home');
+                  }}
+                  className={activeLink === 'HOME' ? 'active' : ''}
+                >
+                  HOME
+                </Link>
+              </S.Li>
+              <S.Li>
+                <Link
+                  to="#about"
+                  onClick={() => {
+                    handleClick('SOBRE');
+                    scrollToElement('about');
+                  }}
+                  className={activeLink === 'SOBRE' ? 'active' : ''}
+                >
+                  SOBRE
+                </Link>
+              </S.Li>
               <S.Li>
                 <Link
                   to="#data"
@@ -125,8 +131,12 @@ export const Header: React.FC<HeaderProps> = () => {
                   LINKS
                 </Link>
               </S.Li>
-              </S.Ul>
-            <Button label="ACESSE O SISTEMA" buttonFunction={showModal} size="large" />
+            </S.Ul>
+            <Button
+              label="ACESSE O SISTEMA"
+              buttonFunction={systemAccess}
+              size="large"
+            />
           </S.Nav>
         </S.Navigation>
         <LoginModal

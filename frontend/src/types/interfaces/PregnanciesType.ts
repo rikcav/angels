@@ -20,6 +20,7 @@ export interface PregnancyInterface {
 }
 
 export interface PregnancyRegisterInterface {
+  username?: String;
   dataUltimaMenstruacao: string | string[] | undefined;
   gestante_id: number | undefined;
   dataInicioGestacao: string | string[] | undefined;
