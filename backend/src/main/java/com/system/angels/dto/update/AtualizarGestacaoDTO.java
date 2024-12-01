@@ -36,6 +36,7 @@ public class AtualizarGestacaoDTO {
     private boolean vacinaHepatiteB;
     private SituacaoGestacional situacaoGestacional;
     private boolean riscoIA;
+    private String username;
 
     public AtualizarGestacaoDTO(Gestacao gestacao) {
         this.id = gestacao.getId();

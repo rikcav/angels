@@ -12,4 +12,5 @@ public interface GestacaoRepository extends JpaRepository<Gestacao, Long> {
 
     public List<Gestacao> findByGestanteId(Long gestanteId);
 
+    public List<Gestacao> findByUser_Username(String username);
 }

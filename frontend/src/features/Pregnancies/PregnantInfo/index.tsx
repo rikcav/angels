@@ -20,6 +20,7 @@ import { successNotification } from '../../../components/Notification';
 import { genderList, raceList } from '../../PregnantRegister/SelectOptions';
 import { ErrorInterface } from '../../../types/interfaces/ErrorType';
 import { pregnantSchemaPartOne } from '../../../types/schemas/PregnantRegisterSchema';
+import Cookies from 'js-cookie';
 
 interface PregnantInfoProps {
   id: number;
@@ -36,6 +37,7 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
   const [gender, setGender] = useState<string>('');
   const [cpf, setCpf] = useState<string>('');
   const [reload, setReload] = useState<number>(0);
+  const authToken = Cookies.get('token');
 
   const [errorName, setErrorName] = useState<ErrorInterface>({
     errorType: '',
@@ -134,7 +136,7 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
 
   useEffect(() => {
     const getPregnantInfo = async () => {
-      const response = await GetPregnantInfo(id);
+      const response = await GetPregnantInfo(id, authToken || '');
       if (response?.status == 200) {
         setPregnantInfo(response.data);
         setName(response.data.nome);
@@ -164,7 +166,7 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
   };
 
   const putPregnant = async () => {
-    const response = await PutPregnant(id, updateData);
+    const response = await PutPregnant(id, updateData, authToken || '');
     if (response?.status == 200) {
       successNotification('Gestante atualizada com sucesso!');
       reloadPag();
@@ -173,7 +175,7 @@ export const PregnantInfo: React.FC<PregnantInfoProps> = ({ id }) => {
   };
 
   const deletePregnant = async () => {
-    const response = await DeletePregnant(id);
+    const response = await DeletePregnant(id, authToken || '');
     if (response?.status == 200) {
       successNotification('Gestante deletada com sucesso!');
       dashBoardScreen();

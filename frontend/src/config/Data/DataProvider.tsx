@@ -2,6 +2,7 @@ import { ReactNode, createContext, useEffect, useState } from 'react';
 import { PregnancyInterface } from '../../types/interfaces/PregnanciesType';
 import { GetPregnancies } from '../../services/PregnancyServices';
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 interface DataContextType {
   pregnanciesList: Array<PregnancyInterface>;
@@ -23,9 +24,14 @@ export function DataProvider({ children }: DataProviderProps) {
   const [reload, setReload] = useState<number>(0);
   const authToken = Cookies.get('token');
 
+  const decodedToken = jwtDecode(authToken || '');
+
   useEffect(() => {
     const getAllPregnancies = async () => {
-      const response = await GetPregnancies();
+      const response = await GetPregnancies(
+        decodedToken.sub || '',
+        authToken || ''
+      );
       if (response?.status == 200) {
         setPregnantList(response.data);
       }

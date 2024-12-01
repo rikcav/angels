@@ -24,6 +24,12 @@ public class GestacaoController {
         return ResponseEntity.status(HttpStatus.OK).body(gestacoes);
     }
 
+    @GetMapping("/usuario/{username}")
+    public ResponseEntity<List<GestacaoComGestanteDTO>> gestacoesPorUsuario(@PathVariable String username) {
+        var gestacoes = service.gestacoesPorUsuario(username);
+        return ResponseEntity.status(HttpStatus.OK).body(gestacoes);
+    }
+
     @GetMapping("/gestacao/{gestanteId}")
     public ResponseEntity<List<GestacaoRO>> gestacaoPorGestanteId(@PathVariable Long gestanteId) {
         var gestacaos = service.gestacaoPorGestanteId(gestanteId);

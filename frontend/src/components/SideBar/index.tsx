@@ -16,6 +16,7 @@ import { warningNotification } from '../Notification';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
+  const authToken = Cookies.get('token');
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -37,7 +38,7 @@ const SideBar: React.FC = () => {
   };
 
   const getPregnantByCpf = async (cpf: string) => {
-    const response = await GetPregnantByCpf(cpf);
+    const response = await GetPregnantByCpf(cpf, authToken || '');
     const id = response?.data.id;
     if (response?.status == 200) {
       navigate(`/pregnancyRegister/${id}`);

@@ -24,5 +24,6 @@ public record GestacaoDTO(
         boolean riscoIA,
         int riscoGestacional,
         boolean vacinaHepatiteB,
+        String username,
         SituacaoGestacional situacaoGestacional) {
 }

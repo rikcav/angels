@@ -23,13 +23,11 @@ export const pregnantSchemaPartOne = z.object({
   sexo: z.string({
     required_error: 'Gênero é obrigatório'
   }),
-  cpf: z
-    .string({
-      required_error: 'CPF é obrigatório',
-      invalid_type_error: 'CPF precisa ser uma string'
-    }),
-    // // .length(11, { message: 'O CPF deve ter exatamente 11 caracteres' })
-    // .regex(/^\d+$/, { message: 'O CPF deve conter apenas dígitos numéricos' }),
+  cpf: z.string({
+    required_error: 'CPF é obrigatório',
+    invalid_type_error: 'CPF precisa ser uma string'
+  }),
+  email: z.string({ required_error: 'E-mail é obrigatório' }).email(),
   chefeFamilia: z.boolean({
     required_error: 'Chefe de família é obrigatório'
   }),

@@ -23,6 +23,7 @@ export function PregnantRegister() {
     progress,
     progressBar,
     name,
+    email,
     birthDate,
     race,
     gender,
@@ -62,6 +63,7 @@ export function PregnantRegister() {
     hypertension,
     twinFamilyHistory,
     errorName,
+    errorEmail,
     errorBirthDate,
     errorCpf,
     errorFamilyIncome,
@@ -130,7 +132,8 @@ export function PregnantRegister() {
     handleChangeTwinFamilyHistory,
     handleSetProgress,
     Register,
-    handleBackArrow
+    handleBackArrow,
+    handleChangeEmail
   } = usePregnantRegisterHandlers();
 
   return (
@@ -155,6 +158,18 @@ export function PregnantRegister() {
                 errorShow={errorName?.errorShow}
                 status={errorName?.errorType}
                 infoText="O nome precisa ter entre 2 e 80 letras"
+                color="#b1488a"
+                disabled={blockName}
+              />
+              <Input
+                label={'Email:'}
+                placeHolder="email@email.com"
+                type="email"
+                inputFunction={handleChangeEmail}
+                value={email}
+                errorShow={errorEmail?.errorShow}
+                status={errorEmail?.errorType}
+                infoText="O e-mail precisa ser válido"
                 color="#b1488a"
                 disabled={blockName}
               />

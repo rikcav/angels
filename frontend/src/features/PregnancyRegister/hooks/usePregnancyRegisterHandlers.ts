@@ -20,6 +20,8 @@ import { PregnancyRegisterSchema } from '../../../types/schemas/PregnancyRegiste
 import { IAInterface } from '../../../types/interfaces/IAPregnancyType';
 import { PregnancyRegisterInterface } from '../../../types/interfaces/PregnanciesType';
 import { postGestacao } from '../../../services/PregnancyServices';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 export function usePregnancyRegisterHandlers(gestanteId: number) {
   const navigate = useNavigate();
@@ -41,6 +43,9 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
   const [gestantInfo, setGestantInfo] = useState<PregnantInfoInterface>();
   const [evolutionData, setEvolutionData] = useState<EvolutionDataInterface>();
 
+  const authToken = Cookies.get('token');
+  const decodedToken = jwtDecode(authToken || '');
+
   const [errorPeriod, setErrorPeriod] = useState<ErrorInterface>({
     errorType: '',
     errorShow: false
@@ -58,13 +63,16 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
 
   useEffect(() => {
     const loadPregnancyData = async () => {
-      const evolutionResponse = await GetPregnantEvolutionData(gestanteId);
+      const evolutionResponse = await GetPregnantEvolutionData(
+        gestanteId,
+        authToken || ''
+      );
       if (evolutionResponse?.status === 200) {
-        console.log(evolutionResponse.data)
+        console.log(evolutionResponse.data);
         setEvolutionData(evolutionResponse.data[0]);
       }
 
-      const infoResponse = await GetPregnantInfo(gestanteId);
+      const infoResponse = await GetPregnantInfo(gestanteId, authToken || '');
       if (infoResponse?.status === 200) {
         setGestantInfo(infoResponse.data);
       }
@@ -86,10 +94,7 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
     setPeriod(dateString);
   };
 
-  const handleChangeDateBeginning = (
-    date: unknown,
-    dateString: string
-  ) => {
+  const handleChangeDateBeginning = (date: unknown, dateString: string) => {
     try {
       PregnancyRegisterSchema.shape.dataInicioGestacao.parse(dateString);
       setErrorBeginning({ errorType: '', errorShow: false });
@@ -178,32 +183,36 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
   };
 
   const formatDateOnly = (dateString: string): string => {
-    return dateString.split("T")[0];
+    return dateString.split('T')[0];
   };
 
   const dataIA: IAInterface = {
     previous_weight: weight,
     gestational_risk: risc,
     schooling: evolutionData?.escolaridade?.toString(),
-    has_hypertension: evolutionData?.hipertensao ? "1":"0",
-    has_diabetes: evolutionData?.diabetes ? "1":"0",
-    has_pelvic_surgery: evolutionData?.cirurgiaPelvica ? "1":"0",
-    has_urinary_infection: evolutionData?.infeccaoUrinaria ? "1":"0",
-    has_congenital_malformation: evolutionData?.maFormacaoCongenita ? "1":"0",
-    has_family_twinship: evolutionData?.familiarGemeos ? "1":"0",
-    amount_gestation: evolutionData?.quantidadeGestacao?.toString() || "0",
-    amount_abortion: evolutionData?.quantidadeAbortos?.toString() || "0",
-    amount_deliveries: evolutionData?.quantidadePartos?.toString() || "0",
-    amount_cesarean: evolutionData?.quantidadePartosCesarios?.toString() || "0",
-    mothers_birth_date: formatDateOnly(gestantInfo?.dataNascimento || '2024-01-01') || '2024-01-01',
+    has_hypertension: evolutionData?.hipertensao ? '1' : '0',
+    has_diabetes: evolutionData?.diabetes ? '1' : '0',
+    has_pelvic_surgery: evolutionData?.cirurgiaPelvica ? '1' : '0',
+    has_urinary_infection: evolutionData?.infeccaoUrinaria ? '1' : '0',
+    has_congenital_malformation: evolutionData?.maFormacaoCongenita ? '1' : '0',
+    has_family_twinship: evolutionData?.familiarGemeos ? '1' : '0',
+    amount_gestation: evolutionData?.quantidadeGestacao?.toString() || '0',
+    amount_abortion: evolutionData?.quantidadeAbortos?.toString() || '0',
+    amount_deliveries: evolutionData?.quantidadePartos?.toString() || '0',
+    amount_cesarean: evolutionData?.quantidadePartosCesarios?.toString() || '0',
+    mothers_birth_date:
+      formatDateOnly(gestantInfo?.dataNascimento || '2024-01-01') ||
+      '2024-01-01',
     date_first_prenatal: formatDate(),
-    date_last_delivery: formatDateOnly(evolutionData?.dataUltimaGestacao || '2024-01-01') || '2024-01-01',
-    date_start_pregnancy: beginning || '2024-01-01',
- 
+    date_last_delivery:
+      formatDateOnly(evolutionData?.dataUltimaGestacao || '2024-01-01') ||
+      '2024-01-01',
+    date_start_pregnancy: beginning || '2024-01-01'
   };
 
   const data: PregnancyRegisterInterface = {
     gestante_id: gestanteId,
+    username: decodedToken ? decodedToken.sub : '',
     dataUltimaMenstruacao: period,
     dataInicioGestacao: beginning,
     pesoAntesGestacao: parseInt(weight),
@@ -222,13 +231,10 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
   };
 
   const handleCheckIA = async () => {
-    console.log("djkahs")
-    console.log(dataIA)
     const response = await postIA(dataIA);
     if (response?.status === 200) {
       data.riscoIA = response.data.risk;
-      successNotification('Deu certo IA');
-      console.log("deu certo")
+      successNotification('Risco calculado');
     }
   };
 
@@ -236,7 +242,7 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
     try {
       PregnancyRegisterSchema.parse(data);
       await handleCheckIA();
-      await postGestacao(data);
+      await postGestacao(data, authToken || '');
       navigate(`/pregnancies/${gestanteId}`);
     } catch (error) {
       if (error instanceof ZodError) {

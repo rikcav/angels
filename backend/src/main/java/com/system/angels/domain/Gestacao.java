@@ -29,6 +29,11 @@ public class Gestacao {
     @JsonIgnore
     private Gestante gestante;
 
+    @ManyToOne
+    @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
+    @JsonIgnore
+    private User user;
+
     @Column(nullable = false)
     private boolean consumoAlcool;
 
