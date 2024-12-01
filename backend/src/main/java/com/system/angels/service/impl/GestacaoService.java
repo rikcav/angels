@@ -39,6 +39,7 @@ public class GestacaoService implements iGestacaoService {
     @Override
     public GestacaoRO registrarGestacao(GestacaoDTO gestacaoDTO) {
         var gestacao = dtoToEntity(gestacaoDTO);
+        System.out.println(gestacaoDTO.riscoIA());
         var savedGestacao = gestacaoRepository.save(gestacao);
 
         var gestante = gestacao.getGestante();
@@ -216,7 +217,7 @@ public class GestacaoService implements iGestacaoService {
                 gestacao.getGrupoSanguineo(),
                 gestacao.getPesoAntesGestacao(),
                 gestacao.getRiscoGestacional(),
-                gestacao.isRiscoIA(),
+                gestacao.getRiscoIA(),
                 gestacao.isVacinaHepatiteB(),
                 gestacao.getSituacaoGestacional()
         );

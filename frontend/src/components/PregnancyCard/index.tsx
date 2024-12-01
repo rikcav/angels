@@ -8,12 +8,15 @@ interface InfoProps {
   id: number;
   weeks: string;
   pregnantName?: string;
-  gestationalRisk: boolean;
+  gestationalRisk: string;
   pregnancyStatus: string;
   onClickFunc?: React.MouseEventHandler<HTMLDivElement>;
   onClickAdd?: React.MouseEventHandler<HTMLButtonElement>;
   onClickThreeDots?: React.MouseEventHandler<HTMLButtonElement>;
-  handlePatchGestacao: (gestacaoId: number, situacaoGestacional: string) => Promise<void>;
+  handlePatchGestacao: (
+    gestacaoId: number,
+    situacaoGestacional: string
+  ) => Promise<void>;
 }
 
 export const PregnancyCard: React.FC<InfoProps> = ({
@@ -25,7 +28,7 @@ export const PregnancyCard: React.FC<InfoProps> = ({
   onClickFunc,
   onClickAdd,
   onClickThreeDots,
-  handlePatchGestacao,
+  handlePatchGestacao
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [status, setStatus] = useState(pregnancyStatus);
@@ -53,7 +56,13 @@ export const PregnancyCard: React.FC<InfoProps> = ({
     <S.PregnancyCardContainer>
       <S.PregnancyInfoContainer onClick={onClickFunc}>
         <S.LineContainer>
-          {gestationalRisk ? <S.RedRiskLine /> : <S.RiskLine />}
+          {gestationalRisk == 'NAO' ? (
+            <S.GreenRiskLine />
+          ) : gestationalRisk == 'SIM' ? (
+            <S.RedRiskLine />
+          ) : (
+            <S.RiskLine />
+          )}
         </S.LineContainer>
         <S.ImageContainer>
           <img src={WhiteLogo} />

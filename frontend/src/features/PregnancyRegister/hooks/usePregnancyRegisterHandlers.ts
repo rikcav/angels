@@ -68,7 +68,6 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
         authToken || ''
       );
       if (evolutionResponse?.status === 200) {
-        console.log(evolutionResponse.data);
         setEvolutionData(evolutionResponse.data[0]);
       }
 
@@ -177,7 +176,7 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
   const formatDate = (): string => {
     const now = new Date();
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // Adiciona 1 ao mês, pois começa do zero
+    const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
@@ -218,7 +217,7 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
     pesoAntesGestacao: parseInt(weight),
     situacaoGestacional: situation,
     riscoGestacional: parseInt(risc),
-    riscoIA: false,
+    riscoIA: 'NAO_INFORMADO',
     grupoSanguineo: blood,
     fatorRh: rh,
     vacinaHepatiteB: hepB,
@@ -233,7 +232,7 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
   const handleCheckIA = async () => {
     const response = await postIA(dataIA);
     if (response?.status === 200) {
-      data.riscoIA = response.data.risk;
+      data.riscoIA = response.data.risk == true ? 'SIM' : 'NAO';
       successNotification('Risco calculado');
     }
   };
@@ -243,6 +242,7 @@ export function usePregnancyRegisterHandlers(gestanteId: number) {
       PregnancyRegisterSchema.parse(data);
       await handleCheckIA();
       await postGestacao(data, authToken || '');
+      successNotification('Gravidez cadastrada');
       navigate(`/pregnancies/${gestanteId}`);
     } catch (error) {
       if (error instanceof ZodError) {

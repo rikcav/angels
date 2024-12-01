@@ -3,6 +3,7 @@ package com.system.angels.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.system.angels.domain.enums.FatorRH;
 import com.system.angels.domain.enums.GrupoSanguineo;
+import com.system.angels.domain.enums.RiscoIA;
 import com.system.angels.domain.enums.SituacaoGestacional;
 import com.system.angels.domain.enums.UsoAlcool;
 import com.system.angels.domain.enums.UsoDrogas;
@@ -71,7 +72,7 @@ public class Gestacao {
     private int riscoGestacional;
 
     @Column(nullable = false)
-    private boolean riscoIA;
+    private RiscoIA riscoIA;
 
     @Column(nullable = false)
     private boolean vacinaHepatiteB;

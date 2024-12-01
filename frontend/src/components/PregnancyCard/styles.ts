@@ -34,6 +34,13 @@ export const RedRiskLine = styled.div`
   border-radius: 0px 0px 100% 100%;
 `;
 
+export const GreenRiskLine = styled.div`
+  background-color: green;
+  height: 6px;
+  width: 80%;
+  border-radius: 0px 0px 100% 100%;
+`;
+
 export const LineContainer = styled.div`
   display: flex;
   justify-content: center;

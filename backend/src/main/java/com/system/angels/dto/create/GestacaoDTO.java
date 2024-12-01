@@ -2,6 +2,7 @@ package com.system.angels.dto.create;
 
 import com.system.angels.domain.enums.FatorRH;
 import com.system.angels.domain.enums.GrupoSanguineo;
+import com.system.angels.domain.enums.RiscoIA;
 import com.system.angels.domain.enums.SituacaoGestacional;
 import com.system.angels.domain.enums.UsoAlcool;
 import com.system.angels.domain.enums.UsoDrogas;
@@ -21,7 +22,7 @@ public record GestacaoDTO(
         boolean gravidezPlanejada,
         GrupoSanguineo grupoSanguineo,
         BigDecimal pesoAntesGestacao,
-        boolean riscoIA,
+        RiscoIA riscoIA,
         int riscoGestacional,
         boolean vacinaHepatiteB,
         String username,

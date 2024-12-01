@@ -33,6 +33,7 @@ export function DataProvider({ children }: DataProviderProps) {
         authToken || ''
       );
       if (response?.status == 200) {
+        console.log(response.data);
         setPregnantList(response.data);
       }
     };

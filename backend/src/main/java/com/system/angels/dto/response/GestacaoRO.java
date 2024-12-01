@@ -2,6 +2,7 @@ package com.system.angels.dto.response;
 
 import com.system.angels.domain.enums.FatorRH;
 import com.system.angels.domain.enums.GrupoSanguineo;
+import com.system.angels.domain.enums.RiscoIA;
 import com.system.angels.domain.enums.SituacaoGestacional;
 import com.system.angels.domain.enums.UsoAlcool;
 import com.system.angels.domain.enums.UsoDrogas;
@@ -23,7 +24,7 @@ public record GestacaoRO(
   GrupoSanguineo grupoSanguineo,
   BigDecimal pesoAntesGestacao,
   int riscoGestacional,
-  boolean riscoIA,
+  RiscoIA riscoIA,
   boolean vacinaHepatiteB,
   SituacaoGestacional situacaoGestacional) {
 }
