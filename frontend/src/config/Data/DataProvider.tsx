@@ -17,6 +17,11 @@ export const DataContext = createContext<DataContextType | undefined>(
   undefined
 );
 
+interface JwtPayload {
+  sub: string;
+  [key: string]: unknown;
+}
+
 export function DataProvider({ children }: DataProviderProps) {
   const [pregnanciesList, setPregnantList] = useState<
     Array<PregnancyInterface>
@@ -24,7 +29,9 @@ export function DataProvider({ children }: DataProviderProps) {
   const [reload, setReload] = useState<number>(0);
   const authToken = Cookies.get('token');
 
-  const decodedToken = jwtDecode(authToken || '');
+  const decodedToken: JwtPayload = authToken
+    ? jwtDecode<JwtPayload>(authToken)
+    : { sub: '' };
 
   useEffect(() => {
     const getAllPregnancies = async () => {

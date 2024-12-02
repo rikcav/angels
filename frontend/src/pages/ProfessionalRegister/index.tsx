@@ -8,7 +8,10 @@ import { ArrowUUpLeft } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router-dom';
 import { UserRegister } from '../../types/interfaces/UserType';
 import { userRegister } from '../../services/UserServices';
-import { successNotification } from '../../components/Notification';
+import {
+  errorNotification,
+  successNotification
+} from '../../components/Notification';
 
 export const ProfessionalRegistration: React.FC = () => {
   const navigate = useNavigate();
@@ -90,7 +93,7 @@ export const ProfessionalRegistration: React.FC = () => {
         navigate('/');
       }
     } catch (error) {
-      console.error('Erro ao cadastrar:', error);
+      errorNotification('Erro ao cadastrar: ' + error);
     }
   };
 
