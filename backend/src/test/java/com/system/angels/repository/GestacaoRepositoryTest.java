@@ -2,6 +2,7 @@ package com.system.angels.repository;
 
 import com.system.angels.domain.Gestacao;
 import com.system.angels.domain.Gestante;
+import com.system.angels.domain.User;
 import com.system.angels.domain.enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 public class GestacaoRepositoryTest {
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private GestacaoRepository gestacaoRepository;
@@ -26,8 +29,17 @@ public class GestacaoRepositoryTest {
 
     private Gestante gestante;
 
+    private User user;
+
     @BeforeEach
     public void setUp() {
+        user = new User();
+        user.setUsername("maria_user"); // Defina um username válido
+        user.setPassword("securePassword"); // Defina uma senha ou outros campos obrigatórios
+        user.setName("Maria Silva"); // Defina o campo 'name'
+        user.setRole("USER"); // Defina um valor para o campo 'role', se necessário
+        user = userRepository.save(user); // Salva o User no banco
+
         gestante = new Gestante();
         gestante.setCpf("12345678901");
         gestante.setNome("Maria");
@@ -35,6 +47,7 @@ public class GestacaoRepositoryTest {
         gestante.setEmail("maria.silva@gmail.com");
         gestante.setRaca(Raca.NEGRO);
         gestante.setSexo(Sexo.FEMININO);
+        gestante.setUser(user);
         gestanteRepository.save(gestante);
     }
 
@@ -53,9 +66,10 @@ public class GestacaoRepositoryTest {
         gestacao.setGrupoSanguineo(GrupoSanguineo.O);
         gestacao.setPesoAntesGestacao(new BigDecimal("65.5"));
         gestacao.setRiscoGestacional(1);
-        gestacao.setRiscoIA(false);
+        gestacao.setRiscoIA(RiscoIA.NAO);
         gestacao.setVacinaHepatiteB(true);
         gestacao.setSituacaoGestacional(SituacaoGestacional.EM_ANDAMENTO);
+        gestacao.setUser(user);
         return gestacao;
     }
 

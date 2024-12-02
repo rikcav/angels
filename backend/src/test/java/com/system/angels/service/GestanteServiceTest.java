@@ -1,6 +1,7 @@
 package com.system.angels.service;
 
 import com.system.angels.domain.Gestante;
+import com.system.angels.domain.User;
 import com.system.angels.domain.enums.Raca;
 import com.system.angels.domain.enums.Sexo;
 import com.system.angels.dto.create.GestanteDTO;
@@ -9,6 +10,7 @@ import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.exceptions.InvalidRequestException;
 import com.system.angels.repository.DadosEvolutivosRepository;
 import com.system.angels.repository.GestanteRepository;
+import com.system.angels.repository.UserRepository;
 import com.system.angels.service.impl.EmailService;
 import com.system.angels.service.impl.GestanteService;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +29,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class GestanteServiceTest {
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private GestanteRepository gestanteRepository;
@@ -42,19 +46,32 @@ public class GestanteServiceTest {
 
     private GestanteDTO gestanteDTO;
     private Gestante gestante;
+    private User user;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
+        user = new User();
+        user.setUsername("mariazinha");
+        user.setPassword("securePassword");
+        user.setName("Maria Silva");
+        user.setRole("USER");
+
+        // Mock para encontrar o usuário
+        when(userRepository.findByUsername("mariazinha")).thenReturn(Optional.of(user));
+
+        // Mock para salvar um usuário
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
         gestanteDTO = new GestanteDTO(
-                "Maria",
+                "Maria Silva",
                 new Date(),
                 "maria.silva@gmail.com",
-                "12345678901",
+                "12345678900",
                 Raca.NEGRO,
-                Sexo.FEMININO
-        );
+                Sexo.FEMININO,
+                "mariazinha");
 
         gestante = new Gestante();
         gestante.setId(1L);
@@ -63,7 +80,9 @@ public class GestanteServiceTest {
         gestante.setCpf("12345678901");
         gestante.setRaca(Raca.NEGRO);
         gestante.setSexo(Sexo.FEMININO);
+        gestante.setUser(user);
     }
+
 
     @Test
     public void testGestantes() {
@@ -121,8 +140,13 @@ public class GestanteServiceTest {
 
     @Test
     public void testRegistrarGestante_InvalidRequest() {
+        // Simular que o usuário existe
+        when(userRepository.findByUsername("mariazinha")).thenReturn(Optional.of(user));
+
+        // Simular que o save do Gestante lança InvalidRequestException
         doThrow(InvalidRequestException.class).when(gestanteRepository).save(any(Gestante.class));
 
+        // Verificar se a exceção é lançada
         assertThrows(InvalidRequestException.class, () -> gestanteService.registrarGestante(gestanteDTO));
     }
 

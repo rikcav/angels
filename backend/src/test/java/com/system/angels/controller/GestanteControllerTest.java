@@ -65,7 +65,8 @@ public class GestanteControllerTest {
                 "maria.silva@gmail.com",
                 "12345678900",
                 Raca.NEGRO,
-                Sexo.FEMININO);
+                Sexo.FEMININO,
+                "mariazinha");
 
         gestanteRO = new GestanteRO(
                 1L,

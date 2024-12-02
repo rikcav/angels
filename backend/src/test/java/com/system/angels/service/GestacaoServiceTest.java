@@ -2,10 +2,8 @@ package com.system.angels.service;
 
 import com.system.angels.domain.Gestacao;
 import com.system.angels.domain.Gestante;
-import com.system.angels.domain.enums.GrupoSanguineo;
-import com.system.angels.domain.enums.SituacaoGestacional;
-import com.system.angels.domain.enums.UsoAlcool;
-import com.system.angels.domain.enums.UsoDrogas;
+import com.system.angels.domain.User;
+import com.system.angels.domain.enums.*;
 import com.system.angels.dto.create.GestacaoDTO;
 import com.system.angels.dto.response.GestacaoComGestanteDTO;
 import com.system.angels.dto.response.GestacaoRO;
@@ -13,6 +11,7 @@ import com.system.angels.exceptions.GestacaoNotFoundException;
 import com.system.angels.exceptions.GestanteNotFoundException;
 import com.system.angels.repository.GestacaoRepository;
 import com.system.angels.repository.GestanteRepository;
+import com.system.angels.repository.UserRepository;
 import com.system.angels.service.impl.EmailService;
 import com.system.angels.service.impl.GestacaoService;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +39,9 @@ class GestacaoServiceTest {
     @Mock
     private GestanteRepository gestanteRepository;
 
+    @Mock
+    private UserRepository userRepository; // Mock do UserRepository
+
     @InjectMocks
     private GestacaoService gestacaoService;
 
@@ -58,14 +60,21 @@ class GestacaoServiceTest {
         gestante.setId(1L);
 
         gestacaoDTO = new GestacaoDTO(
-                1L, true, UsoAlcool.NENHUM_CONSUMO, new Date(), new Date(), null, false, 0, UsoDrogas.NENHUM_CONSUMO,
-                true, GrupoSanguineo.O, BigDecimal.valueOf(55), false, 0, false, SituacaoGestacional.EM_ANDAMENTO
+                1L, true, UsoAlcool.NENHUM_CONSUMO, new Date(), new Date(),
+                FatorRH.POSITIVO, false, 10, UsoDrogas.NENHUM_CONSUMO, true,
+                GrupoSanguineo.A, new BigDecimal("60.5"), RiscoIA.NAO, 2,
+                true, "mariazinha", SituacaoGestacional.EM_ANDAMENTO
         );
 
         gestacao = new Gestacao();
         gestacao.setId(1L);
         gestacao.setGestante(gestante);
         gestacao.setConsumoAlcool(true);
+
+        // Mock do retorno do userRepository
+        User user = new User();
+        user.setUsername("mariazinha");
+        when(userRepository.findByUsername("mariazinha")).thenReturn(Optional.of(user));
     }
 
     @Test
@@ -130,10 +139,7 @@ class GestacaoServiceTest {
 
     @Test
     void testAtualizarGestacao() {
-        Gestante gestante = new Gestante();
-        gestante.setId(gestacaoDTO.gestante_id());
-
-        when(gestanteRepository.findById(gestacaoDTO.gestante_id())).thenReturn(Optional.of(gestante));
+        when(gestanteRepository.findById(anyLong())).thenReturn(Optional.of(gestante));
         when(gestacaoRepository.findById(anyLong())).thenReturn(Optional.of(gestacao));
         when(gestacaoRepository.save(any(Gestacao.class))).thenReturn(gestacao);
 
@@ -143,7 +149,7 @@ class GestacaoServiceTest {
         assertEquals(gestacao.getGestante().getId(), result.gestanteId());
         verify(gestacaoRepository, times(1)).findById(anyLong());
         verify(gestacaoRepository, times(1)).save(any(Gestacao.class));
-        verify(gestanteRepository, times(1)).findById(gestacaoDTO.gestante_id());
+        verify(gestanteRepository, times(1)).findById(anyLong());
     }
 
     @Test

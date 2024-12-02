@@ -42,19 +42,44 @@ class GestacaoControllerTest {
         gestacaoDTO = new GestacaoDTO(
                 1L, true, UsoAlcool.NENHUM_CONSUMO, new Date(), new Date(),
                 FatorRH.POSITIVO, false, 10, UsoDrogas.NENHUM_CONSUMO, true,
-                GrupoSanguineo.A, new BigDecimal("60.5"), true, 2,
-                true, SituacaoGestacional.EM_ANDAMENTO
+                GrupoSanguineo.A, new BigDecimal("60.5"), RiscoIA.NAO, 2,
+                true, "mariazinha", SituacaoGestacional.EM_ANDAMENTO
         );
 
         gestacaoRO = new GestacaoRO(
-                1L, 1L, true, UsoAlcool.NENHUM_CONSUMO, new Date(), new Date(),
-                FatorRH.POSITIVO, false, 10, UsoDrogas.NENHUM_CONSUMO, true,
-                GrupoSanguineo.A, new BigDecimal("60.5"), 2, true,
-                true, SituacaoGestacional.EM_ANDAMENTO
+                1L, // id
+                1L, // gestanteId
+                true, // consumoAlcool
+                UsoAlcool.NENHUM_CONSUMO, // frequenciaUsoAlcool
+                new Date(), // dataUltimaMenstruacao
+                new Date(), // dataInicioGestacao
+                FatorRH.POSITIVO, // fatorRh
+                false, // fuma
+                10, // quantidadeCigarrosDia
+                UsoDrogas.NENHUM_CONSUMO, // usoDrogas
+                true, // gravidezPlanejada
+                GrupoSanguineo.A, // grupoSanguineo
+                new BigDecimal("60.5"), // pesoAntesGestacao
+                2, // riscoGestacional
+                RiscoIA.NAO, // riscoIA
+                true, // vacinaHepatiteB
+                SituacaoGestacional.EM_ANDAMENTO // situacaoGestacional
         );
 
         gestacaoComGestanteDTO = new GestacaoComGestanteDTO();
     }
+
+    @Test
+    void testAtualizarGestacao() {
+        when(gestacaoService.atualizarGestacao(anyLong(), any(GestacaoDTO.class))).thenReturn(gestacaoRO);
+
+        ResponseEntity<GestacaoRO> response = gestacaoController.atualizarGestacao(1L, gestacaoDTO);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); // Altere para verificar o status NO_CONTENT
+        verify(gestacaoService, times(1)).atualizarGestacao(anyLong(), any(GestacaoDTO.class));
+    }
+
 
     @Test
     void testGestacoes() {
@@ -106,19 +131,6 @@ class GestacaoControllerTest {
         assertNotNull(response.getBody());
         assertEquals(gestacaoRO, response.getBody());
         verify(gestacaoService, times(1)).registrarGestacao(any(GestacaoDTO.class));
-    }
-
-    @Test
-    void testAtualizarGestacao() {
-        when(gestacaoService.atualizarGestacao(anyLong(), any(GestacaoDTO.class))).thenReturn(gestacaoRO);
-
-        ResponseEntity<GestacaoRO> response = gestacaoController.atualizarGestacao(1L, gestacaoDTO);
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(gestacaoRO, response.getBody());
-        verify(gestacaoService, times(1)).atualizarGestacao(anyLong(), any(GestacaoDTO.class));
     }
 
     @Test

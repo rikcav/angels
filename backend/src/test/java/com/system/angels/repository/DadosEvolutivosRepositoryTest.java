@@ -2,6 +2,7 @@ package com.system.angels.repository;
 
 import com.system.angels.domain.DadosEvolutivos;
 import com.system.angels.domain.Gestante;
+import com.system.angels.domain.User;
 import com.system.angels.domain.enums.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 public class DadosEvolutivosRepositoryTest {
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private DadosEvolutivosRepository dadosEvolutivosRepository;
@@ -25,12 +28,21 @@ public class DadosEvolutivosRepositoryTest {
     private GestanteRepository gestanteRepository;
 
     private Gestante gestante;
+    private User user;
 
     @BeforeEach
     public void setUp() {
+        user = new User();
+        user.setUsername("maria_user"); // Defina um username válido
+        user.setPassword("securePassword"); // Defina uma senha ou outros campos obrigatórios
+        user.setName("Maria Silva"); // Defina o campo 'name'
+        user.setRole("USER"); // Defina um valor para o campo 'role', se necessário
+        user = userRepository.save(user); // Salva o User no banco
+
         gestante = new Gestante();
         gestante.setCpf("12345678901");
         gestante.setNome("Maria");
+        gestante.setUser(user);
         gestante.setDataNascimento(new Date());
         gestante.setEmail("maria.silva@gmail.com");
         gestante.setRaca(Raca.NEGRO);
